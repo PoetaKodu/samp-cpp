@@ -1,0 +1,26 @@
+{
+	"name": "samp-cpp",
+	"type": "static lib",
+	"includeFolders": {
+		"public": "include"
+	},
+	"pch": {
+		"header": "include/SAMPCpp/SAMPCppPCH.hpp",
+		"source": "src/SAMPCppPCH.cpp",
+		"definition": "SAMPCPP_PCH"
+	},
+	"defines": {
+		"interface": "SAMPCPP_PCH=<SAMPCpp/SAMPCppPCH.hpp>"
+	},
+	"files": [
+		"include/SAMPCpp/**.hpp",
+		"src/**.cpp"
+	],
+	"dependencies": {
+		"public": [
+			"sampgdk-amlg@0.1.0",
+			"fmt@7.1.3"
+		]
+	},
+	"version": "0.0.1"
+}
