@@ -2,7 +2,7 @@
 
 #include <SAMPCpp/Server.hpp>
 
-namespace samp_cpp_new
+namespace samp_cpp
 {
 	
 namespace server

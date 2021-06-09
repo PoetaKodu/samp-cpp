@@ -2,7 +2,7 @@
 
 #include <SAMPCpp/Player.hpp>
 
-namespace samp_cpp_new
+namespace samp_cpp
 {
 	
 //////////////////////////////////////

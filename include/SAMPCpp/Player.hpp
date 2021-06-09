@@ -2,7 +2,7 @@
 
 #include SAMPCPP_PCH
 
-namespace samp_cpp_new
+namespace samp_cpp
 {
 
 enum class CameraMove
