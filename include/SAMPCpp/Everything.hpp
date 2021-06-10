@@ -4,3 +4,4 @@
 
 #include <SAMPCpp/Player.hpp>
 #include <SAMPCpp/Server.hpp>
+#include <SAMPCpp/Color.hpp>

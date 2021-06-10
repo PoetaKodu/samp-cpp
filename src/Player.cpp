@@ -12,13 +12,13 @@ bool Player::setPosition(float x_, float y_, float z_)
 }
 
 //////////////////////////////////////
-bool Player::msg(int color_, std::string const& content_)
+bool Player::msg(Color color_, std::string const& content_)
 {
 	return this->msg(color_, content_.c_str());
 }
 
 //////////////////////////////////////
-bool Player::msg(int color_, char const* content_)
+bool Player::msg(Color color_, char const* content_)
 {
 	return sampgdk_SendClientMessage(_id, color_, content_);
 }

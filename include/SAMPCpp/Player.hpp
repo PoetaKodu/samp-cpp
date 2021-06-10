@@ -2,6 +2,8 @@
 
 #include SAMPCPP_PCH
 
+#include <SAMPCpp/Color.hpp>
+
 namespace samp_cpp
 {
 
@@ -29,7 +31,7 @@ public:
 	std::string getName() const;
 
 	template <typename TFormat, typename TFirstArg, typename... TArgs>
-	void msg(int color_, TFormat && fmt_, TFirstArg && firstArg_, TArgs &&... args_)
+	void msg(Color color_, TFormat && fmt_, TFirstArg && firstArg_, TArgs &&... args_)
 	{
 		std::string msgContent = fmt::format(
 				std::forward<TFormat>(fmt_),
@@ -42,9 +44,9 @@ public:
 
 	
 
-	bool msg(int color_, std::string const& content_);
+	bool msg(Color color_, std::string const& content_);
 
-	bool msg(int color_, char const* content_);
+	bool msg(Color color_, char const* content_);
 private:
 	int32_t _id;
 };
