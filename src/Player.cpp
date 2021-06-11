@@ -6,6 +6,12 @@ namespace samp_cpp
 {
 
 /////////////////////////////////
+bool Player::msg(ChatFmtColorPair const& coloredMsg_)
+{
+	return this->msg(coloredMsg_.first, coloredMsg_.second);
+}
+
+/////////////////////////////////
 bool Player::msg(Color color_, std::string const& content_)
 {
 	return this->msg(color_, content_.c_str());

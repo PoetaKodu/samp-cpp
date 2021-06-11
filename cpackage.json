@@ -1,6 +1,7 @@
 {
 	"name": "samp-cpp",
 	"type": "static lib",
+	"language": "C++20",
 	"includeFolders": {
 		"public": "include"
 	},

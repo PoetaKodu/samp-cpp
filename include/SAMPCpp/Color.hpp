@@ -2,6 +2,8 @@
 
 #include SAMPCPP_PCH
 
+#include <SAMPCpp/String.hpp>
+
 namespace samp_cpp
 {
 
@@ -32,9 +34,9 @@ struct Color
 	{
 	}
 
-	constexpr uint8_t r() const { return value & 0xFF000000; }
-	constexpr uint8_t g() const { return value & 0x00FF0000; }
-	constexpr uint8_t b() const { return value & 0x0000FF00; }
+	constexpr uint8_t r() const { return (value & 0xFF000000) >> (3 * 8); }
+	constexpr uint8_t g() const { return (value & 0x00FF0000) >> (2 * 8); }
+	constexpr uint8_t b() const { return (value & 0x0000FF00) >> (1 * 8); }
 	constexpr uint8_t a() const { return value & 0x000000FF; }
 
 	constexpr void set(uint8_t r_, uint8_t g_, uint8_t b_, uint8_t a_ = 255)
@@ -73,6 +75,15 @@ struct Color
 	constexpr operator uint32_t() const { return value; }
 	constexpr operator int32_t() const 	{ return static_cast<int32_t>(value); }
 };
+
+constexpr std::string toChatColorString(Color const& color_)
+{
+	return "{"
+		+ intToHexString(color_.r())
+		+ intToHexString(color_.g()) 
+		+ intToHexString(color_.b())
+		+ "}";
+}
 
 namespace colors
 {

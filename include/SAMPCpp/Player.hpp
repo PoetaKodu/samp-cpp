@@ -3,6 +3,7 @@
 #include SAMPCPP_PCH
 
 #include <SAMPCpp/Color.hpp>
+#include <SAMPCpp/Formatting.hpp>
 
 namespace samp_cpp
 {
@@ -36,6 +37,18 @@ public:
 
 	std::string getName() const;
 
+	template <typename TFirstArg, typename... TArgs>
+	void msg(ChatFmtColorPair const& colorPair_, TFirstArg && firstArg_, TArgs &&... args_)
+	{
+		std::string msgContent = fmt::format(
+				colorPair_.second,
+				std::forward<TFirstArg>(firstArg_),
+				std::forward<TArgs>(args_)...
+			);
+
+		this->msg(colorPair_.first, msgContent);
+	}
+	
 	template <typename TFormat, typename TFirstArg, typename... TArgs>
 	void msg(Color color_, TFormat && fmt_, TFirstArg && firstArg_, TArgs &&... args_)
 	{
@@ -48,10 +61,9 @@ public:
 		this->msg(color_, msgContent);
 	}
 
-	
+	bool msg(ChatFmtColorPair const& coloredMsg_);
 
 	bool msg(Color color_, std::string const& content_);
-
 	bool msg(Color color_, char const* content_);
 private:
 	int32_t _id;
