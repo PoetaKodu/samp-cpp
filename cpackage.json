@@ -19,7 +19,8 @@
 	"dependencies": {
 		"public": [
 			"sampgdk-amlg@0.1.0",
-			"fmt@7.1.3"
+			"fmt@7.1.3",
+			"github:PoetaKodu/QuickMaffs@1.0.0"
 		]
 	},
 	"version": "0.0.1"
