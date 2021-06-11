@@ -1,0 +1,102 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+
+		/////////////////////////////////////////////
+		// # Project files generation
+		/////////////////////////////////////////////
+
+		// ## Pacc g enerate
+		{
+			"label": "Generate build files",
+			"group": "none",
+			"type": "shell",
+			"command": "pacc generate -cc"
+		},
+
+		/////////////////////////////////////////////
+		// # Project building: 
+		/////////////////////////////////////////////
+
+		// ## Pacc build
+		{
+			"label": "Build",
+			"type": "shell",
+			"command": "pacc build",
+			"args": [
+				"-c=${input:buildConfig}",
+				"-p=${input:buildPlatform}",
+				"--verbose",
+				"-cc",
+				"--cores=24"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "build",
+			"presentation": {
+				"reveal": "always"
+			},
+			// Use the standard MS compiler pattern to detect errors, warnings and infos
+			"problemMatcher": "$msCompile"
+		},
+
+		// # Cleaning:
+
+		// ## Clean build files
+		{
+			"label": "Clean BUILD folder",
+			"windows": {
+				"command": "rmdir build /s /q && echo Cleaning BUILD folder."
+			},
+			"linux": {
+				"command": "rm -r build && echo Cleaning BUILD folder."
+			},
+			"type": "shell",
+			"group": "none"
+		},
+		// ## Clean bin files
+		{
+			"label": "Clean BIN folder",
+			"windows": {
+				"command": "rmdir bin /s /q && echo Cleaning BIN folder."
+			},
+			"linux": {
+				"command": "rm -r bin && echo Cleaning BIN folder."
+			},
+			"type": "shell",
+			"group": "none"
+		},
+
+		// # Rebuild:
+
+		{
+			"dependsOn": [
+				"Clean BUILD folder",
+				"Build"
+			],
+
+			"label": "Rebuild",
+			"group": "build",
+			"problemMatcher": "$msCompile"
+		}
+	],
+	"inputs": [
+        {
+            "id": "buildConfig",
+            "description": "Select build config:",
+            "default": "Debug",
+            "type": "pickString",
+            "options": ["Debug", "Release"]
+		},
+		{
+            "id": "buildPlatform",
+            "description": "Select build platform:",
+            "default": "x64",
+            "type": "pickString",
+            "options": ["x86", "x64"]
+        }
+    ]
+}
