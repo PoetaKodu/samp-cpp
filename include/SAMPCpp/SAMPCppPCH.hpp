@@ -6,3 +6,5 @@
 #include <fmt/format.h>
 #include <string>
 #include <cstdint>
+
+#include <SAMPCpp/Math.hpp>

@@ -4,14 +4,8 @@
 
 namespace samp_cpp
 {
-	
-//////////////////////////////////////
-bool Player::setPosition(float x_, float y_, float z_)
-{
-	return sampgdk_SetPlayerPos(_id, x_, y_, z_);
-}
 
-//////////////////////////////////////
+/////////////////////////////////
 bool Player::msg(Color color_, std::string const& content_)
 {
 	return this->msg(color_, content_.c_str());
@@ -24,9 +18,43 @@ bool Player::msg(Color color_, char const* content_)
 }
 
 //////////////////////////////////////
+bool Player::setPosition(math::Vector3f const& pos_)
+{
+	return this->setPosition(pos_.x, pos_.y, pos_.z);
+}
+
+//////////////////////////////////////
+bool Player::setPosition(float x_, float y_, float z_)
+{
+	return sampgdk_SetPlayerPos(_id, x_, y_, z_);
+}
+
+//////////////////////////////////////
+math::Vector3f Player::getPosition() const
+{
+	math::Vector3f result;
+
+	sampgdk_GetPlayerPos(_id, &result.x, &result.y, &result.z);
+		
+	return result;
+}
+
+//////////////////////////////////////
+bool Player::setCameraPosition(math::Vector3f const& pos_)
+{
+	return this->setCameraPosition(pos_.x, pos_.y, pos_.z);
+}
+
+//////////////////////////////////////
 bool Player::setCameraPosition(float x_, float y_, float z_)
 {
 	return sampgdk_SetPlayerCameraPos(_id, x_, y_, z_);
+}
+
+//////////////////////////////////////
+bool Player::setCameraLookAt(math::Vector3f const& lookAt_, CameraMove moveMethod_)
+{
+	return this->setCameraLookAt(lookAt_.x, lookAt_.y, lookAt_.z, moveMethod_);
 }
 
 //////////////////////////////////////

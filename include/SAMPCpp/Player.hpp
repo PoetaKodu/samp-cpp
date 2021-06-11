@@ -23,9 +23,15 @@ public:
 
 	int32_t id() const { return _id; }
 
+	bool setPosition(math::Vector3f const& pos_);
 	bool setPosition(float x_, float y_, float z_);
 
+	math::Vector3f getPosition() const;
+
+	bool setCameraPosition(math::Vector3f const& pos_);
 	bool setCameraPosition(float x_, float y_, float z_);
+
+	bool setCameraLookAt(math::Vector3f const& lookAt_, CameraMove moveMethod_ = CameraMove::Cut);
 	bool setCameraLookAt(float x_, float y_, float z_, CameraMove moveMethod_ = CameraMove::Cut);
 
 	std::string getName() const;
