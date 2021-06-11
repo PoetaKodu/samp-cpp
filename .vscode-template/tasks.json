@@ -94,7 +94,7 @@
 		{
             "id": "buildPlatform",
             "description": "Select build platform:",
-            "default": "x64",
+            "default": "x86",
             "type": "pickString",
             "options": ["x86", "x64"]
         }
