@@ -10,7 +10,7 @@
 		"definition": "SAMPCPP_PCH"
 	},
 	"defines": {
-		"interface": "SAMPCPP_PCH=<SAMPCpp/SAMPCppPCH.hpp>"
+		"interface": "SAMPCPP_PCH=\"SAMPCpp/SAMPCppPCH.hpp\""
 	},
 	"files": [
 		"include/SAMPCpp/**.hpp",
