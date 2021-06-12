@@ -9,4 +9,4 @@
 #include <cstdint>
 #include <type_traits>
 
-#include <SAMPCpp/Math.hpp>
+#include <SAMPCpp/Core/Math.hpp>

@@ -2,8 +2,8 @@
 
 #include SAMPCPP_PCH
 
-#include <SAMPCpp/Color.hpp>
-#include <SAMPCpp/Formatting.hpp>
+#include <SAMPCpp/Core/Color.hpp>
+#include <SAMPCpp/Core/Formatting.hpp>
 
 namespace samp_cpp
 {

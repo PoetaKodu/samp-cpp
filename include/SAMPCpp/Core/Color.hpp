@@ -2,7 +2,7 @@
 
 #include SAMPCPP_PCH
 
-#include <SAMPCpp/String.hpp>
+#include <SAMPCpp/Core/String.hpp>
 
 namespace samp_cpp
 {

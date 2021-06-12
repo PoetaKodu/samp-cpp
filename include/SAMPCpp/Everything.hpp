@@ -2,6 +2,10 @@
 
 #include SAMPCPP_PCH
 
-#include <SAMPCpp/Player.hpp>
-#include <SAMPCpp/Server.hpp>
-#include <SAMPCpp/Color.hpp>
+#include <SAMPCpp/SAMP/Player.hpp>
+#include <SAMPCpp/SAMP/Server.hpp>
+
+#include <SAMPCpp/Core/Color.hpp>
+#include <SAMPCpp/Core/String.hpp>
+#include <SAMPCpp/Core/Formatting.hpp>
+#include <SAMPCpp/Core/Math.hpp>

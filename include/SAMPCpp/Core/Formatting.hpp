@@ -2,7 +2,7 @@
 
 #include SAMPCPP_PCH
 
-#include <SAMPCpp/Color.hpp>
+#include <SAMPCpp/Core/Color.hpp>
 
 namespace samp_cpp
 {

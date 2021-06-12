@@ -1,6 +1,6 @@
 #include SAMPCPP_PCH
 
-#include <SAMPCpp/Server.hpp>
+#include <SAMPCpp/SAMP/Server.hpp>
 
 namespace samp_cpp
 {
