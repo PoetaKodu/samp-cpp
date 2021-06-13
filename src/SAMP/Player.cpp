@@ -119,9 +119,15 @@ std::string Player::getName() const
 }
 
 //////////////////////////////////////
-bool Player::setSpawnInfo(int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo)
+bool Player::setSpawnInfo(int team_, int skin_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapons_[3])
 {
-	return sampgdk_SetSpawnInfo(_id, team, skin, x, y, z, rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
+	return sampgdk_SetSpawnInfo(_id, 
+			team_, skin_,
+			spawnPos_.x, spawnPos_.y, spawnPos_.z, rotation_,
+			weapons_[0].id, weapons_[0].ammo,
+			weapons_[1].id, weapons_[1].ammo,
+			weapons_[2].id, weapons_[2].ammo
+		);
 }
 
 //////////////////////////////////////
@@ -311,9 +317,15 @@ int Player::getSkin() const
 }
 
 //////////////////////////////////////
-bool Player::giveWeapon(int weaponIdx_, int ammo)
+bool Player::giveWeapon(Weapon weapon_)
 {
-	return sampgdk_GivePlayerWeapon(_id, weaponIdx_, ammo);
+	return this->giveWeapon(weapon_.id, weapon_.ammo);
+}
+
+//////////////////////////////////////
+bool Player::giveWeapon(Weapon::Type weaponType_, int32_t ammo_)
+{
+	return sampgdk_GivePlayerWeapon(_id, static_cast<int>(weaponType_), ammo_);
 }
 
 //////////////////////////////////////
@@ -323,9 +335,9 @@ bool Player::resetWeapons()
 }
 
 //////////////////////////////////////
-bool Player::setArmedWeapon(int weaponIdx_)
+bool Player::setArmedWeapon(Weapon::Type weaponType_)
 {
-	return sampgdk_SetPlayerArmedWeapon(_id, weaponIdx_);
+	return sampgdk_SetPlayerArmedWeapon(_id, static_cast<int>(weaponType_));
 }
 
 //////////////////////////////////////
@@ -401,9 +413,11 @@ bool Player::setTime(int hour, int minute)
 }
 
 //////////////////////////////////////
-bool Player::getTime(int * hour, int * minute) const
+GameTime Player::getTime() const
 {
-	return sampgdk_GetPlayerTime(_id, hour, minute);
+	GameTime result;
+	sampgdk_GetPlayerTime(_id, &result.hour, &result.minute);
+	return result;
 }
 
 //////////////////////////////////////
@@ -493,9 +507,9 @@ bool Player::setShopName(const char * shopname)
 }
 
 //////////////////////////////////////
-bool Player::setSkillLevel(int skill, int level)
+bool Player::setSkillLevel(WeaponSkill skill_, int level_)
 {
-	return sampgdk_SetPlayerSkillLevel(_id, skill, level);
+	return sampgdk_SetPlayerSkillLevel(_id, static_cast<int>(skill_), level_);
 }
 
 //////////////////////////////////////

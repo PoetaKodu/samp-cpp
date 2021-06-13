@@ -2,6 +2,7 @@
 
 #include SAMPCPP_PCH
 
+#include <SAMPCpp/SAMP/Weapon.hpp>
 #include <SAMPCpp/Core/Color.hpp>
 #include <SAMPCpp/Core/Formatting.hpp>
 
@@ -131,6 +132,19 @@ enum class CameraMove
 	Cut = 2
 };
 
+struct GameTime
+{
+	GameTime() = default;
+	GameTime(int32_t hour_, int32_t minute_ = 0)
+		: 
+		hour(hour_), minute(minute_)
+	{
+	}
+
+	int32_t hour 	= 12;
+	int32_t minute 	= 0;
+};
+
 class Player
 {
 public:
@@ -140,7 +154,6 @@ public:
 	}
 
 	int32_t id() const { return _id; }
-
 
 	template <typename TFirstArg, typename... TArgs>
 	void msg(ChatFmtColorPair const& colorPair_, TFirstArg && firstArg_, TArgs &&... args_)
@@ -229,7 +242,7 @@ public:
 	/// RAW FUNCTIONS
 	///////////////////////////////
 
-	bool setSpawnInfo(int team, int skin, float x, float y, float z, float rotation, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo);
+	bool setSpawnInfo(int team_, int skin_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapons_[3]);
 	bool spawn();
 	bool setPosition(float x_, float y_, float z_);
 	bool setPositionFindZ(float x, float y, float z);
@@ -259,9 +272,10 @@ public:
 	Color getColor() const;
 	bool setSkin(int skinid);
 	int getSkin() const;
-	bool giveWeapon(int weaponid, int ammo);
+	bool giveWeapon(Weapon weapon_);
+	bool giveWeapon(Weapon::Type weaponType_, int32_t ammo);
 	bool resetWeapons();
-	bool setArmedWeapon(int weaponid);
+	bool setArmedWeapon(Weapon::Type weapon_);
 	bool getWeaponData(int slot, int * weapon, int * ammo) const;
 	bool givePlayerMoney(int money);
 	bool resetMoney();
@@ -273,8 +287,9 @@ public:
 	int getWeapon() const;
 	bool getKeys(int * keys, int * updown, int * leftright) const;
 	int getName(char * name, int size) const;
-	bool setTime(int hour, int minute);
-	bool getTime(int * hour, int * minute) const;
+	bool setTime(GameTime time_);
+	bool setTime(int32_t hour_, int32_t minute_);
+	GameTime getTime() const;
 	bool toggleClock(bool toggle);
 	bool setWeather(int weather);
 	bool forceClassSelection();
@@ -287,7 +302,7 @@ public:
 	bool playAudioStream(const char * url, float posX, float posY, float posZ, float distance, bool usepos);
 	bool stopAudioStream();
 	bool setShopName(const char * shopname);
-	bool setSkillLevel(int skill, int level);
+	bool setSkillLevel(WeaponSkill skill, int level);
 	int getSurfingVehicleId() const;
 	int getSurfingObjectId() const;
 	bool removeBuilding(int modelid, float fX, float fY, float fZ, float fRadius);

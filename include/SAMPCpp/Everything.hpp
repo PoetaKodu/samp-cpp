@@ -4,6 +4,7 @@
 
 #include <SAMPCpp/SAMP/Player.hpp>
 #include <SAMPCpp/SAMP/Server.hpp>
+#include <SAMPCpp/SAMP/Native.hpp>
 
 #include <SAMPCpp/Core/Color.hpp>
 #include <SAMPCpp/Core/String.hpp>

@@ -76,13 +76,15 @@ struct Color
 	constexpr operator int32_t() const 	{ return static_cast<int32_t>(value); }
 };
 
-constexpr std::string toChatColorString(Color const& color_)
+template <typename OutputIt>
+constexpr inline OutputIt toChatColorChars(Color const& color_, OutputIt it_)
 {
-	return "{"
-		+ intToHexString(color_.r())
-		+ intToHexString(color_.g()) 
-		+ intToHexString(color_.b())
-		+ "}";
+	*it_++ = '{';
+	it_ = byteToChars(color_.r(), it_);
+	it_ = byteToChars(color_.g(), it_);
+	it_ = byteToChars(color_.b(), it_);
+	*it_++ = '}';
+	return it_;
 }
 
 namespace colors
