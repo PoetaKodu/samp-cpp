@@ -9,6 +9,10 @@
 namespace samp_cpp
 {
 
+// Forward declarations:
+class Vehicle;
+
+// Constants:
 constexpr const int32_t MaxPlayerAttachedObjects 	= 10;
 constexpr const int32_t MaxChatbubbleLength 		= 144;
 constexpr const int32_t IpAddressSize 				= 15; /// Warning, without zero at the end!
@@ -145,6 +149,12 @@ struct GameTime
 	int32_t minute 	= 0;
 };
 
+struct ShotVectors
+{
+	math::Vector3f origin;
+	math::Vector3f hitPos;
+};
+
 class Player
 {
 public:
@@ -153,6 +163,7 @@ public:
 	{
 	}
 
+	bool valid() const { return _id >= 0 && _id != INVALID_PLAYER_ID; }
 	int32_t id() const { return _id; }
 
 	template <typename TFirstArg, typename... TArgs>
@@ -226,7 +237,6 @@ public:
 	void getIpAddress(char buf_[IpAddressSize + 1]) const;
 	std::string getIpAddress() const;
 
-
 	bool setCameraPosition(math::Vector3f const& pos_);
 	bool setCameraPosition(float x_, float y_, float z_);
 
@@ -237,6 +247,40 @@ public:
 	float getDistanceFromPoint(math::Vector3f const& pos_) const;
 	bool setVelocity(math::Vector3f const& velocity_);
 	math::Vector3f getVelocity() const;
+
+	// A shorthand for this->getDistanceFromPoint
+	float dist(math::Vector3f const& pos_) const { return this->getDistanceFromPoint(pos_); }
+
+	// A shorthand for this->getVelocity()
+	math::Vector3f vel() const { return this->getVelocity(); }
+
+	// Calculates speed (based on velocity). Much slower than "speedSq"!
+	float speed() const { return this->vel().length(); }
+
+	// Calculated speed squared (based on velocity)
+	float speedSq() const { return this->vel().lengthSquared(); }
+
+	// A shorthand for this->getFacingAngle()
+	float rot() const { return this->getFacingAngle(); }
+
+	// A shorthand for this->getPosition()
+	math::Vector3f pos() const { return this->getPosition(); }
+
+	// A shorthand for this->getVirtualWorld()
+	int32_t world() const { return this->getVirtualWorld(); }
+
+	// A shorthand for this->getInterior()
+	int32_t interior() const { return this->getInterior(); }
+
+	// A shorthand for this->getHealth()
+	float hp() const { return this->getHealth(); }
+
+	// A shorthand for this->getArmour()
+	float ap() const { return this->getArmour(); }
+
+	// A shorthand for this->getIpAddress()
+	std::string ip() const { return this->getIpAddress(); }
+
 
 	///////////////////////////////
 	/// RAW FUNCTIONS
@@ -279,7 +323,8 @@ public:
 	bool getWeaponData(int slot, int * weapon, int * ammo) const;
 	bool givePlayerMoney(int money);
 	bool resetMoney();
-	int setName(const char * name);
+	int setName(std::string const& name_);
+	int setName(const char * name_);
 	int getMoney() const;
 	PlayerState getState() const;
 	bool getIpAddress(char * ip, int size) const;
@@ -299,14 +344,16 @@ public:
 	FightStyle getFightingStyle() const;
 	bool setVelocity(float x, float y, float z);
 	bool playCrimeReport(int suspectid, int crime);
-	bool playAudioStream(const char * url, float posX, float posY, float posZ, float distance, bool usepos);
+	bool playAudioStream(std::string const& url_, math::Vector3f pos_, float distance_, bool usePos_);
+	bool playAudioStream(const char * url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_);
 	bool stopAudioStream();
-	bool setShopName(const char * shopname);
+	bool setShopName(std::string const& shopName_);
+	bool setShopName(const char * shopName_);
 	bool setSkillLevel(WeaponSkill skill, int level);
-	int getSurfingVehicleId() const;
+	Vehicle getSurfingVehicle() const;
 	int getSurfingObjectId() const;
 	bool removeBuilding(int modelid, float fX, float fY, float fZ, float fRadius);
-	bool getLastShotVectors(float * fOriginX, float * fOriginY, float * fOriginZ, float * fHitPosX, float * fHitPosY, float * fHitPosZ) const;
+	ShotVectors getLastShotVectors() const;
 	bool setAttachedObject(int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ, int materialcolor1, int materialcolor2);
 	bool removeAttachedObject(int index);
 	bool isAttachedObjectSlotUsed(int index) const;
@@ -321,9 +368,10 @@ public:
 	int getPVarsUpperIndex() const;
 	bool getPVarNameAtIndex(int index, char * varname, int size) const;
 	int getPVarType(const char * varname) const;
+	bool setChatBubble(std::string const& text_, Color color_, float drawDistance_, int expireTime_);
 	bool setChatBubble(const char * text, int color, float drawdistance, int expiretime);
-	bool putInVehicle(int vehicleid, int seatid);
-	int getVehicleId() const;
+	bool putInVehicle(Vehicle vehicle_, int seatIndex_);
+	Vehicle getVehicle() const;
 	int getVehicleSeat() const;
 	bool removeFromVehicle();
 	bool toggleControllable(bool toggle);
@@ -332,8 +380,8 @@ public:
 	bool clearAnimations(bool forcesync);
 	int getAnimationIndex() const;
 	bool getAnimationName(char * animlib, int animlib_size, char * animname, int animname_size) const;
-	int getSpecialAction() const;
-	bool setSpecialAction(int actionid);
+	PlayerSpecialAction getSpecialAction() const;
+	bool setSpecialAction(PlayerSpecialAction action_);
 	bool disableRemoteVehicleCollisions(bool disable);
 	bool setCheckpoint(float x, float y, float z, float size);
 	bool disableCheckpoint();
@@ -358,8 +406,10 @@ public:
 	float getCameraZoom() const;
 	bool attachCameraToObject(int objectid);
 	bool attachCameraToPlayerObject(int playerobjectid);
-	bool interpolateCameraPos(float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut);
-	bool interpolateCameraLookAt(float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut);
+	bool interpolateCameraPos(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_);
+	bool interpolateCameraPos(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
+	bool interpolateCameraLookAt(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_);
+	bool interpolateCameraLookAt(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
 	static bool isConnected(int playerIdx_);
 	bool isConnected() const;
 	bool isInVehicle(int vehicleid) const;

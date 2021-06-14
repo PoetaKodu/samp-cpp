@@ -2,6 +2,8 @@
 
 #include <SAMPCpp/SAMP/Player.hpp>
 
+#include <SAMPCpp/SAMP/Vehicle.hpp>
+
 namespace samp_cpp
 {
 
@@ -359,9 +361,15 @@ bool Player::resetMoney()
 }
 
 //////////////////////////////////////
-int Player::setName(const char * name)
+int Player::setName(std::string const& name_)
 {
-	return sampgdk_SetPlayerName(_id, name);
+	return sampgdk_SetPlayerName(_id, name_.c_str());
+}
+
+//////////////////////////////////////
+int Player::setName(const char * name_)
+{
+	return sampgdk_SetPlayerName(_id, name_);
 }
 
 //////////////////////////////////////
@@ -489,9 +497,15 @@ bool Player::playCrimeReport(int suspectid, int crime)
 }
 
 //////////////////////////////////////
-bool Player::playAudioStream(const char * url, float posX, float posY, float posZ, float distance, bool usepos)
+bool Player::playAudioStream(std::string const& url_, math::Vector3f pos_, float distance_, bool usePos_)
 {
-	return sampgdk_PlayAudioStreamForPlayer(_id, url, posX, posY, posZ, distance, usepos);
+	return this->playAudioStream(url_.c_str(), pos_.x, pos_.y, pos_.z, distance_, usePos_);
+}
+
+//////////////////////////////////////
+bool Player::playAudioStream(const char * url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_)
+{
+	return sampgdk_PlayAudioStreamForPlayer(_id, url_, posX_, posY_, posZ_, distance_, usePos_);
 }
 
 //////////////////////////////////////
@@ -501,9 +515,15 @@ bool Player::stopAudioStream()
 }
 
 //////////////////////////////////////
-bool Player::setShopName(const char * shopname)
+bool Player::setShopName(std::string const& shopName_)
 {
-	return sampgdk_SetPlayerShopName(_id, shopname);
+	return this->setShopName(shopName_.c_str());
+}
+
+//////////////////////////////////////
+bool Player::setShopName(const char * shopName_)
+{
+	return sampgdk_SetPlayerShopName(_id, shopName_);
 }
 
 //////////////////////////////////////
@@ -513,7 +533,7 @@ bool Player::setSkillLevel(WeaponSkill skill_, int level_)
 }
 
 //////////////////////////////////////
-int Player::getSurfingVehicleId() const
+Vehicle Player::getSurfingVehicle() const
 {
 	return sampgdk_GetPlayerSurfingVehicleID(_id);
 }
@@ -531,9 +551,11 @@ bool Player::removeBuilding(int modelid, float fX, float fY, float fZ, float fRa
 }
 
 //////////////////////////////////////
-bool Player::getLastShotVectors(float * fOriginX, float * fOriginY, float * fOriginZ, float * fHitPosX, float * fHitPosY, float * fHitPosZ) const
+ShotVectors Player::getLastShotVectors() const
 {
-	return sampgdk_GetPlayerLastShotVectors(_id, fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ);
+	ShotVectors sv;
+	sampgdk_GetPlayerLastShotVectors(_id, &sv.origin.x, &sv.origin.y, &sv.origin.z, &sv.hitPos.x, &sv.hitPos.y, &sv.hitPos.z);
+	return sv;
 }
 
 //////////////////////////////////////
@@ -620,6 +642,13 @@ int Player::getPVarType(const char * varname) const
 	return sampgdk_GetPVarType(_id, varname);
 }
 
+
+//////////////////////////////////////
+bool Player::setChatBubble(std::string const& text_, Color color_, float drawDistance_, int expireTime_)
+{
+	return this->setChatBubble(text_.c_str(), static_cast<int>(color_), drawDistance_, expireTime_);
+}
+
 //////////////////////////////////////
 bool Player::setChatBubble(const char * text, int color, float drawdistance, int expiretime)
 {
@@ -627,15 +656,15 @@ bool Player::setChatBubble(const char * text, int color, float drawdistance, int
 }
 
 //////////////////////////////////////
-bool Player::putInVehicle(int vehicleid, int seatid)
+bool Player::putInVehicle(Vehicle vehicle_, int seatIndex_)
 {
-	return sampgdk_PutPlayerInVehicle(_id, vehicleid, seatid);
+	return sampgdk_PutPlayerInVehicle(_id, vehicle_.id(), seatIndex_);
 }
 
 //////////////////////////////////////
-int Player::getVehicleId() const
+Vehicle Player::getVehicle() const
 {
-	return sampgdk_GetPlayerVehicleID(_id);
+	return Vehicle{ sampgdk_GetPlayerVehicleID(_id) };
 }
 
 //////////////////////////////////////
@@ -687,15 +716,15 @@ bool Player::getAnimationName(char * animlib, int animlib_size, char * animname,
 }
 
 //////////////////////////////////////
-int Player::getSpecialAction() const
+PlayerSpecialAction Player::getSpecialAction() const
 {
-	return sampgdk_GetPlayerSpecialAction(_id);
+	return static_cast<PlayerSpecialAction>(sampgdk_GetPlayerSpecialAction(_id));
 }
 
 //////////////////////////////////////
-bool Player::setSpecialAction(int actionid)
+bool Player::setSpecialAction(PlayerSpecialAction action_)
 {
-	return sampgdk_SetPlayerSpecialAction(_id, actionid);
+	return sampgdk_SetPlayerSpecialAction(_id, static_cast<int>(action_));
 }
 
 //////////////////////////////////////
@@ -847,15 +876,27 @@ bool Player::attachCameraToPlayerObject(int playerobjectid)
 }
 
 //////////////////////////////////////
-bool Player::interpolateCameraPos(float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut)
+bool Player::interpolateCameraPos(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_)
 {
-	return sampgdk_InterpolateCameraPos(_id, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut);
+	return this->interpolateCameraPos(from_.x, from_.y, from_.z, to_.x, to_.y, to_.z, time_, moveMode_);
 }
 
 //////////////////////////////////////
-bool Player::interpolateCameraLookAt(float FromX, float FromY, float FromZ, float ToX, float ToY, float ToZ, int time, int cut)
+bool Player::interpolateCameraPos(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_)
 {
-	return sampgdk_InterpolateCameraLookAt(_id, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut);
+	return sampgdk_InterpolateCameraPos(_id, fromX_, fromY_, fromZ_, toX_, toY_, toZ_, time_, static_cast<int>(moveMode_));
+}
+
+//////////////////////////////////////
+bool Player::interpolateCameraLookAt(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_)
+{
+	return this->interpolateCameraLookAt(from_.x, from_.y, from_.z, to_.x, to_.y, to_.z, time_, moveMode_);
+}
+
+//////////////////////////////////////
+bool Player::interpolateCameraLookAt(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_)
+{
+	return sampgdk_InterpolateCameraLookAt(_id, fromX_, fromY_, fromZ_, toX_, toY_, toZ_, time_, static_cast<int>(moveMode_));
 }
 
 //////////////////////////////////////
