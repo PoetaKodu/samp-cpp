@@ -44,13 +44,13 @@ bool Player::msgAll(Color color_, char const* content_)
 }
 
 //////////////////////////////////////
-bool Player::setPosition(math::Vector3f const& pos_)
+bool Player::setPosition(Vec3f const& pos_)
 {
 	return this->setPosition(pos_.x, pos_.y, pos_.z);
 }
 
 //////////////////////////////////////
-bool Player::setPositionFindZ(math::Vector3f const& pos_)
+bool Player::setPositionFindZ(Vec3f const& pos_)
 {
 	return this->setPositionFindZ(pos_.x, pos_.y, pos_.z);
 }
@@ -76,9 +76,9 @@ std::string Player::getIpAddress() const
 }
 
 //////////////////////////////////////
-math::Vector3f Player::getPosition() const
+Vec3f Player::getPosition() const
 {
-	math::Vector3f result;
+	Vec3f result;
 
 	sampgdk_GetPlayerPos(_id, &result.x, &result.y, &result.z);
 		
@@ -86,7 +86,7 @@ math::Vector3f Player::getPosition() const
 }
 
 //////////////////////////////////////
-bool Player::setCameraPosition(math::Vector3f const& pos_)
+bool Player::setCameraPosition(Vec3f const& pos_)
 {
 	return this->setCameraPosition(pos_.x, pos_.y, pos_.z);
 }
@@ -98,7 +98,7 @@ bool Player::setCameraPosition(float x_, float y_, float z_)
 }
 
 //////////////////////////////////////
-bool Player::setCameraLookAt(math::Vector3f const& lookAt_, CameraMove moveMethod_)
+bool Player::setCameraLookAt(Vec3f const& lookAt_, CameraMove moveMethod_)
 {
 	return this->setCameraLookAt(lookAt_.x, lookAt_.y, lookAt_.z, moveMethod_);
 }
@@ -121,7 +121,7 @@ std::string Player::getName() const
 }
 
 //////////////////////////////////////
-bool Player::setSpawnInfo(int team_, int skin_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapons_[3])
+bool Player::setSpawnInfo(int team_, int skin_, Vec3f const& spawnPos_, float rotation_, Weapon weapons_[3])
 {
 	return sampgdk_SetSpawnInfo(_id, 
 			team_, skin_,
@@ -159,7 +159,7 @@ float Player::getFacingAngle() const
 }
 
 //////////////////////////////////////
-bool Player::isInRangeOfPoint(float range_, math::Vector3f const& point_) const
+bool Player::isInRangeOfPoint(float range_, Vec3f const& point_) const
 {
 	return this->isInRangeOfPoint(range_, point_.x, point_.y, point_.z);
 }
@@ -171,7 +171,7 @@ bool Player::isInRangeOfPoint(float range, float x, float y, float z) const
 }
 
 //////////////////////////////////////
-float Player::getDistanceFromPoint(math::Vector3f const& point_) const
+float Player::getDistanceFromPoint(Vec3f const& point_) const
 {
 	return sampgdk_GetPlayerDistanceFromPoint(_id, point_.x, point_.y, point_.z);
 }
@@ -471,7 +471,7 @@ FightStyle Player::getFightingStyle() const
 }
 
 //////////////////////////////////////
-bool Player::setVelocity(math::Vector3f const& velocity_)
+bool Player::setVelocity(Vec3f const& velocity_)
 {
 	return this->setVelocity(velocity_.x, velocity_.y, velocity_.z);
 }
@@ -483,9 +483,9 @@ bool Player::setVelocity(float x, float y, float z)
 }
 
 //////////////////////////////////////
-math::Vector3f Player::getVelocity() const
+Vec3f Player::getVelocity() const
 {
-	math::Vector3f velocity;
+	Vec3f velocity;
 	sampgdk_GetPlayerVelocity(_id, &velocity.x, &velocity.y, &velocity.z);
 	return velocity;
 }
@@ -497,7 +497,7 @@ bool Player::playCrimeReport(int suspectid, int crime)
 }
 
 //////////////////////////////////////
-bool Player::playAudioStream(std::string const& url_, math::Vector3f pos_, float distance_, bool usePos_)
+bool Player::playAudioStream(std::string const& url_, Vec3f pos_, float distance_, bool usePos_)
 {
 	return this->playAudioStream(url_.c_str(), pos_.x, pos_.y, pos_.z, distance_, usePos_);
 }
@@ -727,7 +727,7 @@ bool Player::toggleControllable(bool toggle)
 }
 
 //////////////////////////////////////
-bool Player::playSound(int soundIdx_, math::Vector3f const& pos_)
+bool Player::playSound(int soundIdx_, Vec3f const& pos_)
 {
 	return this->playSound(soundIdx_, pos_.x, pos_.y, pos_.z);
 }
@@ -847,17 +847,17 @@ bool Player::setCameraBehindPlayer()
 }
 
 //////////////////////////////////////
-math::Vector3f Player::getCameraPosition() const
+Vec3f Player::getCameraPosition() const
 {
-	math::Vector3f result;
+	Vec3f result;
 	sampgdk_GetPlayerCameraPos(_id, &result.x, &result.y, &result.z);
 	return result;
 }
 
 //////////////////////////////////////
-math::Vector3f Player::getCameraFrontVector() const
+Vec3f Player::getCameraFrontVector() const
 {
-	math::Vector3f result;
+	Vec3f result;
 	sampgdk_GetPlayerCameraFrontVector(_id, &result.x, &result.y, &result.z);
 	return result;
 }
@@ -923,7 +923,7 @@ bool Player::attachCameraToPlayerObject(int playerobjectid)
 }
 
 //////////////////////////////////////
-bool Player::interpolateCameraPos(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_)
+bool Player::interpolateCameraPos(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_)
 {
 	return this->interpolateCameraPos(from_.x, from_.y, from_.z, to_.x, to_.y, to_.z, time_, moveMode_);
 }
@@ -935,7 +935,7 @@ bool Player::interpolateCameraPos(float fromX_, float fromY_, float fromZ_, floa
 }
 
 //////////////////////////////////////
-bool Player::interpolateCameraLookAt(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_)
+bool Player::interpolateCameraLookAt(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_)
 {
 	return this->interpolateCameraLookAt(from_.x, from_.y, from_.z, to_.x, to_.y, to_.z, time_, moveMode_);
 }

@@ -15,7 +15,7 @@ int32_t getTickCount()
 }
 
 /////////////////////////////////////////////////
-int32_t addPlayerClass(int modelIdx_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapons_[3])
+int32_t addPlayerClass(int modelIdx_, Vec3f const& spawnPos_, float rotation_, Weapon weapons_[3])
 {
 	return addPlayerClass(modelIdx_, 
 			spawnPos_.x, spawnPos_.y, spawnPos_.z, rotation_,
@@ -26,7 +26,7 @@ int32_t addPlayerClass(int modelIdx_, math::Vector3f const& spawnPos_, float rot
 }
 
 /////////////////////////////////////////////////
-int32_t addPlayerClass(int modelIdx_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapon1_, Weapon weapon2_, Weapon weapon3_)
+int32_t addPlayerClass(int modelIdx_, Vec3f const& spawnPos_, float rotation_, Weapon weapon1_, Weapon weapon2_, Weapon weapon3_)
 {
 	return addPlayerClass(modelIdx_, 
 			spawnPos_.x, spawnPos_.y, spawnPos_.z, rotation_,

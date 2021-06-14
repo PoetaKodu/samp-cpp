@@ -152,8 +152,8 @@ struct GameTime
 
 struct ShotVectors
 {
-	math::Vector3f origin;
-	math::Vector3f hitPos;
+	Vec3f origin;
+	Vec3f hitPos;
 };
 
 struct PlayerAnimation
@@ -237,31 +237,31 @@ public:
 	/// Rich functions
 	///////////////////////////////
 
-	bool setPosition(math::Vector3f const& pos_);
-	bool setPositionFindZ(math::Vector3f const& pos_);
+	bool setPosition(Vec3f const& pos_);
+	bool setPositionFindZ(Vec3f const& pos_);
 	
-	math::Vector3f getPosition() const;
+	Vec3f getPosition() const;
 
 	std::string getName() const;
 	void getIpAddress(char buf_[IpAddressSize + 1]) const;
 	std::string getIpAddress() const;
 
-	bool setCameraPosition(math::Vector3f const& pos_);
+	bool setCameraPosition(Vec3f const& pos_);
 	bool setCameraPosition(float x_, float y_, float z_);
 
-	bool setCameraLookAt(math::Vector3f const& lookAt_, CameraMove moveMethod_ = CameraMove::Cut);
+	bool setCameraLookAt(Vec3f const& lookAt_, CameraMove moveMethod_ = CameraMove::Cut);
 	bool setCameraLookAt(float x_, float y_, float z_, CameraMove moveMethod_ = CameraMove::Cut);
 
-	bool isInRangeOfPoint(float range_, math::Vector3f const& point_) const;
-	float getDistanceFromPoint(math::Vector3f const& pos_) const;
-	bool setVelocity(math::Vector3f const& velocity_);
-	math::Vector3f getVelocity() const;
+	bool isInRangeOfPoint(float range_, Vec3f const& point_) const;
+	float getDistanceFromPoint(Vec3f const& pos_) const;
+	bool setVelocity(Vec3f const& velocity_);
+	Vec3f getVelocity() const;
 
 	// A shorthand for this->getDistanceFromPoint
-	float dist(math::Vector3f const& pos_) const { return this->getDistanceFromPoint(pos_); }
+	float dist(Vec3f const& pos_) const { return this->getDistanceFromPoint(pos_); }
 
 	// A shorthand for this->getVelocity()
-	math::Vector3f vel() const { return this->getVelocity(); }
+	Vec3f vel() const { return this->getVelocity(); }
 
 	// Calculates speed (based on velocity). Much slower than "speedSq"!
 	float speed() const { return this->vel().length(); }
@@ -273,7 +273,7 @@ public:
 	float rot() const { return this->getFacingAngle(); }
 
 	// A shorthand for this->getPosition()
-	math::Vector3f pos() const { return this->getPosition(); }
+	Vec3f pos() const { return this->getPosition(); }
 
 	// A shorthand for this->getVirtualWorld()
 	int32_t world() const { return this->getVirtualWorld(); }
@@ -295,7 +295,7 @@ public:
 	/// RAW FUNCTIONS
 	///////////////////////////////
 
-	bool setSpawnInfo(int team_, int skin_, math::Vector3f const& spawnPos_, float rotation_, Weapon weapons_[3]);
+	bool setSpawnInfo(int team_, int skin_, Vec3f const& spawnPos_, float rotation_, Weapon weapons_[3]);
 	bool spawn();
 	bool setPosition(float x_, float y_, float z_);
 	bool setPositionFindZ(float x, float y, float z);
@@ -353,7 +353,7 @@ public:
 	FightStyle getFightingStyle() const;
 	bool setVelocity(float x, float y, float z);
 	bool playCrimeReport(int suspectid, int crime);
-	bool playAudioStream(std::string const& url_, math::Vector3f pos_, float distance_, bool usePos_);
+	bool playAudioStream(std::string const& url_, Vec3f pos_, float distance_, bool usePos_);
 	bool playAudioStream(char const* url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_);
 	bool stopAudioStream();
 	bool setShopName(std::string const& shopName_);
@@ -438,7 +438,7 @@ public:
 	int getVehicleSeat() const;
 	bool removeFromVehicle();
 	bool toggleControllable(bool toggle);
-	bool playSound(int soundIdx_, math::Vector3f const& pos_);
+	bool playSound(int soundIdx_, Vec3f const& pos_);
 	bool playSound(int soundIdx_, float x_, float y_, float z_);
 	bool applyAnimation(char const* animlib, char const* animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync);
 	bool clearAnimations(bool forcesync);
@@ -476,8 +476,8 @@ public:
 	bool removeMapIcon(int iconid);
 	bool allowTeleport(bool allow);
 	bool setCameraBehindPlayer();
-	math::Vector3f getCameraPosition() const;
-	math::Vector3f getCameraFrontVector() const;
+	Vec3f getCameraPosition() const;
+	Vec3f getCameraFrontVector() const;
 	int getCameraMode() const;
 	bool enableCameraTarget(bool enable);
 	int getCameraTargetObject() const;
@@ -488,9 +488,9 @@ public:
 	float getCameraZoom() const;
 	bool attachCameraToObject(int objectid);
 	bool attachCameraToPlayerObject(int playerobjectid);
-	bool interpolateCameraPos(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_);
+	bool interpolateCameraPos(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_);
 	bool interpolateCameraPos(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
-	bool interpolateCameraLookAt(math::Vector3f const& from_, math::Vector3f const& to_, int time_, CameraMove moveMode_);
+	bool interpolateCameraLookAt(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_);
 	bool interpolateCameraLookAt(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
 	static bool isConnected(int playerIdx_);
 	bool isConnected() const;
