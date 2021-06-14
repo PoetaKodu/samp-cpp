@@ -4,6 +4,7 @@
 
 #include <SAMPCpp/SAMP/Weapon.hpp>
 #include <SAMPCpp/Core/Color.hpp>
+#include <SAMPCpp/Core/String.hpp>
 #include <SAMPCpp/Core/Formatting.hpp>
 
 namespace samp_cpp
@@ -155,9 +156,17 @@ struct ShotVectors
 	math::Vector3f hitPos;
 };
 
+struct PlayerAnimation
+{
+	std::string libName;
+	std::string animName;
+};
+
 class Player
 {
 public:
+	using VarType = PlayerVarType;
+
 	Player(int32_t id_)
 		: _id(id_)
 	{
@@ -324,7 +333,7 @@ public:
 	bool givePlayerMoney(int money);
 	bool resetMoney();
 	int setName(std::string const& name_);
-	int setName(const char * name_);
+	int setName(char const* name_);
 	int getMoney() const;
 	PlayerState getState() const;
 	bool getIpAddress(char * ip, int size) const;
@@ -345,10 +354,10 @@ public:
 	bool setVelocity(float x, float y, float z);
 	bool playCrimeReport(int suspectid, int crime);
 	bool playAudioStream(std::string const& url_, math::Vector3f pos_, float distance_, bool usePos_);
-	bool playAudioStream(const char * url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_);
+	bool playAudioStream(char const* url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_);
 	bool stopAudioStream();
 	bool setShopName(std::string const& shopName_);
-	bool setShopName(const char * shopName_);
+	bool setShopName(char const* shopName_);
 	bool setSkillLevel(WeaponSkill skill, int level);
 	Vehicle getSurfingVehicle() const;
 	int getSurfingObjectId() const;
@@ -358,27 +367,100 @@ public:
 	bool removeAttachedObject(int index);
 	bool isAttachedObjectSlotUsed(int index) const;
 	bool editAttachedObject(int index);
-	bool setPVarInt(const char * varname, int value);
-	int getPVarInt(const char * varname) const;
-	bool setPVarString(const char * varname, const char * value);
-	bool getPVarString(const char * varname, char * value, int size) const;
-	bool setPVarFloat(const char * varname, float value);
-	float getPVarFloat(const char * varname) const;
-	bool deletePVar(const char * varname);
-	int getPVarsUpperIndex() const;
-	bool getPVarNameAtIndex(int index, char * varname, int size) const;
-	int getPVarType(const char * varname) const;
+
+	/////////////////////////////////////
+	/// Dynamic player variables (PVars)
+	/////////////////////////////////////
+
+	/////////
+	// Int
+	/////////
+	bool 		setVarInt(std::string const& varName_, int value_);
+	bool 		setVarInt(char const* varName_, int value_);
+	int 		getVarInt(std::string const& varName_) const;
+	int 		getVarInt(char const* varName_) const;
+
+	/////////
+	// Float
+	/////////
+	bool 		setVarFloat(std::string const& varName_, float value);
+	bool 		setVarFloat(char const* varName_, float value);
+	float 		getVarFloat(std::string const& varName_) const;
+	float 		getVarFloat(char const* varName_) const;
+
+	/////////
+	// String
+	/////////
+	bool 		setVarString(std::string const& varName_, std::string const& value_);
+	bool 		setVarString(char const* varName_, char const* value_);
+	bool 		getVarString(char const* varName_, char * buf_, int size_) const;
+	template <size_t MaxLength = 4 * 1024>
+	std::string	getVarString(char const* varName_) const
+	{
+		char buf[MaxLength]{};
+		if (this->getVarString(varName_, buf, MaxLength))
+			return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+
+		return {};
+	}
+	template <size_t MaxLength = 4 * 1024>
+	std::string	getVarString(std::string const& varName_) const
+	{
+		return this->getVarString<MaxLength>(varName_.c_str());
+	}
+
+	
+	/////////
+	// Other
+	/////////
+	bool 		deleteVar(std::string const& varName_);
+	bool 		deleteVar(char const* varName_);
+
+	int 		getVarsUpperIndex() const;
+
+	template <size_t MaxLength = 4 * 1024>
+	std::string getVarNameAtIndex(int index_) const
+	{
+		char buf[MaxLength]{};
+		if (this->getVarNameAtIndex(index_, buf, MaxLength))
+			return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+
+		return {};
+	}
+	bool 		getVarNameAtIndex(int index_, char * varName_, int size_) const;
+	VarType 	getVarType(char const* varName_) const;
+	bool 		varExists(char const* varName_) const;
+
 	bool setChatBubble(std::string const& text_, Color color_, float drawDistance_, int expireTime_);
-	bool setChatBubble(const char * text, int color, float drawdistance, int expiretime);
+	bool setChatBubble(char const* text, int color, float drawdistance, int expiretime);
 	bool putInVehicle(Vehicle vehicle_, int seatIndex_);
 	Vehicle getVehicle() const;
 	int getVehicleSeat() const;
 	bool removeFromVehicle();
 	bool toggleControllable(bool toggle);
-	bool playSound(int soundid, float x, float y, float z);
-	bool applyAnimation(const char * animlib, const char * animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync);
+	bool playSound(int soundIdx_, math::Vector3f const& pos_);
+	bool playSound(int soundIdx_, float x_, float y_, float z_);
+	bool applyAnimation(char const* animlib, char const* animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync);
 	bool clearAnimations(bool forcesync);
 	int getAnimationIndex() const;
+
+	template <size_t MaxLibLength = 4 * 1024, size_t MaxAnimLength = 4 * 1024>
+	PlayerAnimation getAnimationName(char * animlib, int animlib_size, char * animname, int animname_size) const
+	{
+		PlayerAnimation result;
+
+		char bufLib[MaxLibLength]{};
+		char bufAnim[MaxAnimLength]{};
+
+		if (this->getAnimationName(bufLib, MaxLibLength, bufAnim, MaxAnimLength))
+		{
+			result.libName 	= std::string{ bufLib, bufLib + strnlen_s(bufLib, MaxLibLength) };
+			result.animName	= std::string{ bufAnim, bufAnim + strnlen_s(bufAnim, MaxAnimLength) };
+		}
+
+		return result;
+	}
+
 	bool getAnimationName(char * animlib, int animlib_size, char * animname, int animname_size) const;
 	PlayerSpecialAction getSpecialAction() const;
 	bool setSpecialAction(PlayerSpecialAction action_);
@@ -423,7 +505,7 @@ public:
 	bool toggleSpectating(bool toggle);
 	bool spectateOtherPlayer(Player const& target_, SpectateMode mode_);
 	bool spectateVehicle(int targetvehicleid, int mode);
-	bool startRecordingData(int recordtype, const char * recordname);
+	bool startRecordingData(int recordtype, char const* recordname);
 	bool stopRecordingData();
 	bool createExplosion(float X, float Y, float Z, int type, float Radius);
 

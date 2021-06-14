@@ -367,7 +367,7 @@ int Player::setName(std::string const& name_)
 }
 
 //////////////////////////////////////
-int Player::setName(const char * name_)
+int Player::setName(char const* name_)
 {
 	return sampgdk_SetPlayerName(_id, name_);
 }
@@ -503,7 +503,7 @@ bool Player::playAudioStream(std::string const& url_, math::Vector3f pos_, float
 }
 
 //////////////////////////////////////
-bool Player::playAudioStream(const char * url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_)
+bool Player::playAudioStream(char const* url_, float posX_, float posY_, float posZ_, float distance_, bool usePos_)
 {
 	return sampgdk_PlayAudioStreamForPlayer(_id, url_, posX_, posY_, posZ_, distance_, usePos_);
 }
@@ -521,7 +521,7 @@ bool Player::setShopName(std::string const& shopName_)
 }
 
 //////////////////////////////////////
-bool Player::setShopName(const char * shopName_)
+bool Player::setShopName(char const* shopName_)
 {
 	return sampgdk_SetPlayerShopName(_id, shopName_);
 }
@@ -583,65 +583,106 @@ bool Player::editAttachedObject(int index)
 }
 
 //////////////////////////////////////
-bool Player::setPVarInt(const char * varname, int value)
+bool Player::setVarInt(std::string const& varName_, int value)
 {
-	return sampgdk_SetPVarInt(_id, varname, value);
+	return this->setVarInt(varName_.c_str(), value);
 }
 
 //////////////////////////////////////
-int Player::getPVarInt(const char * varname) const
+bool Player::setVarInt(char const* varName_, int value)
 {
-	return sampgdk_GetPVarInt(_id, varname);
+	return sampgdk_SetPVarInt(_id, varName_, value);
 }
 
 //////////////////////////////////////
-bool Player::setPVarString(const char * varname, const char * value)
+int Player::getVarInt(std::string const& varName_) const
 {
-	return sampgdk_SetPVarString(_id, varname, value);
+	return this->getVarInt(varName_.c_str());
 }
 
 //////////////////////////////////////
-bool Player::getPVarString(const char * varname, char * value, int size) const
+int Player::getVarInt(char const* varName_) const
 {
-	return sampgdk_GetPVarString(_id, varname, value, size);
+	return sampgdk_GetPVarInt(_id, varName_);
 }
 
 //////////////////////////////////////
-bool Player::setPVarFloat(const char * varname, float value)
+bool Player::setVarString(std::string const& varName_, std::string const& value_)
 {
-	return sampgdk_SetPVarFloat(_id, varname, value);
+	return this->setVarString(varName_.c_str(), value_.c_str());
 }
 
 //////////////////////////////////////
-float Player::getPVarFloat(const char * varname) const
+bool Player::setVarString(char const* varName_, char const* value)
 {
-	return sampgdk_GetPVarFloat(_id, varname);
+	return sampgdk_SetPVarString(_id, varName_, value);
 }
 
 //////////////////////////////////////
-bool Player::deletePVar(const char * varname)
+bool Player::getVarString(char const* varName_, char * value_, int size_) const
 {
-	return sampgdk_DeletePVar(_id, varname);
+	return sampgdk_GetPVarString(_id, varName_, value_, size_);
 }
 
 //////////////////////////////////////
-int Player::getPVarsUpperIndex() const
+bool Player::setVarFloat(std::string const& varName_, float value)
+{
+	return this->setVarFloat(varName_.c_str(), value);
+}
+
+//////////////////////////////////////
+bool Player::setVarFloat(char const* varName_, float value)
+{
+	return sampgdk_SetPVarFloat(_id, varName_, value);
+}
+
+//////////////////////////////////////
+float Player::getVarFloat(std::string const& varName_) const
+{
+	return this->getVarFloat(varName_.c_str());
+}
+
+//////////////////////////////////////
+float Player::getVarFloat(char const* varName_) const
+{
+	return sampgdk_GetPVarFloat(_id, varName_);
+}
+
+//////////////////////////////////////
+bool Player::deleteVar(std::string const& varName_)
+{
+	return this->deleteVar(varName_.c_str());
+}
+
+//////////////////////////////////////
+bool Player::deleteVar(char const* varName_)
+{
+	return sampgdk_DeletePVar(_id, varName_);
+}
+
+//////////////////////////////////////
+int Player::getVarsUpperIndex() const
 {
 	return sampgdk_GetPVarsUpperIndex(_id);
 }
 
 //////////////////////////////////////
-bool Player::getPVarNameAtIndex(int index, char * varname, int size) const
+bool Player::getVarNameAtIndex(int index_, char * varName_, int size_) const
 {
-	return sampgdk_GetPVarNameAtIndex(_id, index, varname, size);
+	return sampgdk_GetPVarNameAtIndex(_id, index_, varName_, size_);
 }
 
 //////////////////////////////////////
-int Player::getPVarType(const char * varname) const
+PlayerVarType Player::getVarType(char const* varname) const
 {
-	return sampgdk_GetPVarType(_id, varname);
+	return static_cast<PlayerVarType>(sampgdk_GetPVarType(_id, varname));
 }
 
+//////////////////////////////////////
+bool Player::varExists(char const* varName_) const
+{
+	return this->getVarType(varName_) != PlayerVarType::None;
+}
 
 //////////////////////////////////////
 bool Player::setChatBubble(std::string const& text_, Color color_, float drawDistance_, int expireTime_)
@@ -650,7 +691,7 @@ bool Player::setChatBubble(std::string const& text_, Color color_, float drawDis
 }
 
 //////////////////////////////////////
-bool Player::setChatBubble(const char * text, int color, float drawdistance, int expiretime)
+bool Player::setChatBubble(char const* text, int color, float drawdistance, int expiretime)
 {
 	return sampgdk_SetPlayerChatBubble(_id, text, color, drawdistance, expiretime);
 }
@@ -686,13 +727,19 @@ bool Player::toggleControllable(bool toggle)
 }
 
 //////////////////////////////////////
-bool Player::playSound(int soundid, float x, float y, float z)
+bool Player::playSound(int soundIdx_, math::Vector3f const& pos_)
 {
-	return sampgdk_PlayerPlaySound(_id, soundid, x, y, z);
+	return this->playSound(soundIdx_, pos_.x, pos_.y, pos_.z);
 }
 
 //////////////////////////////////////
-bool Player::applyAnimation(const char * animlib, const char * animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync)
+bool Player::playSound(int soundIdx_, float x_, float y_, float z_)
+{
+	return sampgdk_PlayerPlaySound(_id, soundIdx_, x_, y_, z_);
+}
+
+//////////////////////////////////////
+bool Player::applyAnimation(char const* animlib, char const* animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync)
 {
 	return sampgdk_ApplyAnimation(_id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
 }
@@ -978,7 +1025,7 @@ bool Player::spectateVehicle(int targetvehicleid, int mode)
 }
 
 //////////////////////////////////////
-bool Player::startRecordingData(int recordtype, const char * recordname)
+bool Player::startRecordingData(int recordtype, char const* recordname)
 {
 	return sampgdk_StartRecordingPlayerData(_id, recordtype, recordname);
 }

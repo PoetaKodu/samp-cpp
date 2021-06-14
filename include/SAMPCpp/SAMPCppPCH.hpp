@@ -6,6 +6,7 @@
 #include <fmt/format.h>
 #include <fmt/compile.h>
 #include <string>
+#include <cstring>
 #include <cstdint>
 #include <type_traits>
 
