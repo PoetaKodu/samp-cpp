@@ -19,6 +19,8 @@ public:
 	}
 
 	bool operator==(Object const& other_) const { return _id == other_._id; }
+	bool operator!=(Object const& other_) const { return !(*this == other_); }
+
 
 	int32_t id() const { return _id; }
 

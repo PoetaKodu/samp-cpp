@@ -16,6 +16,8 @@ public:
 	PlayerObject(Player player_, int32_t id_);
 
 	bool operator==(PlayerObject const& other_) const { return (_playerId == other_._playerId && _id == other_._id); }
+	bool operator!=(PlayerObject const& other_) const { return !(*this == other_); }
+
 
 	int32_t id() const { return _id; }
 	Player owner() const;

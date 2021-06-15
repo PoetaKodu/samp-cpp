@@ -176,6 +176,7 @@ public:
 	}
 
 	bool operator==(Player const& other_) const { return _id == other_._id; }
+	bool operator!=(Player const& other_) const { return !(*this == other_); }
 
 	bool valid() const { return _id >= 0 && _id != INVALID_PLAYER_ID; }
 	int32_t id() const { return _id; }
