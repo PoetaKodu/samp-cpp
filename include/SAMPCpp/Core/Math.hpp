@@ -7,6 +7,12 @@ namespace samp_cpp
 
 namespace math = quickmaffs;
 
+// TODO: better quaternion maths
+struct Quat
+{
+	float w, x, y, z;
+};
+
 // Bunch of handful aliases
 namespace math_aliases // namespace only for convenient "using namespace samp::math_aliases"
 {
