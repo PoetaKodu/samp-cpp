@@ -321,6 +321,28 @@ bool Vehicle::getModelInfo(Model model_, VehicleModelInfo type_, float * X_, flo
 	return sampgdk_GetVehicleModelInfo(static_cast<int>(model_), static_cast<int>(type_), X_, Y_, Z_);
 }
 
+///////////////////////////////////////////////////////
+std::string_view Vehicle::name(Model model_)
+{
+	return Vehicle::ModelNames[static_cast<int>(model_) - Vehicle::BaseModelIndex];
+}
 
+///////////////////////////////////////////////////////
+std::string_view Vehicle::prettyName(Model model_)
+{
+	return Vehicle::PrettyModelNames[static_cast<int>(model_) - Vehicle::BaseModelIndex];
+}
+
+///////////////////////////////////////////////////////
+std::string_view Vehicle::name() const
+{
+	return Vehicle::ModelNames[static_cast<int>( this->getModel() ) - Vehicle::BaseModelIndex];
+}
+
+///////////////////////////////////////////////////////
+std::string_view Vehicle::prettyName() const
+{
+	return Vehicle::PrettyModelNames[static_cast<int>( this->getModel() ) - Vehicle::BaseModelIndex];
+}
 
 }
