@@ -240,6 +240,10 @@ public:
 	bool setPosition(Vec3f const& pos_);
 	bool setPositionFindZ(Vec3f const& pos_);
 	
+	// Returns fixed position
+	// - if player is not in vehicle: this->getPosition()
+	// - if in vehicle: vehicle.getPosition()
+	Vec3f getPositionFixed() const;
 	Vec3f getPosition() const;
 
 	std::string getName() const;
@@ -269,11 +273,11 @@ public:
 	// Calculated speed squared (based on velocity)
 	float speedSq() const { return this->vel().lengthSquared(); }
 
-	// A shorthand for this->getFacingAngle()
-	float rot() const { return this->getFacingAngle(); }
+	// A shorthand for this->getFacingAngleFixed()
+	float rot() const { return this->getFacingAngleFixed(); }
 
-	// A shorthand for this->getPosition()
-	Vec3f pos() const { return this->getPosition(); }
+	// A shorthand for this->getPositionFixed()
+	Vec3f pos() const { return this->getPositionFixed(); }
 
 	// A shorthand for this->getVirtualWorld()
 	int32_t world() const { return this->getVirtualWorld(); }
@@ -300,6 +304,11 @@ public:
 	bool setPosition(float x_, float y_, float z_);
 	bool setPositionFindZ(float x, float y, float z);
 	bool setFacingAngle(float angle);
+	
+	// Returns fixed facing angle
+	// - if player is not in vehicle: this->getFacingAngle()
+	// - if in vehicle: vehicle.getZAngle()
+	float getFacingAngleFixed() const;
 	float getFacingAngle() const;
 	bool isInRangeOfPoint(float range, float x, float y, float z) const;
 	float getDistanceFromPoint(float x, float y, float z) const;

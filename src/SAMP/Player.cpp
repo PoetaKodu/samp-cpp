@@ -76,12 +76,19 @@ std::string Player::getIpAddress() const
 }
 
 //////////////////////////////////////
+Vec3f Player::getPositionFixed() const
+{
+	if (this->isInAnyVehicle())
+		return this->getVehicle().pos();
+	
+	return this->getPosition();
+}
+
+//////////////////////////////////////
 Vec3f Player::getPosition() const
 {
 	Vec3f result;
-
 	sampgdk_GetPlayerPos(_id, &result.x, &result.y, &result.z);
-		
 	return result;
 }
 
@@ -148,6 +155,15 @@ bool Player::setPositionFindZ(float x, float y, float z)
 bool Player::setFacingAngle(float angle)
 {
 	return sampgdk_SetPlayerFacingAngle(_id, angle);
+}
+
+//////////////////////////////////////
+float Player::getFacingAngleFixed() const
+{
+	if (this->isInAnyVehicle())
+		return this->getVehicle().rot();
+
+	return this->getFacingAngle();
 }
 
 //////////////////////////////////////

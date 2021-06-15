@@ -289,6 +289,9 @@ public:
 	// A shorthand for this->getDistanceFromPoint()
 	float dist(Vec3f const& point_) const { return this->getDistanceFromPoint(point_); }
 
+	// A shorthand for this->getZAngle()
+	float rot() const { return this->getZAngle(); }
+
 	// A shorthand for this->getRotationQuat()
 	Quat rotQuat() const { return this->getRotationQuat(); }
 
