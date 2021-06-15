@@ -4,6 +4,8 @@
 
 #include <SAMPCpp/SAMP/Vehicle.hpp>
 #include <SAMPCpp/SAMP/Actor.hpp>
+#include <SAMPCpp/SAMP/Object.hpp>
+#include <SAMPCpp/SAMP/PlayerObject.hpp>
 
 namespace samp_cpp
 {
@@ -892,15 +894,15 @@ bool Player::enableCameraTarget(bool enable)
 }
 
 //////////////////////////////////////
-int Player::getCameraTargetObject() const
+Object Player::getCameraTargetObject() const
 {
-	return sampgdk_GetPlayerCameraTargetObject(_id);
+	return Object{ sampgdk_GetPlayerCameraTargetObject(_id) };
 }
 
 //////////////////////////////////////
-int Player::getCameraTargetVehicle() const
+Vehicle Player::getCameraTargetVehicle() const
 {
-	return sampgdk_GetPlayerCameraTargetVehicle(_id);
+	return Vehicle{ sampgdk_GetPlayerCameraTargetVehicle(_id) };
 }
 
 //////////////////////////////////////
@@ -928,15 +930,21 @@ float Player::getCameraZoom() const
 }
 
 //////////////////////////////////////
-bool Player::attachCameraToObject(int objectid)
+bool Player::attachCameraTo(Object object_)
 {
-	return sampgdk_AttachCameraToObject(_id, objectid);
+	return sampgdk_AttachCameraToObject(_id, object_.id());
 }
 
 //////////////////////////////////////
-bool Player::attachCameraToPlayerObject(int playerobjectid)
+bool Player::attachCameraTo(PlayerObject object_)
 {
-	return sampgdk_AttachCameraToPlayerObject(_id, playerobjectid);
+	if (object_.owner() != *this)
+	{
+		// DEBUG_LOG("Tried to attach player camera to different player's object")
+		return false;
+	}
+
+	return sampgdk_AttachCameraToPlayerObject(_id, object_.id());
 }
 
 //////////////////////////////////////
@@ -1059,5 +1067,28 @@ bool Player::createExplosion(float X, float Y, float Z, int type, float radius)
 	return sampgdk_CreateExplosionForPlayer(_id, X, Y, Z, type, radius);
 }
 
+//////////////////////////////////////
+bool Player::editObject(PlayerObject object_)
+{
+	return sampgdk_EditPlayerObject(_id, object_.id());
+}
+
+//////////////////////////////////////
+bool Player::editObject(Object object_)
+{
+	return sampgdk_EditObject(_id, object_.id());
+}
+
+//////////////////////////////////////
+bool Player::selectObject()
+{
+	return sampgdk_SelectObject(_id);
+}
+
+//////////////////////////////////////
+bool Player::cancelEditObject()
+{
+	return sampgdk_CancelEdit(_id);
+}
 
 }

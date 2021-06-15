@@ -13,6 +13,8 @@ namespace samp_cpp
 // Forward declarations:
 class Vehicle;
 class Actor;
+class Object;
+class PlayerObject;
 
 // Constants:
 constexpr const int32_t MaxPlayerAttachedObjects 	= 10;
@@ -172,6 +174,8 @@ public:
 		: _id(id_)
 	{
 	}
+
+	bool operator==(Player const& other_) const { return _id == other_._id; }
 
 	bool valid() const { return _id >= 0 && _id != INVALID_PLAYER_ID; }
 	int32_t id() const { return _id; }
@@ -490,14 +494,14 @@ public:
 	Vec3f getCameraFrontVector() const;
 	int getCameraMode() const;
 	bool enableCameraTarget(bool enable);
-	int getCameraTargetObject() const;
-	int getCameraTargetVehicle() const;
+	Object getCameraTargetObject() const;
+	Vehicle getCameraTargetVehicle() const;
 	Player getCameraTargetPlayer() const;
 	Actor getCameraTargetActor() const;
 	float getCameraAspectRatio() const;
 	float getCameraZoom() const;
-	bool attachCameraToObject(int objectid);
-	bool attachCameraToPlayerObject(int playerobjectid);
+	bool attachCameraTo(Object object_);
+	bool attachCameraTo(PlayerObject object_);
 	bool interpolateCameraPos(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_);
 	bool interpolateCameraPos(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
 	bool interpolateCameraLookAt(Vec3f const& from_, Vec3f const& to_, int time_, CameraMove moveMode_);
@@ -519,6 +523,12 @@ public:
 	bool stopRecordingData();
 	bool createExplosion(float X, float Y, float Z, int type, float Radius);
 
+	/// Object related:
+	bool editObject(PlayerObject object_);
+	bool editObject(Object object_);
+	bool selectObject();
+	bool cancelEditObject();
+	
 private:
 	int32_t _id;
 };

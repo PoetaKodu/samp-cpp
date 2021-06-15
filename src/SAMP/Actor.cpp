@@ -8,6 +8,12 @@ namespace samp_cpp
 {
 
 //////////////////////////////////////////////////////
+bool Actor::valid() const
+{
+	return _id != INVALID_ACTOR_ID && sampgdk_IsValidActor(_id);
+}
+
+//////////////////////////////////////////////////////
 Actor Actor::create(int modelIdx_, Vec3f const& pos_, float rotation_)
 {
 	return Actor::create(modelIdx_, pos_.x, pos_.y, pos_.z, rotation_);

@@ -15,6 +15,8 @@ public:
 	{
 	}
 
+	bool operator==(Actor const& other_) const { return _id == other_._id; }
+
 	int32_t id() const { return _id; }
 	bool valid() const;	
 
