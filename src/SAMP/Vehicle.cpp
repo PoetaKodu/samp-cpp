@@ -24,6 +24,12 @@ float Vehicle::getDistanceFromPoint(float x_, float y_, float z_) const
 }
 
 ///////////////////////////////////////////////////////
+Vehicle Vehicle::create(Vehicle::Model model_,  Vec3f const& pos_, float rotation_, int color1_, int color2_, int respawnDelay_, bool addSiren_)
+{
+	return Vehicle::create(model_, pos_.x, pos_.y, pos_.z, rotation_, color1_, color2_, respawnDelay_, addSiren_);
+}
+
+///////////////////////////////////////////////////////
 Vehicle Vehicle::create(Vehicle::Model model_, float x_, float y_, float z_, float rotation_, int color1_, int color2_, int respawnDelay_, bool addSiren_)
 {
 	return Vehicle{
