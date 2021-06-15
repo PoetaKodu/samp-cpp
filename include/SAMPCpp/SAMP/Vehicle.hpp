@@ -333,6 +333,7 @@ public:
 	Vec3f getVelocity() const;
 	bool setVelocity(Vec3f const& vel_);
 	bool setVelocity(float x_, float y_, float z_);
+	bool setAngularVelocity(Vec3f const& vel_);
 	bool setAngularVelocity(float x_, float y_, float z_);
 	bool getDamageStatus(int * panels, int * doors, int * lights, int * tires) const;
 	bool updateDamageStatus(int panels_, int doors_, int lights_, int tires_);

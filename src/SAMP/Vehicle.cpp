@@ -274,6 +274,12 @@ bool Vehicle::setVelocity(float x_, float y_, float z_)
 }
 
 ///////////////////////////////////////////////////////
+bool Vehicle::setAngularVelocity(Vec3f const& vel_)
+{
+	return this->setAngularVelocity(vel_.x, vel_.y, vel_.z);
+}
+
+///////////////////////////////////////////////////////
 bool Vehicle::setAngularVelocity(float x_, float y_, float z_)
 {
 	return sampgdk_SetVehicleAngularVelocity(_id, x_, y_, z_);
