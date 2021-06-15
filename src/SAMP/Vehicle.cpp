@@ -194,9 +194,9 @@ float Vehicle::getHealth() const
 }
 
 ///////////////////////////////////////////////////////
-bool Vehicle::attachTrailer(int trailerIdx_)
+bool Vehicle::attachTrailer(Vehicle trailer_)
 {
-	return sampgdk_AttachTrailerToVehicle(trailerIdx_, _id);
+	return sampgdk_AttachTrailerToVehicle(trailer_.id(), _id);
 }
 
 ///////////////////////////////////////////////////////

@@ -321,7 +321,7 @@ public:
 	bool changePaintjob(int paintjobIdx_);
 	bool setHealth(float health_);
 	float getHealth() const;
-	bool attachTrailer(int trailerIdx_);
+	bool attachTrailer(Vehicle trailer_);
 	bool detachTrailer();
 	bool isTrailerAttached() const;
 	Vehicle getTrailer() const;
