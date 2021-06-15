@@ -3,6 +3,7 @@
 #include <SAMPCpp/SAMP/Player.hpp>
 
 #include <SAMPCpp/SAMP/Vehicle.hpp>
+#include <SAMPCpp/SAMP/Actor.hpp>
 
 namespace samp_cpp
 {
@@ -269,9 +270,9 @@ Player Player::getTargetPlayer() const
 }
 
 //////////////////////////////////////
-int Player::getTargetActor() const
+Actor Player::getTargetActor() const
 {
-	return sampgdk_GetPlayerTargetActor(_id);
+	return Actor{ sampgdk_GetPlayerTargetActor(_id) };
 }
 
 //////////////////////////////////////
@@ -909,9 +910,9 @@ Player Player::getCameraTargetPlayer() const
 }
 
 //////////////////////////////////////
-int Player::getCameraTargetActor() const
+Actor Player::getCameraTargetActor() const
 {
-	return sampgdk_GetPlayerCameraTargetActor(_id);
+	return Actor{ sampgdk_GetPlayerCameraTargetActor(_id) };
 }
 
 //////////////////////////////////////

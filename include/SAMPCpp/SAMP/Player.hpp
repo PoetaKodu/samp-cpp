@@ -12,6 +12,7 @@ namespace samp_cpp
 
 // Forward declarations:
 class Vehicle;
+class Actor;
 
 // Constants:
 constexpr const int32_t MaxPlayerAttachedObjects 	= 10;
@@ -323,7 +324,7 @@ public:
 	int getAmmo() const;
 	WeaponState getWeaponState() const;
 	Player getTargetPlayer() const;
-	int getTargetActor() const;
+	Actor getTargetActor() const;
 	bool setTeam(int teamid);
 	int getTeam() const;
 	bool setScore(int score);
@@ -492,7 +493,7 @@ public:
 	int getCameraTargetObject() const;
 	int getCameraTargetVehicle() const;
 	Player getCameraTargetPlayer() const;
-	int getCameraTargetActor() const;
+	Actor getCameraTargetActor() const;
 	float getCameraAspectRatio() const;
 	float getCameraZoom() const;
 	bool attachCameraToObject(int objectid);
