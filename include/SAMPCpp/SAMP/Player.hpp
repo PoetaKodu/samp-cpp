@@ -374,13 +374,15 @@ public:
 	bool setShopName(char const* shopName_);
 	bool setSkillLevel(WeaponSkill skill, int level);
 	Vehicle getSurfingVehicle() const;
-	int getSurfingObjectId() const;
-	bool removeBuilding(int modelid, float fX, float fY, float fZ, float fRadius);
+	Object getSurfingObject() const;
+	bool removeBuilding(int modelIdx_, Vec3f const& pos_, float radius_);
+	bool removeBuilding(int modelIdx_, float x_, float y_, float z_, float radius_);
 	ShotVectors getLastShotVectors() const;
-	bool setAttachedObject(int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ, int materialcolor1, int materialcolor2);
-	bool removeAttachedObject(int index);
-	bool isAttachedObjectSlotUsed(int index) const;
-	bool editAttachedObject(int index);
+	bool setAttachedObject(int slot_, int modelIdx_, int bone_, Vec3f const& offset_, Vec3f const& rot_, Vec3f const& scale_, Color materialColor1_, Color materialColor2_);
+	bool setAttachedObject(int slot_, int modelIdx_, int bone_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, float scaleX_, float scaleY_, float scaleZ_, Color materialColor1_, Color materialColor2_);
+	bool removeAttachedObject(int slot_);
+	bool isAttachedObjectSlotUsed(int slot_) const;
+	bool editAttachedObject(int slot_);
 
 	/////////////////////////////////////
 	/// Dynamic player variables (PVars)
@@ -454,7 +456,8 @@ public:
 	bool toggleControllable(bool toggle);
 	bool playSound(int soundIdx_, Vec3f const& pos_);
 	bool playSound(int soundIdx_, float x_, float y_, float z_);
-	bool applyAnimation(char const* animlib, char const* animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync);
+	bool applyAnimation(std::string const& animLib_, std::string const& animName_, float delta_, bool loop_, bool lockx_, bool locky_, bool freeze_, int time_, bool forceSync_);
+	bool applyAnimation(char const* animLib_, char const* animName_, float delta_, bool loop_, bool lockx_, bool locky_, bool freeze_, int time_, bool forceSync_);
 	bool clearAnimations(bool forcesync);
 	int getAnimationIndex() const;
 
@@ -478,17 +481,21 @@ public:
 	bool getAnimationName(char * animlib, int animlib_size, char * animname, int animname_size) const;
 	PlayerSpecialAction getSpecialAction() const;
 	bool setSpecialAction(PlayerSpecialAction action_);
-	bool disableRemoteVehicleCollisions(bool disable);
-	bool setCheckpoint(float x, float y, float z, float size);
+	bool disableRemoteVehicleCollisions(bool disable_);
+	bool setCheckpoint(Vec3f const& pos_, float size_);
+	bool setCheckpoint(float x_, float y_, float z_, float size_);
 	bool disableCheckpoint();
-	bool setRaceCheckpoint(int type, float x, float y, float z, float nextx, float nexty, float nextz, float size);
+	bool setRaceCheckpoint(int type_, Vec3f const& pos_, Vec3f const& nextPos_, float size_);
+	bool setRaceCheckpoint(int type_, float x_, float y_, float z_, float nextx_, float nexty_, float nextz_, float size_);
 	bool disableRaceCheckpoint();
+	bool setWorldBounds(Vec2f const& min_, Vec2f const& max_);
 	bool setWorldBounds(float x_max, float x_min, float y_max, float y_min);
-	bool setMarkerForPlayer(int showplayerid, Color color_);
-	bool showNameTagForPlayer(int showplayerid, bool show);
-	bool setMapIcon(int iconid, float x, float y, float z, int markertype, int color, int style);
-	bool removeMapIcon(int iconid);
-	bool allowTeleport(bool allow);
+	bool setMarkerForPlayer(Player showPlayer_, Color color_);
+	bool showNameTagForPlayer(Player showPlayer_, bool show);
+	bool setMapIcon(int iconIdx_, Vec3f const& pos_, int markerType_, Color color_, int style_);
+	bool setMapIcon(int iconIdx_, float x_, float y_, float z_, int markerType_, Color color_, int style_);
+	bool removeMapIcon(int iconIdx_);
+	bool allowTeleport(bool allow_);
 	bool setCameraBehindPlayer();
 	Vec3f getCameraPosition() const;
 	Vec3f getCameraFrontVector() const;
@@ -508,7 +515,7 @@ public:
 	bool interpolateCameraLookAt(float fromX_, float fromY_, float fromZ_, float toX_, float toY_, float toZ_, int time_, CameraMove moveMode_);
 	static bool isConnected(int playerIdx_);
 	bool isConnected() const;
-	bool isInVehicle(int vehicleid) const;
+	bool isInVehicle(Vehicle vehicle_) const;
 	bool isInAnyVehicle() const;
 	bool isInCheckpoint() const;
 	bool isInRaceCheckpoint() const;
@@ -519,9 +526,11 @@ public:
 	bool toggleSpectating(bool toggle);
 	bool spectateOtherPlayer(Player const& target_, SpectateMode mode_);
 	bool spectateVehicle(int targetvehicleid, int mode);
-	bool startRecordingData(int recordtype, char const* recordname);
+	bool startRecordingData(int recordType_, std::string const& recordName_);
+	bool startRecordingData(int recordType_, char const* recordName_);
 	bool stopRecordingData();
-	bool createExplosion(float X, float Y, float Z, int type, float Radius);
+	bool createExplosion(Vec3f const& pos_, int type_, float radius_);
+	bool createExplosion(float x_, float y_, float z_, int type_, float radius_);
 
 	/// Object related:
 	bool editObject(PlayerObject object_);

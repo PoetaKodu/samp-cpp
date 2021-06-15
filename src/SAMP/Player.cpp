@@ -558,15 +558,21 @@ Vehicle Player::getSurfingVehicle() const
 }
 
 //////////////////////////////////////
-int Player::getSurfingObjectId() const
+Object Player::getSurfingObject() const
 {
 	return sampgdk_GetPlayerSurfingObjectID(_id);
 }
 
 //////////////////////////////////////
-bool Player::removeBuilding(int modelid, float fX, float fY, float fZ, float fRadius)
+bool Player::removeBuilding(int modelIdx_, Vec3f const& pos_, float radius_)
 {
-	return sampgdk_RemoveBuildingForPlayer(_id, modelid, fX, fY, fZ, fRadius);
+	return sampgdk_RemoveBuildingForPlayer(_id, modelIdx_, pos_.x, pos_.y, pos_.z, radius_);
+}
+
+//////////////////////////////////////
+bool Player::removeBuilding(int modelIdx_, float x_, float y_, float z_, float radius_)
+{
+	return sampgdk_RemoveBuildingForPlayer(_id, modelIdx_, x_, y_, z_, radius_);
 }
 
 //////////////////////////////////////
@@ -578,9 +584,15 @@ ShotVectors Player::getLastShotVectors() const
 }
 
 //////////////////////////////////////
-bool Player::setAttachedObject(int index, int modelid, int bone, float fOffsetX, float fOffsetY, float fOffsetZ, float fRotX, float fRotY, float fRotZ, float fScaleX, float fScaleY, float fScaleZ, int materialcolor1, int materialcolor2)
+bool Player::setAttachedObject(int slot_, int modelIdx_, int bone_, Vec3f const& offset_, Vec3f const& rot_, Vec3f const& scale_, Color materialColor1_, Color materialColor2_)
 {
-	return sampgdk_SetPlayerAttachedObject(_id, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, materialcolor1, materialcolor2);
+	return this->setAttachedObject(slot_, modelIdx_, bone_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z, scale_.x, scale_.y, scale_.z, materialColor1_, materialColor2_);
+}
+
+//////////////////////////////////////
+bool Player::setAttachedObject(int slot_, int modelIdx_, int bone_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, float scaleX_, float scaleY_, float scaleZ_, Color materialColor1_, Color materialColor2_)
+{
+	return sampgdk_SetPlayerAttachedObject(_id, slot_, modelIdx_, bone_, offsetX_, offsetY_, offsetZ_, rotX_, rotY_, rotZ_, scaleX_, scaleY_, scaleZ_, materialColor1_, materialColor2_);
 }
 
 //////////////////////////////////////
@@ -758,15 +770,21 @@ bool Player::playSound(int soundIdx_, float x_, float y_, float z_)
 }
 
 //////////////////////////////////////
-bool Player::applyAnimation(char const* animlib, char const* animname, float fDelta, bool loop, bool lockx, bool locky, bool freeze, int time, bool forcesync)
+bool Player::applyAnimation(std::string const& animLib_, std::string const& animName_, float delta_, bool loop_, bool lockx_, bool locky_, bool freeze_, int time_, bool forceSync_)
 {
-	return sampgdk_ApplyAnimation(_id, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+	return this->applyAnimation(animLib_.c_str(), animName_.c_str(), delta_, loop_, lockx_, locky_, freeze_, time_, forceSync_);
 }
 
 //////////////////////////////////////
-bool Player::clearAnimations(bool forcesync)
+bool Player::applyAnimation(char const* animLib_, char const* animName_, float delta_, bool loop_, bool lockx_, bool locky_, bool freeze_, int time_, bool forceSync_)
 {
-	return sampgdk_ClearAnimations(_id, forcesync);
+	return sampgdk_ApplyAnimation(_id, animLib_, animName_, delta_, loop_, lockx_, locky_, freeze_, time_, forceSync_);
+}
+
+//////////////////////////////////////
+bool Player::clearAnimations(bool forceSync_)
+{
+	return sampgdk_ClearAnimations(_id, forceSync_);
 }
 
 //////////////////////////////////////
@@ -794,9 +812,15 @@ bool Player::setSpecialAction(PlayerSpecialAction action_)
 }
 
 //////////////////////////////////////
-bool Player::disableRemoteVehicleCollisions(bool disable)
+bool Player::disableRemoteVehicleCollisions(bool disable_)
 {
-	return sampgdk_DisableRemoteVehicleCollisions(_id, disable);
+	return sampgdk_DisableRemoteVehicleCollisions(_id, disable_);
+}
+
+//////////////////////////////////////
+bool Player::setCheckpoint(Vec3f const& pos_, float size_)
+{
+	return this->setCheckpoint(pos_.x, pos_.y, pos_.z, size_);
 }
 
 //////////////////////////////////////
@@ -809,6 +833,12 @@ bool Player::setCheckpoint(float x, float y, float z, float size)
 bool Player::disableCheckpoint()
 {
 	return sampgdk_DisablePlayerCheckpoint(_id);
+}
+
+//////////////////////////////////////
+bool Player::setRaceCheckpoint(int type_, Vec3f const& pos_, Vec3f const& nextPos_, float size_)
+{
+	return this->setRaceCheckpoint(type_, pos_.x, pos_.y, pos_.z, nextPos_.x, nextPos_.y, nextPos_.z, size_);
 }
 
 //////////////////////////////////////
@@ -830,33 +860,39 @@ bool Player::setWorldBounds(float x_max, float x_min, float y_max, float y_min)
 }
 
 //////////////////////////////////////
-bool Player::setMarkerForPlayer(int showplayerid, Color color_)
+bool Player::setMarkerForPlayer(Player showPlayer_, Color color_)
 {
-	return sampgdk_SetPlayerMarkerForPlayer(_id, showplayerid, color_);
+	return sampgdk_SetPlayerMarkerForPlayer(_id, showPlayer_.id(), color_);
 }
 
 //////////////////////////////////////
-bool Player::showNameTagForPlayer(int showplayerid, bool show)
+bool Player::showNameTagForPlayer(Player showPlayer_, bool show)
 {
-	return sampgdk_ShowPlayerNameTagForPlayer(_id, showplayerid, show);
+	return sampgdk_ShowPlayerNameTagForPlayer(_id, showPlayer_.id(), show);
 }
 
 //////////////////////////////////////
-bool Player::setMapIcon(int iconid, float x, float y, float z, int markertype, int color, int style)
+bool Player::setMapIcon(int iconIdx_, Vec3f const& pos_, int markerType_, Color color_, int style_)
 {
-	return sampgdk_SetPlayerMapIcon(_id, iconid, x, y, z, markertype, color, style);
+	return this->setMapIcon(iconIdx_, pos_.x, pos_.y, pos_.z, markerType_, color_, style_);
 }
 
 //////////////////////////////////////
-bool Player::removeMapIcon(int iconid)
+bool Player::setMapIcon(int iconIdx_, float x_, float y_, float z_, int markerType_, Color color_, int style_)
 {
-	return sampgdk_RemovePlayerMapIcon(_id, iconid);
+	return sampgdk_SetPlayerMapIcon(_id, iconIdx_, x_, y_, z_, markerType_, color_, style_);
 }
 
 //////////////////////////////////////
-bool Player::allowTeleport(bool allow)
+bool Player::removeMapIcon(int iconIdx_)
 {
-	return sampgdk_AllowPlayerTeleport(_id, allow);
+	return sampgdk_RemovePlayerMapIcon(_id, iconIdx_);
+}
+
+//////////////////////////////////////
+bool Player::allowTeleport(bool allow_)
+{
+	return sampgdk_AllowPlayerTeleport(_id, allow_);
 }
 
 //////////////////////////////////////
@@ -984,9 +1020,9 @@ bool Player::isConnected() const
 }
 
 //////////////////////////////////////
-bool Player::isInVehicle(int vehicleid) const
+bool Player::isInVehicle(Vehicle vehicle_) const
 {
-	return sampgdk_IsPlayerInVehicle(_id, vehicleid);
+	return sampgdk_IsPlayerInVehicle(_id, vehicle_.id());
 }
 
 //////////////////////////////////////
@@ -1050,9 +1086,15 @@ bool Player::spectateVehicle(int targetvehicleid, int mode)
 }
 
 //////////////////////////////////////
-bool Player::startRecordingData(int recordtype, char const* recordname)
+bool Player::startRecordingData(int recordType_, std::string const& recordName_)
 {
-	return sampgdk_StartRecordingPlayerData(_id, recordtype, recordname);
+	return this->startRecordingData(recordType_, recordName_.c_str());
+}
+
+//////////////////////////////////////
+bool Player::startRecordingData(int recordType_, char const* recordName_)
+{
+	return sampgdk_StartRecordingPlayerData(_id, recordType_, recordName_);
 }
 
 //////////////////////////////////////
@@ -1062,9 +1104,15 @@ bool Player::stopRecordingData()
 }
 
 //////////////////////////////////////
-bool Player::createExplosion(float X, float Y, float Z, int type, float radius)
+bool Player::createExplosion(Vec3f const& pos_, int type_, float radius_)
 {
-	return sampgdk_CreateExplosionForPlayer(_id, X, Y, Z, type, radius);
+	return this->createExplosion(pos_.x, pos_.y, pos_.z, type_, radius_);
+}
+
+//////////////////////////////////////
+bool Player::createExplosion(float x_, float y_, float z_, int type_, float radius_)
+{
+	return sampgdk_CreateExplosionForPlayer(_id, x_, y_, z_, type_, radius_);
 }
 
 //////////////////////////////////////
