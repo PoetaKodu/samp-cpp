@@ -288,7 +288,7 @@ public:
 	std::string serial() const
 	{
 		char buf[MaxLength];
-		sampgdk_gpci(player_.id(), buf, MaxLength);
+		sampgdk_gpci(_id, buf, MaxLength);
 		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 	}
 

@@ -2,9 +2,6 @@
 
 #include <SAMPCpp/SAMP/TextLabel3D.hpp>
 
-#include <SAMPCpp/SAMP/Player.hpp>
-#include <SAMPCpp/SAMP/Vehicle.hpp>
-
 namespace samp_cpp
 {
 
