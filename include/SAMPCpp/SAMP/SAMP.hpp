@@ -287,6 +287,12 @@ bool setGameModeText(std::string const& text_);
 bool setTeamCount(int count_);
 
 ///////////////////////////////////////////////
+int addPlayerClass(int modelIdx_, Vec3f const& spawnPos_, float zAngle_, Weapon weapon1_ = Weapon::None, Weapon weapon2_ = Weapon::None, Weapon weapon3_ = Weapon::None);
+
+///////////////////////////////////////////////
+int addPlayerClass(int modelIdx_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, Weapon weapon1_ = Weapon::None, Weapon weapon2_ = Weapon::None, Weapon weapon3_ = Weapon::None);
+
+///////////////////////////////////////////////
 int addPlayerClassEx(int teamIdx_, int modelIdx_, Vec3f const& spawnPos_, float zAngle_, Weapon weapon1_ = Weapon::None, Weapon weapon2_ = Weapon::None, Weapon weapon3_ = Weapon::None);
 
 ///////////////////////////////////////////////

@@ -13,7 +13,6 @@
 #include <SAMPCpp/SAMP/GangZone.hpp>
 #include <SAMPCpp/SAMP/Weapon.hpp>
 #include <SAMPCpp/SAMP/Http.hpp>
-#include <SAMPCpp/SAMP/Server.hpp>
 #include <SAMPCpp/SAMP/Native.hpp>
 #include <SAMPCpp/SAMP/Timer.hpp>
 #include <SAMPCpp/SAMP/SAMP.hpp>

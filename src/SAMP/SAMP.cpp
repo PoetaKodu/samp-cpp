@@ -168,6 +168,30 @@ bool setTeamCount(int count_)
 }
 
 ///////////////////////////////////////////////
+int addPlayerClass(int modelIdx_, Vec3f const& spawnPos_, float zAngle_, Weapon weapon1_, Weapon weapon2_, Weapon weapon3_)
+{
+	return sampgdk_AddPlayerClass(
+			modelIdx_,
+			spawnPos_.x, spawnPos_.y, spawnPos_.z, zAngle_,
+			weapon1_.id, weapon1_.ammo,
+			weapon2_.id, weapon2_.ammo,
+			weapon3_.id, weapon3_.ammo
+		);
+}
+
+///////////////////////////////////////////////
+int addPlayerClass(int modelIdx_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, Weapon weapon1_, Weapon weapon2_, Weapon weapon3_)
+{
+	return sampgdk_AddPlayerClass(
+			modelIdx_,
+			spawnX_, spawnY_, spawnZ_, zAngle_,
+			weapon1_.id, weapon1_.ammo,
+			weapon2_.id, weapon2_.ammo,
+			weapon3_.id, weapon3_.ammo
+		);
+}
+
+///////////////////////////////////////////////
 int addPlayerClassEx(int teamIdx_, int modelIdx_, Vec3f const& spawnPos_, float zAngle_, Weapon weapon1_, Weapon weapon2_, Weapon weapon3_)
 {
 	return sampgdk_AddPlayerClassEx(
