@@ -10,6 +10,8 @@ class Player;
 class Actor
 {
 public:
+	Actor() = default;
+
 	Actor(int32_t id_)
 		: _id(id_)
 	{
@@ -56,7 +58,7 @@ public:
 	bool isInvulnerable() const;
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 }

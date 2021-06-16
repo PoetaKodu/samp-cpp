@@ -10,10 +10,14 @@ class Player;
 class Menu
 {
 public:
+	Menu() = default;
 	Menu(int32_t id_)
 		: _id(id_)
 	{
 	}
+
+	bool operator==(Menu const& other_) const { return _id == other_._id; }
+	bool operator!=(Menu const& other_) const { return !(*this == other_); }
 
 	bool valid() const;
 
@@ -35,7 +39,7 @@ public:
 	bool disableRow(int row_);
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 }

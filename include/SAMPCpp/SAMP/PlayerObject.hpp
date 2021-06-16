@@ -13,6 +13,7 @@ class Vehicle;
 class PlayerObject
 {
 public:
+	PlayerObject() = default;
 	PlayerObject(Player player_, int32_t id_);
 
 	bool operator==(PlayerObject const& other_) const { return (_playerId == other_._playerId && _id == other_._id); }
@@ -57,8 +58,7 @@ public:
 	bool setMaterialText(std::string const& text_, int materialIndex_, int materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_);
 	bool setMaterialText(char const* text_, int materialIndex_, int materialsize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_);
 private:
-	int32_t _id;
-	int32_t _playerId;
+	int32_t _id = -1, _playerId = -1;
 };
 
 }

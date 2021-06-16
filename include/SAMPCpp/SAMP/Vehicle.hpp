@@ -263,7 +263,7 @@ public:
 		FarmTrailer				= 610,
 		UtilityTrailer			= 611,
 	};
-
+	Vehicle() = default;
 	Vehicle(int32_t id_)
 		: _id(id_)
 	{
@@ -363,7 +363,7 @@ public:
 	std::string_view prettyName() const;
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 
 public:
 	////////////////////////

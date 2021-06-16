@@ -15,6 +15,7 @@ public:
 class Pickup
 {
 public:
+	Pickup() = default;
 	Pickup(int32_t id_)
 		: _id(id_)
 	{
@@ -30,7 +31,7 @@ public:
 	bool destroy();
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 }

@@ -13,6 +13,7 @@ class Vehicle;
 class Object
 {
 public:
+	Object() = default;
 	Object(int32_t id_)
 		: _id(id_)
 	{
@@ -60,7 +61,7 @@ public:
 	static bool setObjectsDefaultCameraCol(bool disable_);
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 

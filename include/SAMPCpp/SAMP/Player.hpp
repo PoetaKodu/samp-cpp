@@ -196,7 +196,7 @@ class Player
 {
 public:
 	using VarType = PlayerVarType;
-
+	Player() = default;
 	Player(int32_t id_)
 		: _id(id_)
 	{
@@ -612,7 +612,7 @@ public:
 	Menu getMenu() const;
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 //////////////////////////////////////////////////////////////

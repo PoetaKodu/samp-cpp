@@ -12,10 +12,15 @@ class Player;
 class GangZone
 {
 public:
+	GangZone() = default;
+
 	GangZone(int32_t id_)
 		: _id(id_)
 	{
 	}
+
+	bool operator==(GangZone const& other_) const { return _id == other_._id; }
+	bool operator!=(GangZone const& other_) const { return !(*this == other_); }
 
 	static GangZone create(Vec2f const& min_, Vec2f const& max_);
 	static GangZone create(float minX_, float minY_, float maxX_, float maxY_);
@@ -30,7 +35,7 @@ public:
 	bool stopFlashForAll();
 
 private:
-	int32_t _id;
+	int32_t _id = -1;
 };
 
 
