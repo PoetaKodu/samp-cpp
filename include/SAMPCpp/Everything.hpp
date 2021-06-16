@@ -16,6 +16,7 @@
 #include <SAMPCpp/SAMP/Server.hpp>
 #include <SAMPCpp/SAMP/Native.hpp>
 #include <SAMPCpp/SAMP/Timer.hpp>
+#include <SAMPCpp/SAMP/SAMP.hpp>
 
 #include <SAMPCpp/Core/Safety/Unique.hpp>
 #include <SAMPCpp/Core/Color.hpp>
