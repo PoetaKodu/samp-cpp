@@ -43,18 +43,12 @@ constexpr const int32_t		InvalidGangZone		= -1;
 constexpr const int32_t		Invalid3DTextId		= 0xFFFF;
 
 
-enum class ServerValType
+enum class ServerVarType
 {
 	None	= 0,
 	Int		= 1,
 	String	= 2,
 	Float	= 3,
-};
-
-enum class TextDrawFontType
-{
-	SpriteDraw		= 4,
-	ModelPreview	= 5,
 };
 
 enum class DialogStyle
@@ -177,724 +171,805 @@ enum class ObjectMaterialTextAlign
 };
 
 
-bool sendClientMessage(Player player_, int color, const char * message)
+///////////////////////////////////////////////
+bool sendClientMessage(Player player_, Color color_, char const* message_)
 {
-	return sampgdk_SendClientMessage(player_.id(), color, message);
+	return sampgdk_SendClientMessage(player_.id(), color_, message_);
 }
 
-bool sendClientMessageToAll(int color, const char * message)
+///////////////////////////////////////////////
+bool sendClientMessageToAll(Color color_, char const* message_)
 {
-	return sampgdk_SendClientMessageToAll(color, message);
+	return sampgdk_SendClientMessageToAll(color_, message_);
 }
 
-bool sendPlayerMessageToPlayer(Player player_, Player sender_, const char * message)
+///////////////////////////////////////////////
+bool sendPlayerMessageToPlayer(Player player_, Player sender_, char const* message_)
 {
-	return sampgdk_SendPlayerMessageToPlayer(player_.id(), sender_.id(), message);
+	return sampgdk_SendPlayerMessageToPlayer(player_.id(), sender_.id(), message_);
 }
 
-bool sendPlayerMessageToAll(Player sender_, const char * message)
+///////////////////////////////////////////////
+bool sendPlayerMessageToAll(Player sender_, char const* message_)
 {
-	return sampgdk_SendPlayerMessageToAll(sender_.id(), message);
+	return sampgdk_SendPlayerMessageToAll(sender_.id(), message_);
 }
 
+///////////////////////////////////////////////
 bool sendDeathMessage(Player killer_, Player killee_, Weapon::Type weapon_)
 {
 	return sampgdk_SendDeathMessage(killer_.id(), killee_.id(), static_cast<int>(weapon_));
 }
 
+///////////////////////////////////////////////
 bool sendDeathMessageToPlayer(Player player_, Player killer_, Player killee_, Weapon::Type weapon_)
 {
 	return sampgdk_SendDeathMessageToPlayer(player_.id(), killer_.id(), killee_.id(), static_cast<int>(weapon_));
 }
 
-bool gameTextForAll(const char * text, int time, int style)
+///////////////////////////////////////////////
+bool gameTextForAll(char const* text_, int time_, int style_)
 {
-	return sampgdk_GameTextForAll(text, time, style);
+	return sampgdk_GameTextForAll(text_, time_, style_);
 }
 
-bool gameTextForPlayer(Player player_, const char * text, int time, int style)
+///////////////////////////////////////////////
+bool gameTextForPlayer(Player player_, char const* text_, int time_, int style_)
 {
-	return sampgdk_GameTextForPlayer(player_.id(), text, time, style);
+	return sampgdk_GameTextForPlayer(player_.id(), text_, time_, style_);
 }
 
+///////////////////////////////////////////////
 int getTickCount()
 {
 	return sampgdk_GetTickCount();
 }
 
+///////////////////////////////////////////////
 int getMaxPlayers()
 {
 	return sampgdk_GetMaxPlayers();
 }
 
+///////////////////////////////////////////////
 int getPlayerPoolSize()
 {
 	return sampgdk_GetPlayerPoolSize();
 }
 
+///////////////////////////////////////////////
 int getVehiclePoolSize()
 {
 	return sampgdk_GetVehiclePoolSize();
 }
 
+///////////////////////////////////////////////
 int getActorPoolSize()
 {
 	return sampgdk_GetActorPoolSize();
 }
 
-bool sha256PassHash(const char * password, const char * salt, char * ret_hash, int ret_hash_len)
+///////////////////////////////////////////////
+template <size_t MaxHashLength = (256 / 8)>
+std::string sha256PassHash(std::string const& password_, std::string const& salt_)
 {
-	return sampgdk_SHA256_PassHash(password, salt, ret_hash, ret_hash_len);
+	char buf[MaxHashLength]{};
+	sampgdk_SHA256_PassHash(password_.c_str(), salt_.c_str(), buf, MaxHashLength);
+	return std::string{buf, buf + strnlen_s(buf, MaxHashLength) };
 }
 
-bool setSVarInt(const char * varname, int int_value)
+///////////////////////////////////////////////
+bool setSVar(char const* varName_, int value_)
 {
-	return sampgdk_SetSVarInt(varname, int_value);
+	return sampgdk_SetSVarInt(varName_, value_);
 }
 
-int getSVarInt(const char * varname)
+///////////////////////////////////////////////
+bool setSVar(std::string const& varName_, int value_)
 {
-	return sampgdk_GetSVarInt(varname);
+	return setSVar(varName_.c_str(), value_);
 }
 
-bool setSVarString(const char * varname, const char * string_value)
+///////////////////////////////////////////////
+int getSVarInt(char const* varName_)
 {
-	return sampgdk_SetSVarString(varname, string_value);
+	return sampgdk_GetSVarInt(varName_);
 }
 
-bool getSVarString(const char * varname, char * string_return, int len)
+///////////////////////////////////////////////
+bool setSVar(char const* varName_, char const* value_)
 {
-	return sampgdk_GetSVarString(varname, string_return, len);
+	return sampgdk_SetSVarString(varName_, value_);
 }
 
-bool setSVarFloat(const char * varname, float float_value)
+///////////////////////////////////////////////
+bool setSVar(std::string const& varName_, std::string const& value_)
 {
-	return sampgdk_SetSVarFloat(varname, float_value);
+	return setSVar(varName_.c_str(), value_.c_str());
 }
 
-float getSVarFloat(const char * varname)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getSVarString(char const* varName_)
 {
-	return sampgdk_GetSVarFloat(varname);
+	char buf[MaxLength]{};
+	sampgdk_GetSVarString(varName_, buf, MaxLength);
+	return std::string{buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-bool deleteSVar(const char * varname)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getSVarString(std::string const& varName_)
 {
-	return sampgdk_DeleteSVar(varname);
+	return getSVarString<MaxLength>(varName_.c_str());
 }
 
+///////////////////////////////////////////////
+bool setSVar(char const* varName_, float value)
+{
+	return sampgdk_SetSVarFloat(varName_, value);
+}
+
+///////////////////////////////////////////////
+bool setSVar(std::string const& varName_, float value_)
+{
+	return setSVar(varName_.c_str(), value_);
+}
+
+///////////////////////////////////////////////
+float getSVarFloat(char const* varName_)
+{
+	return sampgdk_GetSVarFloat(varName_);
+}
+
+///////////////////////////////////////////////
+bool deleteSVar(char const* varName_)
+{
+	return sampgdk_DeleteSVar(varName_);
+}
+
+///////////////////////////////////////////////
 int getSVarsUpperIndex()
 {
 	return sampgdk_GetSVarsUpperIndex();
 }
 
-bool getSVarNameAtIndex(int index, char * ret_varname, int ret_len)
+///////////////////////////////////////////////
+template <size_t MaxNameLength = 1024>
+inline bool getSVarNameAtIndex(int index_)
 {
-	return sampgdk_GetSVarNameAtIndex(index, ret_varname, ret_len);
+	char buf[MaxNameLength]{};
+	sampgdk_GetSVarNameAtIndex(index_, buf, MaxNameLength);
+	return std::string{buf, buf + strnlen_s(buf, MaxNameLength) };
 }
 
-int getSVarType(const char * varname)
+///////////////////////////////////////////////
+ServerVarType getSVarType(char const* varName_)
 {
-	return sampgdk_GetSVarType(varname);
+	return static_cast<ServerVarType>(sampgdk_GetSVarType(varName_));
 }
 
-bool setGameModeText(const char * text)
+///////////////////////////////////////////////
+bool setGameModeText(char const* text_)
 {
-	return sampgdk_SetGameModeText(text);
+	return sampgdk_SetGameModeText(text_);
 }
 
-bool setTeamCount(int count)
+///////////////////////////////////////////////
+bool setGameModeText(std::string const& text_)
 {
-	return sampgdk_SetTeamCount(count);
+	return sampgdk_SetGameModeText(text_.c_str());
 }
 
-int addPlayerClass(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo)
+///////////////////////////////////////////////
+bool setTeamCount(int count_)
 {
-	return sampgdk_AddPlayerClass(modelid, spawn_x, spawn_y, spawn_z, z_angle, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
+	return sampgdk_SetTeamCount(count_);
 }
 
-int addPlayerClassEx(int teamid, int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int weapon1, int weapon1_ammo, int weapon2, int weapon2_ammo, int weapon3, int weapon3_ammo)
+///////////////////////////////////////////////
+int addPlayerClassEx(int teamIdx_, int modelIdx_, Vec3f const& spawnPos_, float zAngle_, Weapon weapon1_ = Weapon::None, Weapon weapon2_ = Weapon::None, Weapon weapon3_ = Weapon::None)
 {
-	return sampgdk_AddPlayerClassEx(teamid, modelid, spawn_x, spawn_y, spawn_z, z_angle, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
+	return sampgdk_AddPlayerClassEx(
+			teamIdx_, modelIdx_,
+			spawnPos_.x, spawnPos_.y, spawnPos_.z, zAngle_,
+			weapon1_.id, weapon1_.ammo,
+			weapon2_.id, weapon2_.ammo,
+			weapon3_.id, weapon3_.ammo
+		);
 }
 
-int addStaticVehicle(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2)
+///////////////////////////////////////////////
+int addPlayerClassEx(int teamIdx_, int modelIdx_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, Weapon weapon1_ = Weapon::None, Weapon weapon2_ = Weapon::None, Weapon weapon3_ = Weapon::None)
 {
-	return sampgdk_AddStaticVehicle(modelid, spawn_x, spawn_y, spawn_z, z_angle, color1, color2);
+	return sampgdk_AddPlayerClassEx(
+			teamIdx_, modelIdx_,
+			spawnX_, spawnY_, spawnZ_, zAngle_,
+			weapon1_.id, weapon1_.ammo,
+			weapon2_.id, weapon2_.ammo,
+			weapon3_.id, weapon3_.ammo
+		);
 }
 
-int addStaticVehicleEx(int modelid, float spawn_x, float spawn_y, float spawn_z, float z_angle, int color1, int color2, int respawn_delay, bool addsiren)
+///////////////////////////////////////////////
+bool showNameTags(bool show_)
 {
-	return sampgdk_AddStaticVehicleEx(modelid, spawn_x, spawn_y, spawn_z, z_angle, color1, color2, respawn_delay, addsiren);
+	return sampgdk_ShowNameTags(show_);
 }
 
-int addStaticPickup(int model, int type, float x, float y, float z, int virtualworld)
+///////////////////////////////////////////////
+bool showPlayerMarkers(int mode_)
 {
-	return sampgdk_AddStaticPickup(model, type, x, y, z, virtualworld);
+	return sampgdk_ShowPlayerMarkers(mode_);
 }
 
-int createPickup(int model, int type, float x, float y, float z, int virtualworld)
-{
-	return sampgdk_CreatePickup(model, type, x, y, z, virtualworld);
-}
-
-bool destroyPickup(int pickup)
-{
-	return sampgdk_DestroyPickup(pickup);
-}
-
-bool showNameTags(bool show)
-{
-	return sampgdk_ShowNameTags(show);
-}
-
-bool showPlayerMarkers(int mode)
-{
-	return sampgdk_ShowPlayerMarkers(mode);
-}
-
+///////////////////////////////////////////////
 bool gameModeExit()
 {
 	return sampgdk_GameModeExit();
 }
 
-bool setWorldTime(int hour)
+///////////////////////////////////////////////
+bool setWorldTime(int hour_)
 {
-	return sampgdk_SetWorldTime(hour);
+	return sampgdk_SetWorldTime(hour_);
 }
 
-bool getWeaponName(int weaponid, char * name, int size)
+///////////////////////////////////////////////
+bool getWeaponName(int weaponIdx_, char * name_, int size_)
 {
-	return sampgdk_GetWeaponName(weaponid, name, size);
+	return sampgdk_GetWeaponName(weaponIdx_, name_, size_);
 }
 
-bool enableTirePopping(bool enable)
+///////////////////////////////////////////////
+bool enableTirePopping(bool enable_)
 {
-	return sampgdk_EnableTirePopping(enable);
+	return sampgdk_EnableTirePopping(enable_);
 }
 
+///////////////////////////////////////////////
 bool enableVehicleFriendlyFire()
 {
 	return sampgdk_EnableVehicleFriendlyFire();
 }
 
-bool allowInteriorWeapons(bool allow)
+///////////////////////////////////////////////
+bool allowInteriorWeapons(bool allow_)
 {
-	return sampgdk_AllowInteriorWeapons(allow);
+	return sampgdk_AllowInteriorWeapons(allow_);
 }
 
-bool setWeather(int weatherid)
+///////////////////////////////////////////////
+bool setWeather(int weatherIdx_)
 {
-	return sampgdk_SetWeather(weatherid);
+	return sampgdk_SetWeather(weatherIdx_);
 }
 
-bool setGravity(float gravity)
+///////////////////////////////////////////////
+bool setGravity(float gravity_)
 {
-	return sampgdk_SetGravity(gravity);
+	return sampgdk_SetGravity(gravity_);
 }
 
+///////////////////////////////////////////////
 float getGravity()
 {
 	return sampgdk_GetGravity();
 }
 
-bool allowAdminTeleport(bool allow)
+///////////////////////////////////////////////
+bool allowAdminTeleport(bool allow_)
 {
-	return sampgdk_AllowAdminTeleport(allow);
+	return sampgdk_AllowAdminTeleport(allow_);
 }
 
-bool setDeathDropAmount(int amount)
+// NOTE:
+// Removed because it does not work with the current SAMP version:
+// see: https://open.mp/docs/scripting/functions/SetDeathDropAmount
+///////////////////////////////////////////////
+// bool setDeathDropAmount(int amount_)
+// {
+// 	return sampgdk_SetDeathDropAmount(amount_);
+// }
+
+///////////////////////////////////////////////
+bool createExplosion(float x_, float y_, float z_, int type_, float radius_)
 {
-	return sampgdk_SetDeathDropAmount(amount);
+	return sampgdk_CreateExplosion(x_, y_, z_, type_, radius_);
 }
 
-bool createExplosion(float x, float y, float z, int type, float radius)
+///////////////////////////////////////////////
+bool createExplosion(Vec3f const& pos_, int type_, float radius_)
 {
-	return sampgdk_CreateExplosion(x, y, z, type, radius);
+	return createExplosion(pos_.x, pos_.y, pos_.z, type_, radius_);
 }
 
-bool enableZoneNames(bool enable)
+///////////////////////////////////////////////
+bool enableZoneNames(bool enable_)
 {
-	return sampgdk_EnableZoneNames(enable);
+	return sampgdk_EnableZoneNames(enable_);
 }
 
+///////////////////////////////////////////////
 bool usePlayerPedAnims()
 {
 	return sampgdk_UsePlayerPedAnims();
 }
 
+///////////////////////////////////////////////
 bool disableInteriorEnterExits()
 {
 	return sampgdk_DisableInteriorEnterExits();
 }
 
-bool setNameTagDrawDistance(float distance)
+///////////////////////////////////////////////
+bool setNameTagDrawDistance(float distance_)
 {
-	return sampgdk_SetNameTagDrawDistance(distance);
+	return sampgdk_SetNameTagDrawDistance(distance_);
 }
 
+///////////////////////////////////////////////
 bool disableNameTagLos()
 {
 	return sampgdk_DisableNameTagLOS();
 }
 
-bool limitGlobalChatRadius(float chat_radius)
+///////////////////////////////////////////////
+bool limitGlobalChatRadius(float chatRadius_)
 {
-	return sampgdk_LimitGlobalChatRadius(chat_radius);
+	return sampgdk_LimitGlobalChatRadius(chatRadius_);
 }
 
-bool limitPlayerMarkerRadius(float marker_radius)
+///////////////////////////////////////////////
+bool limitPlayerMarkerRadius(float markerRadius_)
 {
-	return sampgdk_LimitPlayerMarkerRadius(marker_radius);
+	return sampgdk_LimitPlayerMarkerRadius(markerRadius_);
 }
 
-bool connectNpc(const char * name, const char * script)
+///////////////////////////////////////////////
+bool connectNpc(char const* name_, char const* script_)
 {
-	return sampgdk_ConnectNPC(name, script);
+	return sampgdk_ConnectNPC(name_, script_);
 }
 
-bool isPlayerNpc(Player player_)
+///////////////////////////////////////////////
+bool connectNpc(std::string const& name_, std::string const& script_)
 {
-	return sampgdk_IsPlayerNPC(player_.id());
+	return connectNpc(name_.c_str(), script_.c_str());
 }
 
-bool isPlayerAdmin(Player player_)
+///////////////////////////////////////////////
+bool sendRconCommand(char const* command_)
 {
-	return sampgdk_IsPlayerAdmin(player_.id());
+	return sampgdk_SendRconCommand(command_);
 }
 
-bool kick(Player player_)
+///////////////////////////////////////////////
+bool sendRconCommand(std::string const& command_)
 {
-	return sampgdk_Kick(player_.id());
+	return sendRconCommand(command_.c_str());
 }
 
-bool ban(Player player_)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getPlayerNetworkStats(Player player_)
 {
-	return sampgdk_Ban(player_.id());
+	char buf[MaxLength]{};
+	sampgdk_GetPlayerNetworkStats(player_.id(), buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-bool banEx(Player player_, const char * reason)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getNetworkStats()
 {
-	return sampgdk_BanEx(player_.id(), reason);
+	char buf[MaxLength]{};
+	sampgdk_GetNetworkStats(buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-bool sendRconCommand(const char * command)
+///////////////////////////////////////////////
+template <size_t MaxLength = 64>
+std::string getPlayerVersion(Player player_)
 {
-	return sampgdk_SendRconCommand(command);
+	char buf[MaxLength]{};
+	sampgdk_GetPlayerVersion(player_.id(), buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-bool getPlayerNetworkStats(Player player_, char * retstr, int size)
+///////////////////////////////////////////////
+bool blockIpAddress(char const* ipAddress_, int timeMs_)
 {
-	return sampgdk_GetPlayerNetworkStats(player_.id(), retstr, size);
+	return sampgdk_BlockIpAddress(ipAddress_, timeMs_);
 }
 
-bool getNetworkStats(char * retstr, int size)
+///////////////////////////////////////////////
+bool blockIpAddress(std::string const& ipAddress_, int timeMs_)
 {
-	return sampgdk_GetNetworkStats(retstr, size);
+	return blockIpAddress(ipAddress_.c_str(), timeMs_);
 }
 
-bool getPlayerVersion(Player player_, char * version, int len)
+///////////////////////////////////////////////
+bool unBlockIpAddress(char const* ipAddress_)
 {
-	return sampgdk_GetPlayerVersion(player_.id(), version, len);
+	return sampgdk_UnBlockIpAddress(ipAddress_);
 }
 
-bool blockIpAddress(const char * ip_address, int timems)
+///////////////////////////////////////////////
+bool unblockIpAddress(std::string const& ipAddress_)
 {
-	return sampgdk_BlockIpAddress(ip_address, timems);
+	return unblockIpAddress(ipAddress_.c_str());
 }
 
-bool unBlockIpAddress(const char * ip_address)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getServerVarAsString(char const* varName_)
 {
-	return sampgdk_UnBlockIpAddress(ip_address);
+	char buf[MaxLength]{};
+	sampgdk_GetServerVarAsString(varName_, buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-bool getServerVarAsString(const char * varname, char * value, int size)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getServerVarAsString(std::string const& varName_)
 {
-	return sampgdk_GetServerVarAsString(varname, value, size);
+	return getServerVarAsString<MaxLength>(varName_.c_str());
 }
 
-int getServerVarAsInt(const char * varname)
+///////////////////////////////////////////////
+int getServerVarAsInt(char const* varName_)
 {
-	return sampgdk_GetServerVarAsInt(varname);
+	return sampgdk_GetServerVarAsInt(varName_);
 }
 
-bool getServerVarAsBool(const char * varname)
+///////////////////////////////////////////////
+int getServerVarAsInt(std::string const& varName_)
 {
-	return sampgdk_GetServerVarAsBool(varname);
+	return getServerVarAsInt(varName_.c_str());
 }
 
-bool getConsoleVarAsString(const char * varname, char * buffer, int len)
+///////////////////////////////////////////////
+bool getServerVarAsBool(char const* varName_)
 {
-	return sampgdk_GetConsoleVarAsString(varname, buffer, len);
+	return sampgdk_GetServerVarAsBool(varName_);
 }
 
-int getConsoleVarAsInt(const char * varname)
+///////////////////////////////////////////////
+bool getServerVarAsBool(std::string const& varName_)
 {
-	return sampgdk_GetConsoleVarAsInt(varname);
+	return getServerVarAsBool(varName_.c_str());
 }
 
-bool getConsoleVarAsBool(const char * varname)
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getConsoleVarAsString(char const* varName_)
 {
-	return sampgdk_GetConsoleVarAsBool(varname);
+	char buf[MaxLength]{};
+	sampgdk_GetConsoleVarAsString(varName_, buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
+///////////////////////////////////////////////
+template <size_t MaxLength = 4 * 1024>
+inline std::string getConsoleVarAsString(std::string const& varName_)
+{
+	return getConsoleVarAsString<MaxLength>(varName_.c_str());
+}
+
+///////////////////////////////////////////////
+int getConsoleVarAsInt(char const* varName_)
+{
+	return sampgdk_GetConsoleVarAsInt(varName_);
+}
+
+///////////////////////////////////////////////
+int getConsoleVarAsInt(std::string const& varName_)
+{
+	return getConsoleVarAsInt(varName_.c_str());
+}
+
+///////////////////////////////////////////////
+bool getConsoleVarAsBool(char const* varName_)
+{
+	return sampgdk_GetConsoleVarAsBool(varName_);
+}
+
+///////////////////////////////////////////////
+bool getConsoleVarAsBool(std::string const& varName_)
+{
+	return getConsoleVarAsBool(varName_.c_str());
+}
+
+///////////////////////////////////////////////
 int getServerTickRate()
 {
 	return sampgdk_GetServerTickRate();
 }
 
+///////////////////////////////////////////////
 int netStatsGetConnectedTime(Player player_)
 {
 	return sampgdk_NetStats_GetConnectedTime(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsMessagesReceived(Player player_)
 {
 	return sampgdk_NetStats_MessagesReceived(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsBytesReceived(Player player_)
 {
 	return sampgdk_NetStats_BytesReceived(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsMessagesSent(Player player_)
 {
 	return sampgdk_NetStats_MessagesSent(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsBytesSent(Player player_)
 {
 	return sampgdk_NetStats_BytesSent(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsMessagesRecvPerSecond(Player player_)
 {
 	return sampgdk_NetStats_MessagesRecvPerSecond(player_.id());
 }
 
+///////////////////////////////////////////////
 float netStatsPacketLossPercent(Player player_)
 {
 	return sampgdk_NetStats_PacketLossPercent(player_.id());
 }
 
+///////////////////////////////////////////////
 int netStatsConnectionStatus(Player player_)
 {
 	return sampgdk_NetStats_ConnectionStatus(player_.id());
 }
 
-bool netStatsGetIpPort(Player player_, char * ip_port, int ip_port_len)
+///////////////////////////////////////////////
+template <size_t MaxLength = 15 + 1 + 5> // Ip address (15) + colon (:) + port(max 65535 -> 5 chars)
+bool netStatsGetIpPort(Player player_)
 {
-	return sampgdk_NetStats_GetIpPort(player_.id(), ip_port, ip_port_len);
+	char buf[MaxLength]{};
+	sampgdk_NetStats_GetIpPort(player_.id(), buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
-int createMenu(const char * title, int columns, float x, float y, float col1width, float col2width)
+///////////////////////////////////////////////
+int createMenu(char const* title_, int columns_, float x_, float y_, float col1width_, float col2width_)
 {
-	return sampgdk_CreateMenu(title, columns, x, y, col1width, col2width);
+	return sampgdk_CreateMenu(title_, columns_, x_, y_, col1width_, col2width_);
 }
 
-bool destroyMenu(int menuid)
+///////////////////////////////////////////////
+bool destroyMenu(int menuIdx_)
 {
-	return sampgdk_DestroyMenu(menuid);
+	return sampgdk_DestroyMenu(menuIdx_);
 }
 
-int addMenuItem(int menuid, int column, const char * menutext)
+///////////////////////////////////////////////
+int addMenuItem(int menuIdx_, int column_, char const* menutext_)
 {
-	return sampgdk_AddMenuItem(menuid, column, menutext);
+	return sampgdk_AddMenuItem(menuIdx_, column_, menutext_);
 }
 
-bool setMenuColumnHeader(int menuid, int column, const char * columnheader)
+///////////////////////////////////////////////
+bool setMenuColumnHeader(int menuIdx_, int column_, char const* columnheader_)
 {
-	return sampgdk_SetMenuColumnHeader(menuid, column, columnheader);
+	return sampgdk_SetMenuColumnHeader(menuIdx_, column_, columnheader_);
 }
 
-bool showMenuForPlayer(int menuid, Player player_)
+///////////////////////////////////////////////
+bool showMenuForPlayer(int menuIdx_, Player player_)
 {
-	return sampgdk_ShowMenuForPlayer(menuid, player_.id());
+	return sampgdk_ShowMenuForPlayer(menuIdx_, player_.id());
 }
 
-bool hideMenuForPlayer(int menuid, Player player_)
+///////////////////////////////////////////////
+bool hideMenuForPlayer(int menuIdx_, Player player_)
 {
-	return sampgdk_HideMenuForPlayer(menuid, player_.id());
+	return sampgdk_HideMenuForPlayer(menuIdx_, player_.id());
 }
 
-bool isValidMenu(int menuid)
+///////////////////////////////////////////////
+bool isValidMenu(int menuIdx_)
 {
-	return sampgdk_IsValidMenu(menuid);
+	return sampgdk_IsValidMenu(menuIdx_);
 }
 
-bool disableMenu(int menuid)
+///////////////////////////////////////////////
+bool disableMenu(int menuIdx_)
 {
-	return sampgdk_DisableMenu(menuid);
+	return sampgdk_DisableMenu(menuIdx_);
 }
 
-bool disableMenuRow(int menuid, int row)
+///////////////////////////////////////////////
+bool disableMenuRow(int menuIdx_, int row_)
 {
-	return sampgdk_DisableMenuRow(menuid, row);
+	return sampgdk_DisableMenuRow(menuIdx_, row_);
 }
 
+///////////////////////////////////////////////
 int getPlayerMenu(Player player_)
 {
 	return sampgdk_GetPlayerMenu(player_.id());
 }
 
-int textDrawCreate(float x, float y, const char * text)
+///////////////////////////////////////////////
+int gangZoneCreate(float minx_, float miny_, float maxx_, float maxy_)
 {
-	return sampgdk_TextDrawCreate(x, y, text);
+	return sampgdk_GangZoneCreate(minx_, miny_, maxx_, maxy_);
 }
 
-bool textDrawDestroy(int text)
+///////////////////////////////////////////////
+bool gangZoneDestroy(int zone_)
 {
-	return sampgdk_TextDrawDestroy(text);
+	return sampgdk_GangZoneDestroy(zone_);
 }
 
-bool textDrawLetterSize(int text, float x, float y)
+///////////////////////////////////////////////
+bool gangZoneShowForPlayer(Player player_, int zone_, Color color_)
 {
-	return sampgdk_TextDrawLetterSize(text, x, y);
+	return sampgdk_GangZoneShowForPlayer(player_.id(), zone_, color_);
 }
 
-bool textDrawTextSize(int text, float x, float y)
+///////////////////////////////////////////////
+bool gangZoneShowForAll(int zone_, Color color_)
 {
-	return sampgdk_TextDrawTextSize(text, x, y);
+	return sampgdk_GangZoneShowForAll(zone_, color_);
 }
 
-bool textDrawAlignment(int text, int alignment)
+///////////////////////////////////////////////
+bool gangZoneHideForPlayer(Player player_, int zone_)
 {
-	return sampgdk_TextDrawAlignment(text, alignment);
+	return sampgdk_GangZoneHideForPlayer(player_.id(), zone_);
 }
 
-bool textDrawColor(int text, int color)
+///////////////////////////////////////////////
+bool gangZoneHideForAll(int zone_)
 {
-	return sampgdk_TextDrawColor(text, color);
+	return sampgdk_GangZoneHideForAll(zone_);
 }
 
-bool textDrawUseBox(int text, bool use)
+///////////////////////////////////////////////
+bool gangZoneFlashForPlayer(Player player_, int zone_, Color flashColor_)
 {
-	return sampgdk_TextDrawUseBox(text, use);
+	return sampgdk_GangZoneFlashForPlayer(player_.id(), zone_, flashColor_);
 }
 
-bool textDrawBoxColor(int text, int color)
+///////////////////////////////////////////////
+bool gangZoneFlashForAll(int zone_, Color flashColor_)
 {
-	return sampgdk_TextDrawBoxColor(text, color);
+	return sampgdk_GangZoneFlashForAll(zone_, flashColor_);
 }
 
-bool textDrawSetShadow(int text, int size)
+///////////////////////////////////////////////
+bool gangZoneStopFlashForPlayer(Player player_, int zone_)
 {
-	return sampgdk_TextDrawSetShadow(text, size);
+	return sampgdk_GangZoneStopFlashForPlayer(player_.id(), zone_);
 }
 
-bool textDrawSetOutline(int text, int size)
+///////////////////////////////////////////////
+bool gangZoneStopFlashForAll(int zone_)
 {
-	return sampgdk_TextDrawSetOutline(text, size);
+	return sampgdk_GangZoneStopFlashForAll(zone_);
 }
 
-bool textDrawBackgroundColor(int text, int color)
+///////////////////////////////////////////////
+int create3DTextLabel(char const* text_, Color color_, float x_, float y_, float z_, float drawDistance_, int virtualWorld_, bool testLos_)
 {
-	return sampgdk_TextDrawBackgroundColor(text, color);
+	return sampgdk_Create3DTextLabel(text_, color_, x_, y_, z_, drawDistance_, virtualWorld_, testLos_);
 }
 
-bool textDrawFont(int text, int font)
+///////////////////////////////////////////////
+bool delete3DTextLabel(int id_)
 {
-	return sampgdk_TextDrawFont(text, font);
+	return sampgdk_Delete3DTextLabel(id_);
 }
 
-bool textDrawSetProportional(int text, bool set)
+///////////////////////////////////////////////
+bool attach3DTextLabelToPlayer(int id_, Player player_, float offsetX_, float offsetY_, float offsetZ_)
 {
-	return sampgdk_TextDrawSetProportional(text, set);
+	return sampgdk_Attach3DTextLabelToPlayer(id_, player_.id(), offsetX_, offsetY_, offsetZ_);
 }
 
-bool textDrawSetSelectable(int text, bool set)
+///////////////////////////////////////////////
+bool attach3DTextLabelToVehicle(int id_, int vehicleIdx_, float offsetX_, float offsetY_, float offsetZ_)
 {
-	return sampgdk_TextDrawSetSelectable(text, set);
+	return sampgdk_Attach3DTextLabelToVehicle(id_, vehicleIdx_, offsetX_, offsetY_, offsetZ_);
 }
 
-bool textDrawShowForPlayer(Player player_, int text)
+///////////////////////////////////////////////
+bool update3DTextLabelText(int id_, Color color_, char const* text_)
 {
-	return sampgdk_TextDrawShowForPlayer(player_.id(), text);
+	return sampgdk_Update3DTextLabelText(id_, color_, text_);
 }
 
-bool textDrawHideForPlayer(Player player_, int text)
+///////////////////////////////////////////////
+int createPlayer3DTextLabel(Player player_, char const* text_, Color color_, float x_, float y_, float z_, float drawDistance_, int attachedPlayer_, int attachedVehicle_, bool testLos_)
 {
-	return sampgdk_TextDrawHideForPlayer(player_.id(), text);
+	return sampgdk_CreatePlayer3DTextLabel(player_.id(), text_, color_, x_, y_, z_, drawDistance_, attachedPlayer_, attachedVehicle_, testLos_);
 }
 
-bool textDrawShowForAll(int text)
+///////////////////////////////////////////////
+bool deletePlayer3DTextLabel(Player player_, int id_)
 {
-	return sampgdk_TextDrawShowForAll(text);
+	return sampgdk_DeletePlayer3DTextLabel(player_.id(), id_);
 }
 
-bool textDrawHideForAll(int text)
+///////////////////////////////////////////////
+bool updatePlayer3DTextLabelText(Player player_, int id_, Color color_, char const* text_)
 {
-	return sampgdk_TextDrawHideForAll(text);
+	return sampgdk_UpdatePlayer3DTextLabelText(player_.id(), id_, color_, text_);
 }
 
-bool textDrawSetString(int text, const char * string)
+///////////////////////////////////////////////
+bool showPlayerDialog(Player player_, int dialogIdx_, int style_, char const* caption_, char const* info_, char const* button1_, char const* button2_)
 {
-	return sampgdk_TextDrawSetString(text, string);
+	return sampgdk_ShowPlayerDialog(player_.id(), dialogIdx_, style_, caption_, info_, button1_, button2_);
 }
 
-bool textDrawSetPreviewModel(int text, int modelindex)
+///////////////////////////////////////////////
+int setTimer(int interval_, bool repeat_, TimerCallback callback_, void * param_)
 {
-	return sampgdk_TextDrawSetPreviewModel(text, modelindex);
+	return sampgdk_SetTimer(interval_, repeat_, callback_, param_);
 }
 
-bool textDrawSetPreviewRot(int text, float fRotX, float fRotY, float fRotZ, float fZoom)
+///////////////////////////////////////////////
+bool killTimer(int timerIdx_)
 {
-	return sampgdk_TextDrawSetPreviewRot(text, fRotX, fRotY, fRotZ, fZoom);
+	return sampgdk_KillTimer(timerIdx_);
 }
 
-bool textDrawSetPreviewVehCol(int text, int color1, int color2)
+///////////////////////////////////////////////
+bool gpci(Player player_, char * buffer_, int size_)
 {
-	return sampgdk_TextDrawSetPreviewVehCol(text, color1, color2);
+	return sampgdk_gpci(player_.id(), buffer_, size_);
 }
 
-bool selectTextDraw(Player player_, int hovercolor)
+///////////////////////////////////////////////
+int addCharModel(int baseIdx_, int newIdx_, char const* dffName_, char const* txdName_)
 {
-	return sampgdk_SelectTextDraw(player_.id(), hovercolor);
+	return sampgdk_AddCharModel(baseIdx_, newIdx_, dffName_, txdName_);
 }
 
-bool cancelSelectTextDraw(Player player_)
+///////////////////////////////////////////////
+int addSimpleModel(int virtualWorld_, int baseIdx_, int newIdx_, char const* dffName_, char const* txdName_)
 {
-	return sampgdk_CancelSelectTextDraw(player_.id());
+	return sampgdk_AddSimpleModel(virtualWorld_, baseIdx_, newIdx_, dffName_, txdName_);
 }
 
-int gangZoneCreate(float minx, float miny, float maxx, float maxy)
+///////////////////////////////////////////////
+int addSimpleModelTimed(int virtualWorld_, int baseIdx_, int newIdx_, char const* dffName_, char const* txdName_, int timeon_, int timeoff_)
 {
-	return sampgdk_GangZoneCreate(minx, miny, maxx, maxy);
+	return sampgdk_AddSimpleModelTimed(virtualWorld_, baseIdx_, newIdx_, dffName_, txdName_, timeon_, timeoff_);
 }
 
-bool gangZoneDestroy(int zone)
+///////////////////////////////////////////////
+bool findModelFileNameFromCrc(int crc_, char * modelStr_, int modelStrLen_)
 {
-	return sampgdk_GangZoneDestroy(zone);
+	return sampgdk_FindModelFileNameFromCRC(crc_, modelStr_, modelStrLen_);
 }
 
-bool gangZoneShowForPlayer(Player player_, int zone, int color)
+///////////////////////////////////////////////
+bool findTextureFileNameFromCrc(int crc_, char * textureStr_, int textureStrLen_)
 {
-	return sampgdk_GangZoneShowForPlayer(player_.id(), zone, color);
+	return sampgdk_FindTextureFileNameFromCRC(crc_, textureStr_, textureStrLen_);
 }
 
-bool gangZoneShowForAll(int zone, int color)
+///////////////////////////////////////////////
+bool redirectDownload(Player player_, char const* url_)
 {
-	return sampgdk_GangZoneShowForAll(zone, color);
-}
-
-bool gangZoneHideForPlayer(Player player_, int zone)
-{
-	return sampgdk_GangZoneHideForPlayer(player_.id(), zone);
-}
-
-bool gangZoneHideForAll(int zone)
-{
-	return sampgdk_GangZoneHideForAll(zone);
-}
-
-bool gangZoneFlashForPlayer(Player player_, int zone, int flashcolor)
-{
-	return sampgdk_GangZoneFlashForPlayer(player_.id(), zone, flashcolor);
-}
-
-bool gangZoneFlashForAll(int zone, int flashcolor)
-{
-	return sampgdk_GangZoneFlashForAll(zone, flashcolor);
-}
-
-bool gangZoneStopFlashForPlayer(Player player_, int zone)
-{
-	return sampgdk_GangZoneStopFlashForPlayer(player_.id(), zone);
-}
-
-bool gangZoneStopFlashForAll(int zone)
-{
-	return sampgdk_GangZoneStopFlashForAll(zone);
-}
-
-int create3DTextLabel(const char * text, int color, float x, float y, float z, float DrawDistance, int virtualworld, bool testLOS)
-{
-	return sampgdk_Create3DTextLabel(text, color, x, y, z, DrawDistance, virtualworld, testLOS);
-}
-
-bool delete3DTextLabel(int id)
-{
-	return sampgdk_Delete3DTextLabel(id);
-}
-
-bool attach3DTextLabelToPlayer(int id, Player player_, float OffsetX, float OffsetY, float OffsetZ)
-{
-	return sampgdk_Attach3DTextLabelToPlayer(id, player_.id(), OffsetX, OffsetY, OffsetZ);
-}
-
-bool attach3DTextLabelToVehicle(int id, int vehicleid, float OffsetX, float OffsetY, float OffsetZ)
-{
-	return sampgdk_Attach3DTextLabelToVehicle(id, vehicleid, OffsetX, OffsetY, OffsetZ);
-}
-
-bool update3DTextLabelText(int id, int color, const char * text)
-{
-	return sampgdk_Update3DTextLabelText(id, color, text);
-}
-
-int createPlayer3DTextLabel(Player player_, const char * text, int color, float x, float y, float z, float DrawDistance, int attachedplayer, int attachedvehicle, bool testLOS)
-{
-	return sampgdk_CreatePlayer3DTextLabel(player_.id(), text, color, x, y, z, DrawDistance, attachedplayer, attachedvehicle, testLOS);
-}
-
-bool deletePlayer3DTextLabel(Player player_, int id)
-{
-	return sampgdk_DeletePlayer3DTextLabel(player_.id(), id);
-}
-
-bool updatePlayer3DTextLabelText(Player player_, int id, int color, const char * text)
-{
-	return sampgdk_UpdatePlayer3DTextLabelText(player_.id(), id, color, text);
-}
-
-bool showPlayerDialog(Player player_, int dialogid, int style, const char * caption, const char * info, const char * button1, const char * button2)
-{
-	return sampgdk_ShowPlayerDialog(player_.id(), dialogid, style, caption, info, button1, button2);
-}
-
-int setTimer(int interval, bool repeat, TimerCallback callback, void * param)
-{
-	return sampgdk_SetTimer(interval, repeat, callback, param);
-}
-
-bool killTimer(int timerid)
-{
-	return sampgdk_KillTimer(timerid);
-}
-
-bool gpci(Player player_, char * buffer, int size)
-{
-	return sampgdk_gpci(player_.id(), buffer, size);
-}
-
-int addCharModel(int baseid, int newid, const char * dffname, const char * txdname)
-{
-	return sampgdk_AddCharModel(baseid, newid, dffname, txdname);
-}
-
-int addSimpleModel(int virtualworld, int baseid, int newid, const char * dffname, const char * txdname)
-{
-	return sampgdk_AddSimpleModel(virtualworld, baseid, newid, dffname, txdname);
-}
-
-int addSimpleModelTimed(int virtualworld, int baseid, int newid, const char * dffname, const char * txdname, int timeon, int timeoff)
-{
-	return sampgdk_AddSimpleModelTimed(virtualworld, baseid, newid, dffname, txdname, timeon, timeoff);
-}
-
-bool findModelFileNameFromCrc(int crc, char * model_str, int model_str_len)
-{
-	return sampgdk_FindModelFileNameFromCRC(crc, model_str, model_str_len);
-}
-
-bool findTextureFileNameFromCrc(int crc, char * texture_str, int texture_str_len)
-{
-	return sampgdk_FindTextureFileNameFromCRC(crc, texture_str, texture_str_len);
-}
-
-bool redirectDownload(Player player_, const char * url)
-{
-	return sampgdk_RedirectDownload(player_.id(), url);
+	return sampgdk_RedirectDownload(player_.id(), url_);
 }
 
 

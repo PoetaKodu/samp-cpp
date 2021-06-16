@@ -23,6 +23,30 @@ float Vehicle::getDistanceFromPoint(float x_, float y_, float z_) const
 	return sampgdk_GetVehicleDistanceFromPoint(_id, x_, y_, z_);
 }
 
+///////////////////////////////////////////////
+Vehicle Vehicle::addStatic(Model model_, Vec3f const& spawnPos_, float zAngle_, int color1_, int color2_)
+{
+	return sampgdk_AddStaticVehicle(model_, spawnPos_.x, spawnPos_.y, spawnPos_.z, zAngle_, color1_, color2_);
+}
+
+///////////////////////////////////////////////
+Vehicle Vehicle::addStatic(Model model_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, int color1_, int color2_)
+{
+	return sampgdk_AddStaticVehicle(model_, spawnX_, spawnY_, spawnZ_, zAngle_, color1_, color2_);
+}
+
+///////////////////////////////////////////////
+Vehicle Vehicle::addStatic(Model model_, Vec3f const& spawnPos_, float zAngle_, int color1_, int color2_, int respawnDelay_, bool addSiren_)
+{
+	return sampgdk_AddStaticVehicleEx(model_, spawnPos_.x, spawnPos_.y, spawnPos_.z, zAngle_, color1_, color2_, respawnDelay_, addSiren_);
+}
+
+///////////////////////////////////////////////
+Vehicle Vehicle::addStatic(Model model_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, int color1_, int color2_, int respawnDelay_, bool addSiren_)
+{
+	return sampgdk_AddStaticVehicleEx(model_, spawnX_, spawnY_, spawnZ_, zAngle_, color1_, color2_, respawnDelay_, addSiren_);
+}
+
 ///////////////////////////////////////////////////////
 Vehicle Vehicle::create(Vehicle::Model model_,  Vec3f const& pos_, float rotation_, int color1_, int color2_, int respawnDelay_, bool addSiren_)
 {

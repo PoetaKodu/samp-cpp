@@ -295,6 +295,10 @@ public:
 	// A shorthand for this->getRotationQuat()
 	Quat rotQuat() const { return this->getRotationQuat(); }
 
+	static Vehicle addStatic(Model model_, Vec3f const& spawnPos_, float zAngle_, int color1_, int color2_);
+	static Vehicle addStatic(Model model_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, int color1_, int color2_);
+	static Vehicle addStatic(Model model_, Vec3f const& spawnPos_, float zAngle_, int color1_, int color2_, int respawnDelay_, bool addSiren_);
+	static Vehicle addStatic(Model model_, float spawnX_, float spawnY_, float spawnZ_, float zAngle_, int color1_, int color2_, int respawnDelay_, bool addSiren_);
 	static Vehicle create(Model model_, float x_, float y_, float z_, float rotation_, int color1_, int color2_, int respawnDelay_, bool addSiren_ = false);
 	static Vehicle create(Model model_, Vec3f const& pos_, float rotation_, int color1_, int color2_, int respawnDelay_, bool addSiren_ = false);
 	static bool manualEngineAndLights();

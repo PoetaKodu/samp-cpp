@@ -311,6 +311,14 @@ public:
 	bool setPositionFindZ(float x, float y, float z);
 	bool setFacingAngle(float angle);
 	
+
+	bool isNpc() const;
+	bool isRconAdmin() const;
+	bool kick();
+	bool ban();
+	bool ban(std::string const& reason_);
+	bool ban(char const* reason_);
+
 	// Returns fixed facing angle
 	// - if player is not in vehicle: this->getFacingAngle()
 	// - if in vehicle: vehicle.getZAngle()
@@ -539,6 +547,10 @@ public:
 	bool selectObject();
 	bool cancelEditObject();
 	
+	// TextDraw related:
+	bool selectTextDraw(Color hoverColor_);
+	bool cancelSelectTextDraw();
+
 private:
 	int32_t _id;
 };

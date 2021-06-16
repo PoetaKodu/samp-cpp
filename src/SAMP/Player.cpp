@@ -11,6 +11,42 @@ namespace samp_cpp
 {
 
 /////////////////////////////////
+bool Player::isNpc() const
+{
+	return sampgdk_IsPlayerNPC(_id);
+}
+
+/////////////////////////////////
+bool Player::isRconAdmin() const
+{
+	return sampgdk_IsPlayerAdmin(_id);
+}
+
+/////////////////////////////////
+bool Player::kick()
+{
+	return sampgdk_Kick(_id);
+}
+
+/////////////////////////////////
+bool Player::ban()
+{
+	return sampgdk_Ban(_id);
+}
+
+/////////////////////////////////
+bool Player::ban(std::string const& reason_)
+{
+	return this->ban(reason_.c_str());
+}
+
+/////////////////////////////////
+bool Player::ban(char const* reason_)
+{
+	return sampgdk_BanEx(_id, reason_);
+}
+
+/////////////////////////////////
 bool Player::msg(ChatFmtColorPair const& coloredMsg_)
 {
 	return this->msg(coloredMsg_.first, coloredMsg_.second);
@@ -1137,6 +1173,18 @@ bool Player::selectObject()
 bool Player::cancelEditObject()
 {
 	return sampgdk_CancelEdit(_id);
+}
+
+///////////////////////////////////////////////
+bool Player::selectTextDraw(Color hoverColor_)
+{
+	return sampgdk_SelectTextDraw(_id, hoverColor_);
+}
+
+///////////////////////////////////////////////
+bool Player::cancelSelectTextDraw()
+{
+	return sampgdk_CancelSelectTextDraw(_id);
 }
 
 }
