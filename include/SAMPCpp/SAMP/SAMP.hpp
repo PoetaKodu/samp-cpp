@@ -670,66 +670,6 @@ int getServerTickRate()
 }
 
 ///////////////////////////////////////////////
-int gangZoneCreate(float minx_, float miny_, float maxx_, float maxy_)
-{
-	return sampgdk_GangZoneCreate(minx_, miny_, maxx_, maxy_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneDestroy(int zone_)
-{
-	return sampgdk_GangZoneDestroy(zone_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneShowForPlayer(Player player_, int zone_, Color color_)
-{
-	return sampgdk_GangZoneShowForPlayer(player_.id(), zone_, color_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneShowForAll(int zone_, Color color_)
-{
-	return sampgdk_GangZoneShowForAll(zone_, color_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneHideForPlayer(Player player_, int zone_)
-{
-	return sampgdk_GangZoneHideForPlayer(player_.id(), zone_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneHideForAll(int zone_)
-{
-	return sampgdk_GangZoneHideForAll(zone_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneFlashForPlayer(Player player_, int zone_, Color flashColor_)
-{
-	return sampgdk_GangZoneFlashForPlayer(player_.id(), zone_, flashColor_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneFlashForAll(int zone_, Color flashColor_)
-{
-	return sampgdk_GangZoneFlashForAll(zone_, flashColor_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneStopFlashForPlayer(Player player_, int zone_)
-{
-	return sampgdk_GangZoneStopFlashForPlayer(player_.id(), zone_);
-}
-
-///////////////////////////////////////////////
-bool gangZoneStopFlashForAll(int zone_)
-{
-	return sampgdk_GangZoneStopFlashForAll(zone_);
-}
-
-///////////////////////////////////////////////
 int create3DTextLabel(char const* text_, Color color_, float x_, float y_, float z_, float drawDistance_, int virtualWorld_, bool testLos_)
 {
 	return sampgdk_Create3DTextLabel(text_, color_, x_, y_, z_, drawDistance_, virtualWorld_, testLos_);
