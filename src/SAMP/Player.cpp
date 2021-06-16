@@ -5,10 +5,65 @@
 #include <SAMPCpp/SAMP/Vehicle.hpp>
 #include <SAMPCpp/SAMP/Actor.hpp>
 #include <SAMPCpp/SAMP/Object.hpp>
+#include <SAMPCpp/SAMP/Menu.hpp>
 #include <SAMPCpp/SAMP/PlayerObject.hpp>
 
 namespace samp_cpp
 {
+
+///////////////////////////////////////////////
+int PlayerNetStats::getConnectedTime() const
+{
+	return sampgdk_NetStats_GetConnectedTime(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::messagesReceived() const
+{
+	return sampgdk_NetStats_MessagesReceived(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::bytesReceived() const
+{
+	return sampgdk_NetStats_BytesReceived(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::messagesSent() const
+{
+	return sampgdk_NetStats_MessagesSent(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::bytesSent() const
+{
+	return sampgdk_NetStats_BytesSent(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::messagesRecvPerSecond() const
+{
+	return sampgdk_NetStats_MessagesRecvPerSecond(_player.id());
+}
+
+///////////////////////////////////////////////
+float PlayerNetStats::packetLossPercent() const
+{
+	return sampgdk_NetStats_PacketLossPercent(_player.id());
+}
+
+///////////////////////////////////////////////
+int PlayerNetStats::connectionStatus() const
+{
+	return sampgdk_NetStats_ConnectionStatus(_player.id());
+}
+
+/////////////////////////////////
+Menu Player::getMenu() const
+{
+	return sampgdk_GetPlayerMenu(_id);
+}
 
 /////////////////////////////////
 bool Player::isNpc() const

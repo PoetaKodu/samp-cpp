@@ -15,6 +15,8 @@ class Vehicle;
 class Actor;
 class Object;
 class PlayerObject;
+class Player;
+class Menu;
 
 // Constants:
 constexpr const int32_t MaxPlayerAttachedObjects 	= 10;
@@ -165,6 +167,31 @@ struct PlayerAnimation
 	std::string animName;
 };
 
+class PlayerNetStats
+{
+public:
+	///////////////////////////////////////////////
+	PlayerNetStats(Player const& player_)
+		: _player(player_)
+	{
+	}
+
+	int getConnectedTime() const;
+	int messagesReceived() const;
+	int bytesReceived() const;
+	int messagesSent() const;
+	int bytesSent() const;
+	int messagesRecvPerSecond() const;
+	float packetLossPercent() const;
+	int connectionStatus() const;
+
+	template <size_t MaxLength = 15 + 1 + 5> // Ip address (15) + colon (:) + port(max 65535 -> 5 chars)
+	bool getIpPort() const;
+
+private:
+	Player const& _player;
+};
+
 class Player
 {
 public:
@@ -256,6 +283,15 @@ public:
 	void getIpAddress(char buf_[IpAddressSize + 1]) const;
 	std::string getIpAddress() const;
 
+	// GPCI/serial
+	template <size_t MaxLength = 50> // Actually can take up to ~40 chars
+	std::string serial() const
+	{
+		char buf[MaxLength];
+		sampgdk_gpci(player_.id(), buf, MaxLength);
+		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	}
+
 	bool setCameraPosition(Vec3f const& pos_);
 	bool setCameraPosition(float x_, float y_, float z_);
 
@@ -300,6 +336,9 @@ public:
 	// A shorthand for this->getIpAddress()
 	std::string ip() const { return this->getIpAddress(); }
 
+	PlayerNetStats netStats() const {
+		return PlayerNetStats{ *this };
+	}
 
 	///////////////////////////////
 	/// RAW FUNCTIONS
@@ -392,6 +431,22 @@ public:
 	bool removeAttachedObject(int slot_);
 	bool isAttachedObjectSlotUsed(int slot_) const;
 	bool editAttachedObject(int slot_);
+
+	template <size_t MaxLength = 64>
+	std::string getVersion() const
+	{
+		char buf[MaxLength]{};
+		sampgdk_GetPlayerVersion(_id, buf, MaxLength);
+		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	}
+
+		template <size_t MaxLength = 4 * 1024>
+	std::string getNetworkStats() const
+	{
+		char buf[MaxLength]{};
+		sampgdk_GetPlayerNetworkStats(_id, buf, MaxLength);
+		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	}
 
 	/////////////////////////////////////
 	/// Dynamic player variables (PVars)
@@ -551,8 +606,22 @@ public:
 	bool selectTextDraw(Color hoverColor_);
 	bool cancelSelectTextDraw();
 
+
+	// Menu:
+	///////////////////////////////////////////////
+	Menu getMenu() const;
+
 private:
 	int32_t _id;
 };
+
+//////////////////////////////////////////////////////////////
+template <size_t MaxLength>
+inline bool PlayerNetStats::getIpPort() const
+{
+	char buf[MaxLength]{};
+	sampgdk_NetStats_GetIpPort(_player.id(), buf, MaxLength);
+	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+}
 
 }

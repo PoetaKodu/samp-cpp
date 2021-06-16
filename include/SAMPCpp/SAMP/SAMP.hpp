@@ -552,28 +552,10 @@ bool sendRconCommand(std::string const& command_)
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getPlayerNetworkStats(Player player_)
-{
-	char buf[MaxLength]{};
-	sampgdk_GetPlayerNetworkStats(player_.id(), buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
-}
-
-///////////////////////////////////////////////
-template <size_t MaxLength = 4 * 1024>
 inline std::string getNetworkStats()
 {
 	char buf[MaxLength]{};
 	sampgdk_GetNetworkStats(buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
-}
-
-///////////////////////////////////////////////
-template <size_t MaxLength = 64>
-std::string getPlayerVersion(Player player_)
-{
-	char buf[MaxLength]{};
-	sampgdk_GetPlayerVersion(player_.id(), buf, MaxLength);
 	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
 }
 
@@ -590,7 +572,7 @@ bool blockIpAddress(std::string const& ipAddress_, int timeMs_)
 }
 
 ///////////////////////////////////////////////
-bool unBlockIpAddress(char const* ipAddress_)
+bool unblockIpAddress(char const* ipAddress_)
 {
 	return sampgdk_UnBlockIpAddress(ipAddress_);
 }
@@ -685,123 +667,6 @@ bool getConsoleVarAsBool(std::string const& varName_)
 int getServerTickRate()
 {
 	return sampgdk_GetServerTickRate();
-}
-
-///////////////////////////////////////////////
-int netStatsGetConnectedTime(Player player_)
-{
-	return sampgdk_NetStats_GetConnectedTime(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsMessagesReceived(Player player_)
-{
-	return sampgdk_NetStats_MessagesReceived(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsBytesReceived(Player player_)
-{
-	return sampgdk_NetStats_BytesReceived(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsMessagesSent(Player player_)
-{
-	return sampgdk_NetStats_MessagesSent(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsBytesSent(Player player_)
-{
-	return sampgdk_NetStats_BytesSent(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsMessagesRecvPerSecond(Player player_)
-{
-	return sampgdk_NetStats_MessagesRecvPerSecond(player_.id());
-}
-
-///////////////////////////////////////////////
-float netStatsPacketLossPercent(Player player_)
-{
-	return sampgdk_NetStats_PacketLossPercent(player_.id());
-}
-
-///////////////////////////////////////////////
-int netStatsConnectionStatus(Player player_)
-{
-	return sampgdk_NetStats_ConnectionStatus(player_.id());
-}
-
-///////////////////////////////////////////////
-template <size_t MaxLength = 15 + 1 + 5> // Ip address (15) + colon (:) + port(max 65535 -> 5 chars)
-bool netStatsGetIpPort(Player player_)
-{
-	char buf[MaxLength]{};
-	sampgdk_NetStats_GetIpPort(player_.id(), buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
-}
-
-///////////////////////////////////////////////
-int createMenu(char const* title_, int columns_, float x_, float y_, float col1width_, float col2width_)
-{
-	return sampgdk_CreateMenu(title_, columns_, x_, y_, col1width_, col2width_);
-}
-
-///////////////////////////////////////////////
-bool destroyMenu(int menuIdx_)
-{
-	return sampgdk_DestroyMenu(menuIdx_);
-}
-
-///////////////////////////////////////////////
-int addMenuItem(int menuIdx_, int column_, char const* menutext_)
-{
-	return sampgdk_AddMenuItem(menuIdx_, column_, menutext_);
-}
-
-///////////////////////////////////////////////
-bool setMenuColumnHeader(int menuIdx_, int column_, char const* columnheader_)
-{
-	return sampgdk_SetMenuColumnHeader(menuIdx_, column_, columnheader_);
-}
-
-///////////////////////////////////////////////
-bool showMenuForPlayer(int menuIdx_, Player player_)
-{
-	return sampgdk_ShowMenuForPlayer(menuIdx_, player_.id());
-}
-
-///////////////////////////////////////////////
-bool hideMenuForPlayer(int menuIdx_, Player player_)
-{
-	return sampgdk_HideMenuForPlayer(menuIdx_, player_.id());
-}
-
-///////////////////////////////////////////////
-bool isValidMenu(int menuIdx_)
-{
-	return sampgdk_IsValidMenu(menuIdx_);
-}
-
-///////////////////////////////////////////////
-bool disableMenu(int menuIdx_)
-{
-	return sampgdk_DisableMenu(menuIdx_);
-}
-
-///////////////////////////////////////////////
-bool disableMenuRow(int menuIdx_, int row_)
-{
-	return sampgdk_DisableMenuRow(menuIdx_, row_);
-}
-
-///////////////////////////////////////////////
-int getPlayerMenu(Player player_)
-{
-	return sampgdk_GetPlayerMenu(player_.id());
 }
 
 ///////////////////////////////////////////////
@@ -928,12 +793,6 @@ int setTimer(int interval_, bool repeat_, TimerCallback callback_, void * param_
 bool killTimer(int timerIdx_)
 {
 	return sampgdk_KillTimer(timerIdx_);
-}
-
-///////////////////////////////////////////////
-bool gpci(Player player_, char * buffer_, int size_)
-{
-	return sampgdk_gpci(player_.id(), buffer_, size_);
 }
 
 ///////////////////////////////////////////////
