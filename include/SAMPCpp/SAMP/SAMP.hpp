@@ -670,54 +670,6 @@ int getServerTickRate()
 }
 
 ///////////////////////////////////////////////
-int create3DTextLabel(char const* text_, Color color_, float x_, float y_, float z_, float drawDistance_, int virtualWorld_, bool testLos_)
-{
-	return sampgdk_Create3DTextLabel(text_, color_, x_, y_, z_, drawDistance_, virtualWorld_, testLos_);
-}
-
-///////////////////////////////////////////////
-bool delete3DTextLabel(int id_)
-{
-	return sampgdk_Delete3DTextLabel(id_);
-}
-
-///////////////////////////////////////////////
-bool attach3DTextLabelToPlayer(int id_, Player player_, float offsetX_, float offsetY_, float offsetZ_)
-{
-	return sampgdk_Attach3DTextLabelToPlayer(id_, player_.id(), offsetX_, offsetY_, offsetZ_);
-}
-
-///////////////////////////////////////////////
-bool attach3DTextLabelToVehicle(int id_, int vehicleIdx_, float offsetX_, float offsetY_, float offsetZ_)
-{
-	return sampgdk_Attach3DTextLabelToVehicle(id_, vehicleIdx_, offsetX_, offsetY_, offsetZ_);
-}
-
-///////////////////////////////////////////////
-bool update3DTextLabelText(int id_, Color color_, char const* text_)
-{
-	return sampgdk_Update3DTextLabelText(id_, color_, text_);
-}
-
-///////////////////////////////////////////////
-int createPlayer3DTextLabel(Player player_, char const* text_, Color color_, float x_, float y_, float z_, float drawDistance_, int attachedPlayer_, int attachedVehicle_, bool testLos_)
-{
-	return sampgdk_CreatePlayer3DTextLabel(player_.id(), text_, color_, x_, y_, z_, drawDistance_, attachedPlayer_, attachedVehicle_, testLos_);
-}
-
-///////////////////////////////////////////////
-bool deletePlayer3DTextLabel(Player player_, int id_)
-{
-	return sampgdk_DeletePlayer3DTextLabel(player_.id(), id_);
-}
-
-///////////////////////////////////////////////
-bool updatePlayer3DTextLabelText(Player player_, int id_, Color color_, char const* text_)
-{
-	return sampgdk_UpdatePlayer3DTextLabelText(player_.id(), id_, color_, text_);
-}
-
-///////////////////////////////////////////////
 bool showPlayerDialog(Player player_, int dialogIdx_, int style_, char const* caption_, char const* info_, char const* button1_, char const* button2_)
 {
 	return sampgdk_ShowPlayerDialog(player_.id(), dialogIdx_, style_, caption_, info_, button1_, button2_);
