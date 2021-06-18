@@ -8,6 +8,9 @@
 #include <string>
 #include <cstring>
 #include <cstdint>
+#include <map>
+#include <set>
+#include <optional>
 #include <type_traits>
 
 #include <SAMPCpp/Core/Math.hpp>

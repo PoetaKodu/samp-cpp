@@ -17,6 +17,11 @@
 #include <SAMPCpp/SAMP/Timer.hpp>
 #include <SAMPCpp/SAMP/SAMP.hpp>
 
+#include <SAMPCpp/AMX/CallNative.hpp>
+#include <SAMPCpp/AMX/CallPublic.hpp>
+#include <SAMPCpp/AMX/NativeLoader.hpp>
+#include <SAMPCpp/AMX/SmartNative.hpp>
+
 #include <SAMPCpp/Core/Safety/Unique.hpp>
 #include <SAMPCpp/Core/Color.hpp>
 #include <SAMPCpp/Core/String.hpp>
