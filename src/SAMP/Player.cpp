@@ -104,7 +104,7 @@ bool Player::ban(char const* reason_)
 /////////////////////////////////
 bool Player::msg(ChatFmtColorPair const& coloredMsg_)
 {
-	return this->msg(coloredMsg_.first, coloredMsg_.second);
+	return this->msg(coloredMsg_.first, fmt::format(coloredMsg_.second)); // Note: could be optimized
 }
 
 /////////////////////////////////
