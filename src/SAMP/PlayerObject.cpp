@@ -157,15 +157,15 @@ bool PlayerObject::setMaterial(int materialIndex_, int modelIdx_, char const* tx
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::setMaterialText(std::string const& text_, int materialIndex_, int materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_)
+bool PlayerObject::setMaterialText(std::string const& text_, int materialIndex_, ObjectMaterialSize materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, TextAlign textAlignment_)
 {
 	return this->setMaterialText(text_.c_str(), materialIndex_, materialSize_, fontFace_.c_str(), fontSize_, bold_, fontColor_, backColor_, textAlignment_);
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::setMaterialText(char const* text_, int materialIndex_, int materialsize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_)
+bool PlayerObject::setMaterialText(char const* text_, int materialIndex_, ObjectMaterialSize materialsize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, TextAlign textAlignment_)
 {
-	return sampgdk_SetPlayerObjectMaterialText(_playerId, _id, text_, materialIndex_, materialsize_, fontFace_, fontSize_, bold_, fontColor_, backColor_, textAlignment_);
+	return sampgdk_SetPlayerObjectMaterialText(_playerId, _id, text_, materialIndex_, static_cast<int>(materialsize_), fontFace_, fontSize_, bold_, fontColor_, backColor_, toObjectMaterialTextAlign(textAlignment_));
 }
 
 }

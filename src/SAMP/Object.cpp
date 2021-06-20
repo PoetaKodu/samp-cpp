@@ -151,15 +151,15 @@ bool Object::setMaterial(int materialIndex_, int modelIdx_, char const* txdName_
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::setMaterialText(std::string const& text_, int materialIndex_, int materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_)
+bool Object::setMaterialText(std::string const& text_, int materialIndex_, ObjectMaterialSize materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, TextAlign textAlignment_)
 {
 	return this->setMaterialText(text_.c_str(), materialIndex_, materialSize_, fontFace_.c_str(), fontSize_, bold_, fontColor_, backColor_, textAlignment_);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::setMaterialText(char const* text_, int materialIndex_, int materialSize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_)
+bool Object::setMaterialText(char const* text_, int materialIndex_, ObjectMaterialSize materialSize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, TextAlign textAlignment_)
 {
-	return sampgdk_SetObjectMaterialText(_id, text_, materialIndex_, materialSize_, fontFace_, fontSize_, bold_, fontColor_, backColor_, textAlignment_);
+	return sampgdk_SetObjectMaterialText(_id, text_, materialIndex_, static_cast<int>(materialSize_), fontFace_, fontSize_, bold_, fontColor_, backColor_, toObjectMaterialTextAlign(textAlignment_));
 }
 
 ////////////////////////////////////////////////////////////

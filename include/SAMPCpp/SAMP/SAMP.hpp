@@ -145,32 +145,6 @@ enum class DownloadRequest
 	TextureFile		= 2,
 };
 
-enum class ObjectMaterialSize
-{
-	Size_32x32		= 10,
-	Size_64x32		= 20,
-	Size_64x64		= 30,
-	Size_128x32		= 40,
-	Size_128x64		= 50,
-	Size_128x128	= 60,
-	Size_256x32		= 70,
-	Size_256x64		= 80,
-	Size_256x128	= 90,
-	Size_256x256	= 100,
-	Size_512x64		= 110,
-	Size_512x128	= 120,
-	Size_512x256	= 130,
-	Size_512x512	= 140,
-};
-
-enum class ObjectMaterialTextAlign
-{
-	Left		= 0,
-	Center		= 1,
-	Right		= 2,
-};
-
-
 ///////////////////////////////////////////////
 bool sendClientMessage(Player player_, Color color_, char const* message_);
 

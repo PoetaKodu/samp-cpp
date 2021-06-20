@@ -3,12 +3,31 @@
 #include SAMPCPP_PCH
 
 #include <SAMPCpp/Core/Color.hpp>
+#include <SAMPCpp/Core/TextAlign.hpp>
 
 namespace samp_cpp
 {
 	
 class Player;
 class Vehicle;
+
+enum class ObjectMaterialSize
+{
+	Size_32x32		= 10,
+	Size_64x32		= 20,
+	Size_64x64		= 30,
+	Size_128x32		= 40,
+	Size_128x64		= 50,
+	Size_128x128	= 60,
+	Size_256x32		= 70,
+	Size_256x64		= 80,
+	Size_256x128	= 90,
+	Size_256x256	= 100,
+	Size_512x64		= 110,
+	Size_512x128	= 120,
+	Size_512x256	= 130,
+	Size_512x512	= 140,
+};
 
 class Object
 {
@@ -54,10 +73,10 @@ public:
 	int move(float x_, float y_, float z_, float speed_, float rotX_, float rotY_, float rotZ_);
 	bool stop();
 	bool isMoving() const;
-	bool setMaterial(int materialIndex_, int modelIdx_, std::string const& txdName_, std::string const& textureName_, Color materialColor_);
-	bool setMaterial(int materialIndex_, int modelIdx_, char const* txdName_, char const* textureName_, Color materialColor_);
-	bool setMaterialText(std::string const& text_, int materialIndex_, int materialSize_, std::string const& fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_);
-	bool setMaterialText(char const* text_, int materialIndex_, int materialSize_, char const* fontFace_, int fontSize_, bool bold_, Color fontColor_, Color backColor_, int textAlignment_);
+	bool setMaterial(int materialIndex_, int modelIdx_, std::string const& txdName_, std::string const& textureName_, Color materialColor_ = colors::transparent);
+	bool setMaterial(int materialIndex_, int modelIdx_, char const* txdName_, char const* textureName_, Color materialColor_ = colors::transparent);
+	bool setMaterialText(std::string const& text_, int materialIndex_, ObjectMaterialSize materialSize_ = ObjectMaterialSize::Size_256x128, std::string const& fontFace_ = "Arial", int fontSize_ = 24, bool bold_ = true, Color fontColor_ = colors::white, Color backColor_ = colors::transparent, TextAlign textAlignment_ = TextAlign::Left);
+	bool setMaterialText(char const* text_, int materialIndex_, ObjectMaterialSize materialSize_ = ObjectMaterialSize::Size_256x128, char const* fontFace_ = "Arial", int fontSize_ = 24, bool bold_ = true, Color fontColor_ = colors::white, Color backColor_ = colors::transparent, TextAlign textAlignment_ = TextAlign::Left);
 	static bool setObjectsDefaultCameraCol(bool disable_);
 
 private:

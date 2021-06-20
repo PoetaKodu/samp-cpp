@@ -3,6 +3,7 @@
 #include SAMPCPP_PCH
 
 #include <SAMPCpp/Core/Color.hpp>
+#include <SAMPCpp/Core/TextAlign.hpp>
 
 #include <SAMPCpp/SAMP/Vehicle.hpp>
 
@@ -11,13 +12,6 @@ namespace samp_cpp
 {
 
 class Player;
-
-enum class TextDrawAlign
-{
-	Left 	= 1,
-	Center 	= 2,
-	Right 	= 3,
-};
 
 enum class TextDrawFontType
 {
@@ -47,7 +41,7 @@ public:
 	bool setLetterSize(float x_, float y_);
 	bool setTextSize(Vec2f const& size_);
 	bool setTextSize(float x_, float y_);
-	bool setAlignment(TextDrawAlign alignment_);
+	bool setAlignment(TextAlign alignment_);
 	bool setColor(Color color_);
 	bool setUseBox(bool use_);
 	bool setBoxColor(Color color_);
@@ -93,7 +87,7 @@ public:
 	bool setLetterSize(float x_, float y_);
 	bool setTextSize(Vec2f const& size_);
 	bool setTextSize(float x_, float y_);
-	bool setAlignment(TextDrawAlign alignment_);
+	bool setAlignment(TextAlign alignment_);
 	bool setColor(Color color_);
 	bool setUseBox(bool use_);
 	bool setBoxColor(Color color_);

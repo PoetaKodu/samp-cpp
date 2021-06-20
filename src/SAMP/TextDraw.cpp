@@ -3,6 +3,7 @@
 #include <SAMPCpp/SAMP/TextDraw.hpp>
 
 #include <SAMPCpp/SAMP/Player.hpp>
+#include <SAMPCpp/Core/TextAlign.hpp>
 
 namespace samp_cpp
 {
@@ -50,9 +51,9 @@ bool TextDraw::setTextSize(float x_, float y_)
 }
 
 ///////////////////////////////////////////////
-bool TextDraw::setAlignment(TextDrawAlign alignment_)
+bool TextDraw::setAlignment(TextAlign alignment_)
 {
-	return sampgdk_TextDrawAlignment(_id, static_cast<int>(alignment_));
+	return sampgdk_TextDrawAlignment(_id, toTextDrawTextAlign(alignment_));
 }
 
 ///////////////////////////////////////////////
@@ -231,9 +232,9 @@ bool PlayerTextDraw::setTextSize(float x_, float y_)
 }
 
 ////////////////////////////////////////////////////////
-bool PlayerTextDraw::setAlignment(TextDrawAlign alignment_)
+bool PlayerTextDraw::setAlignment(TextAlign alignment_)
 {
-	return sampgdk_PlayerTextDrawAlignment(_playerId, _id, static_cast<int>(alignment_));
+	return sampgdk_PlayerTextDrawAlignment(_playerId, _id, toTextDrawTextAlign(alignment_));
 }
 
 ////////////////////////////////////////////////////////
