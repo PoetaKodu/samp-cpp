@@ -54,12 +54,12 @@ public:
 
 	static Object create(int modelIdx_, Vec3f const& pos_, Vec3f const& rot_, float drawDistance_);
 	static Object create(int modelIdx_, float x_, float y_, float z_, float rX_, float rY_, float rZ_, float drawDistance_);
-	bool attachToVehicle(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_);
-	bool attachToVehicle(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_);
-	bool attachToObject(Object attachTo_, Vec3f const& offset_, Vec3f const& rot_, bool syncRotation_);
-	bool attachToObject(Object attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, bool syncRotation_);
-	bool attachToPlayer(Player player_, Vec3f const& offset_, Vec3f const& rot_);
-	bool attachToPlayer(Player player_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_);
+	bool attachTo(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_);
+	bool attachTo(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_);
+	bool attachTo(Object attachTo_, Vec3f const& offset_, Vec3f const& rot_, bool syncRotation_);
+	bool attachTo(Object attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, bool syncRotation_);
+	bool attachTo(Player player_, Vec3f const& offset_, Vec3f const& rot_);
+	bool attachTo(Player player_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_);
 	bool setPosition(Vec3f const& pos_);
 	bool setPosition(float x_, float y_, float z_);
 	Vec3f getPosition() const;

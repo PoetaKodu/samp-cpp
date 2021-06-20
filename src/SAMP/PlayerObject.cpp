@@ -27,25 +27,25 @@ PlayerObject PlayerObject::create(Player player_, int modelIdx_, float x_, float
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::attachToPlayer(Player attachTo_, Vec3f const& offset_, Vec3f const& rot_)
+bool PlayerObject::attachTo(Player attachTo_, Vec3f const& offset_, Vec3f const& rot_)
 {
-	return this->attachToPlayer(attachTo_.id(), offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
+	return this->attachTo(attachTo_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::attachToPlayer(Player attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rX_, float rY_, float rZ_)
+bool PlayerObject::attachTo(Player attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rX_, float rY_, float rZ_)
 {
 	return sampgdk_AttachPlayerObjectToPlayer(_playerId, _id, attachTo_.id(), offsetX_, offsetY_, offsetZ_, rX_, rY_, rZ_);
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::attachToVehicle(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_)
+bool PlayerObject::attachTo(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_)
 {
-	return this->attachToVehicle(vehicle_.id(), offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
+	return this->attachTo(vehicle_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
 }
 
 ///////////////////////////////////////////
-bool PlayerObject::attachToVehicle(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
+bool PlayerObject::attachTo(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
 {
 	return sampgdk_AttachPlayerObjectToVehicle(_playerId, _id, vehicle_.id(), offsetX_, offsetY_, offsetZ_, rotX_, rotY_, rotZ_);
 }

@@ -21,37 +21,37 @@ Object Object::create(int modelIdx_, float x_, float y_, float z_, float rX_, fl
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToVehicle(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_)
+bool Object::attachTo(Vehicle vehicle_, Vec3f const& offset_, Vec3f const& rot_)
 {
-	return this->attachToVehicle(vehicle_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
+	return this->attachTo(vehicle_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToVehicle(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
+bool Object::attachTo(Vehicle vehicle_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
 {
 	return sampgdk_AttachObjectToVehicle(_id, vehicle_.id(), offsetX_, offsetY_, offsetZ_, rotX_, rotY_, rotZ_);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToObject(Object attachTo_, Vec3f const& offset_, Vec3f const& rot_, bool syncRotation_)
+bool Object::attachTo(Object attachTo_, Vec3f const& offset_, Vec3f const& rot_, bool syncRotation_)
 {
-	return this->attachToObject(attachTo_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z, syncRotation_);
+	return this->attachTo(attachTo_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z, syncRotation_);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToObject(Object attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, bool syncRotation_)
+bool Object::attachTo(Object attachTo_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_, bool syncRotation_)
 {
 	return sampgdk_AttachObjectToObject(_id, attachTo_.id(), offsetX_, offsetY_, offsetZ_, rotX_, rotY_, rotZ_, syncRotation_);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToPlayer(Player player_, Vec3f const& offset_, Vec3f const& rot_)
+bool Object::attachTo(Player player_, Vec3f const& offset_, Vec3f const& rot_)
 {
-	return this->attachToPlayer(player_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
+	return this->attachTo(player_, offset_.x, offset_.y, offset_.z, rot_.x, rot_.y, rot_.z);
 }
 
 ////////////////////////////////////////////////////////////
-bool Object::attachToPlayer(Player player_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
+bool Object::attachTo(Player player_, float offsetX_, float offsetY_, float offsetZ_, float rotX_, float rotY_, float rotZ_)
 {
 	return sampgdk_AttachObjectToPlayer(_id, player_.id(), offsetX_, offsetY_, offsetZ_, rotX_, rotY_, rotZ_);
 }
