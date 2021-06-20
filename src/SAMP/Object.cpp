@@ -120,6 +120,13 @@ bool Object::destroy()
 	return sampgdk_DestroyObject(_id);
 }
 
+
+///////////////////////////////////////////
+int Object::move(Vec3f const& pos_, float speed_, Vec3f const& rot_)
+{
+	return this->move(pos_.x, pos_.y, pos_.z, speed_, rot_.x, rot_.y, rot_.z);
+}
+
 ////////////////////////////////////////////////////////////
 int Object::move(float x_, float y_, float z_, float speed_, float rotX_, float rotY_, float rotZ_)
 {

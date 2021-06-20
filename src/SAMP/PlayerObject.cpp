@@ -121,9 +121,9 @@ bool PlayerObject::destroy()
 }
 
 ///////////////////////////////////////////
-int PlayerObject::move(Vec3f const& pos_, Vec3f const& rot_, float speed_)
+int PlayerObject::move(Vec3f const& pos_, float speed_, Vec3f const& rot_)
 {
-	return sampgdk_MovePlayerObject(_playerId, _id, pos_.x, pos_.y, pos_.z, speed_, rot_.x, rot_.y, rot_.z);
+	return this->move(pos_.x, pos_.y, pos_.z, speed_, rot_.x, rot_.y, rot_.z);
 }
 
 ///////////////////////////////////////////
