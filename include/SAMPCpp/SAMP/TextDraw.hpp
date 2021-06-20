@@ -6,17 +6,18 @@
 
 #include <SAMPCpp/SAMP/Vehicle.hpp>
 
+
+namespace samp_cpp
+{
+
+class Player;
+
 enum class TextDrawAlign
 {
 	Left 	= 1,
 	Center 	= 2,
 	Right 	= 3,
 };
-
-namespace samp_cpp
-{
-
-class Player;
 
 enum class TextDrawFontType
 {
