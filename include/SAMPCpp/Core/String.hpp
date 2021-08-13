@@ -43,3 +43,18 @@ constexpr inline OutputIt byteToChars(uint8_t byte_, OutputIt it_)
 
 
 }
+
+namespace fmt
+{
+
+template <size_t MaxChars>
+struct formatter< samp_cpp::StackString<MaxChars> > : formatter<std::string_view>
+{
+    template <typename Context>
+    auto format(samp_cpp::StackString<MaxChars> const & str_, Context& ctx_)
+	{
+        return formatter<std::string_view>::format(str_.view(), ctx_);
+    }
+};
+
+}
