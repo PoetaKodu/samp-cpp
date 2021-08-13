@@ -7,7 +7,7 @@ namespace samp_cpp
 {
 
 ////////////////////////////////////
-bool NativeLoader::load(AMX* amx_, char const* nativeName_)
+bool NativeLoader::load(char const* nativeName_)
 {
 	auto it = natives.find(nativeName_);
 	

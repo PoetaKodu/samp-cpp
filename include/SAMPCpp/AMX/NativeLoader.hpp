@@ -18,7 +18,7 @@ public:
 	{
 	}
 
-	bool load(AMX* amx_, char const* nativeName_);
+	bool load(char const* nativeName_);
 
 	NativeMap natives;
 };
