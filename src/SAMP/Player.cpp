@@ -156,17 +156,15 @@ bool Player::setPosition(float x_, float y_, float z_)
 }
 
 //////////////////////////////////////
-void Player::getIpAddress(char buf_[IpAddressSize + 1]) const
+bool Player::getIpAddress(char * ip_, int size_) const
 {
-	this->getIpAddress(buf_, IpAddressSize + 1);
+	return sampgdk_GetPlayerIp(_id, ip_, size_);
 }
 
 //////////////////////////////////////
-std::string Player::getIpAddress() const
+void Player::getIpAddress(char buf_[IpAddressSize + 1]) const
 {
-	char buf[IpAddressSize + 1];
-	this->getIpAddress(buf);
-	return std::string(buf, buf + IpAddressSize); // without zero at the end
+	this->getIpAddress(buf_, IpAddressSize + 1);
 }
 
 //////////////////////////////////////
@@ -208,17 +206,6 @@ bool Player::setCameraLookAt(Vec3f const& lookAt_, CameraMove moveMethod_)
 bool Player::setCameraLookAt(float x_, float y_, float z_, CameraMove moveMethod_)
 {
 	return sampgdk_SetPlayerCameraLookAt(_id, x_, y_, z_, static_cast<int>(moveMethod_));
-}
-
-//////////////////////////////////////
-std::string Player::getName() const
-{
-	char buf[MAX_PLAYER_NAME];
-	int len = sampgdk_GetPlayerName(_id, buf, MAX_PLAYER_NAME);
-	if (len == 0)
-		return {};
-	
-	return std::string(buf, buf + len);
 }
 
 //////////////////////////////////////
@@ -492,12 +479,6 @@ int Player::getMoney() const
 PlayerState Player::getState() const
 {
 	return static_cast<PlayerState>( sampgdk_GetPlayerState(_id) );
-}
-
-//////////////////////////////////////
-bool Player::getIpAddress(char * ip_, int size_) const
-{
-	return sampgdk_GetPlayerIp(_id, ip_, size_);
 }
 
 //////////////////////////////////////

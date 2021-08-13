@@ -280,9 +280,19 @@ public:
 	Vec3f getPositionFixed() const;
 	Vec3f getPosition() const;
 
-	std::string getName() const;
+	//////////////////////////////////////
+	template <size_t MaxLength = MAX_PLAYER_NAME>
+	StackString<MaxLength> name() const
+	{
+		StackString<MaxLength> buf;
+		int len = this->getName(buf.data(), MaxLength);
+		if (len == 0)
+			return {};
+		
+		return buf;
+	}
+
 	void getIpAddress(char buf_[IpAddressSize + 1]) const;
-	std::string getIpAddress() const;
 
 	// GPCI/serial
 	template <size_t MaxLength = 50> // Actually can take up to ~40 chars

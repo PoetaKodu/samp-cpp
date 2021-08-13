@@ -202,7 +202,7 @@ bool setSVar(std::string const& varName_, std::string const& value_);
 template <size_t MaxLength = 4 * 1024>
 inline StackString<MaxLength> getSVarString(char const* varName_)
 {
-	StackString<MaxHashLength> buf{};
+	StackString<MaxLength> buf{};
 	sampgdk_GetSVarString(varName_, buf.data(), MaxLength);
 	return buf;
 }
