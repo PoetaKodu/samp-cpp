@@ -6,6 +6,7 @@
 #include <SAMPCpp/Core/Color.hpp>
 #include <SAMPCpp/Core/String.hpp>
 #include <SAMPCpp/Core/Formatting.hpp>
+#include <SAMPCpp/SAMP/Dialog.hpp>
 
 namespace samp_cpp
 {
@@ -186,7 +187,7 @@ public:
 	int connectionStatus() const;
 
 	template <size_t MaxLength = 15 + 1 + 5> // Ip address (15) + colon (:) + port(max 65535 -> 5 chars)
-	bool getIpPort() const;
+	StackString<MaxLength> getIpPort() const;
 
 private:
 	Player const& _player;
@@ -285,11 +286,11 @@ public:
 
 	// GPCI/serial
 	template <size_t MaxLength = 50> // Actually can take up to ~40 chars
-	std::string serial() const
+	StackString<MaxLength> serial() const
 	{
-		char buf[MaxLength];
-		sampgdk_gpci(_id, buf, MaxLength);
-		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+		StackString<MaxLength> buf{};
+		sampgdk_gpci(_id, buf.data(), MaxLength);
+		return buf;
 	}
 
 	bool setCameraPosition(Vec3f const& pos_);
@@ -333,8 +334,23 @@ public:
 	// A shorthand for this->getArmour()
 	float ap() const { return this->getArmour(); }
 
+
+	//////////////////////////////////////
+	template <size_t MaxLength = IpAddressSize + 1>
+	StackString<MaxLength> getIpAddress() const
+	{
+		StackString<MaxLength> buf{};
+		if (this->getIpAddress(buf.data(), MaxLength))
+			return buf;
+
+		return {};
+	}
+
 	// A shorthand for this->getIpAddress()
-	std::string ip() const { return this->getIpAddress(); }
+	template <size_t MaxLength = IpAddressSize + 1>
+	StackString<MaxLength> ip() const {
+		return this->getIpAddress<MaxLength>();
+	}
 
 	PlayerNetStats netStats() const {
 		return PlayerNetStats{ *this };
@@ -433,19 +449,19 @@ public:
 	bool editAttachedObject(int slot_);
 
 	template <size_t MaxLength = 64>
-	std::string getVersion() const
+	StackString<MaxLength> getVersion() const
 	{
-		char buf[MaxLength]{};
-		sampgdk_GetPlayerVersion(_id, buf, MaxLength);
-		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+		StackString<MaxLength> buf{};
+		sampgdk_GetPlayerVersion(_id, buf.data(), MaxLength);
+		return buf;
 	}
 
-		template <size_t MaxLength = 4 * 1024>
-	std::string getNetworkStats() const
+	template <size_t MaxLength = 4 * 1024>
+	StackString<MaxLength> getNetworkStats() const
 	{
-		char buf[MaxLength]{};
-		sampgdk_GetPlayerNetworkStats(_id, buf, MaxLength);
-		return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+		StackString<MaxLength> buf{};
+		sampgdk_GetPlayerNetworkStats(_id, buf.data(), MaxLength);
+		return buf;
 	}
 
 	/////////////////////////////////////
@@ -475,16 +491,16 @@ public:
 	bool 		setVarString(char const* varName_, char const* value_);
 	bool 		getVarString(char const* varName_, char * buf_, int size_) const;
 	template <size_t MaxLength = 4 * 1024>
-	std::string	getVarString(char const* varName_) const
+	StackString<MaxLength> getVarString(char const* varName_) const
 	{
-		char buf[MaxLength]{};
-		if (this->getVarString(varName_, buf, MaxLength))
-			return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+		StackString<MaxLength> buf{};
+		if (this->getVarString(varName_, buf.data(), MaxLength))
+			return buf;
 
 		return {};
 	}
 	template <size_t MaxLength = 4 * 1024>
-	std::string	getVarString(std::string const& varName_) const
+	StackString<MaxLength> getVarString(std::string const& varName_) const
 	{
 		return this->getVarString<MaxLength>(varName_.c_str());
 	}
@@ -499,11 +515,11 @@ public:
 	int 		getVarsUpperIndex() const;
 
 	template <size_t MaxLength = 4 * 1024>
-	std::string getVarNameAtIndex(int index_) const
+	StackString<MaxLength> getVarNameAtIndex(int index_) const
 	{
-		char buf[MaxLength]{};
-		if (this->getVarNameAtIndex(index_, buf, MaxLength))
-			return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+		StackString<MaxLength> buf{};
+		if (this->getVarNameAtIndex(index_, buf.data(), MaxLength))
+			return buf;
 
 		return {};
 	}
@@ -606,6 +622,22 @@ public:
 	bool selectTextDraw(Color hoverColor_);
 	bool cancelSelectTextDraw();
 
+	bool showDialog(int dialogIdx_, DialogStyle style_, char const* caption_, char const* info_, char const* button1_, char const* button2_ = "");
+
+	template <typename T>
+	bool showDialog(T const& fn_)
+	{
+		if constexpr (std::is_invocable_v<T, Player const&>)
+			return this->showDialog(fn_(*this));
+		else if constexpr (std::is_invocable_v<T>)
+			return this->showDialog(fn_());
+			
+		return false;
+	}
+
+	bool showDialog(Dialog const& dialog_);
+	bool showDialog(Dialog const& dialog_, int customIdx_);
+
 
 	// Menu:
 	///////////////////////////////////////////////
@@ -617,11 +649,11 @@ private:
 
 //////////////////////////////////////////////////////////////
 template <size_t MaxLength>
-inline bool PlayerNetStats::getIpPort() const
+inline StackString<MaxLength> PlayerNetStats::getIpPort() const
 {
-	char buf[MaxLength]{};
+	StackString<MaxLength> buf{};
 	sampgdk_NetStats_GetIpPort(_player.id(), buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	return buf;
 }
 
 }

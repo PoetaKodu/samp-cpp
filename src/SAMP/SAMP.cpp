@@ -453,12 +453,6 @@ int getServerTickRate()
 }
 
 ///////////////////////////////////////////////
-bool showPlayerDialog(Player player_, int dialogIdx_, int style_, char const* caption_, char const* info_, char const* button1_, char const* button2_)
-{
-	return sampgdk_ShowPlayerDialog(player_.id(), dialogIdx_, style_, caption_, info_, button1_, button2_);
-}
-
-///////////////////////////////////////////////
 int addCharModel(int baseIdx_, int newIdx_, char const* dffName_, char const* txdName_)
 {
 	return sampgdk_AddCharModel(baseIdx_, newIdx_, dffName_, txdName_);

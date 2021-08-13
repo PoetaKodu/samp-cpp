@@ -495,9 +495,9 @@ PlayerState Player::getState() const
 }
 
 //////////////////////////////////////
-bool Player::getIpAddress(char * ip, int size) const
+bool Player::getIpAddress(char * ip_, int size_) const
 {
-	return sampgdk_GetPlayerIp(_id, ip, size);
+	return sampgdk_GetPlayerIp(_id, ip_, size_);
 }
 
 //////////////////////////////////////
@@ -1240,6 +1240,38 @@ bool Player::selectTextDraw(Color hoverColor_)
 bool Player::cancelSelectTextDraw()
 {
 	return sampgdk_CancelSelectTextDraw(_id);
+}
+
+///////////////////////////////////////////////
+bool Player::showDialog(int dialogIdx_, DialogStyle style_, char const* caption_, char const* info_, char const* button1_, char const* button2_)
+{
+	return sampgdk_ShowPlayerDialog(_id, dialogIdx_, static_cast<int>(style_), caption_, info_, button1_, button2_);
+}
+
+///////////////////////////////////////////////
+bool Player::showDialog(Dialog const& dialog_)
+{
+	return this->showDialog(
+			dialog_.id,
+			dialog_.style(),
+			dialog_.caption.data(),
+			dialog_.text.data(),
+			dialog_.buttons[0].data(),
+			dialog_.buttons[1].data()
+		);
+}
+
+///////////////////////////////////////////////
+bool Player::showDialog(Dialog const& dialog_, int customIdx_)
+{
+	return this->showDialog(
+			customIdx_,
+			dialog_.style(),
+			dialog_.caption.data(),
+			dialog_.text.data(),
+			dialog_.buttons[0].data(),
+			dialog_.buttons[1].data()
+		);
 }
 
 }

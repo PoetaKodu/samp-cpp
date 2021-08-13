@@ -51,16 +51,6 @@ enum class ServerVarType
 	Float	= 3,
 };
 
-enum class DialogStyle
-{
-	MessageBox		= 0,
-	Input			= 1,
-	List			= 2,
-	Password		= 3,
-	TabList			= 4,
-	TabListHeaders	= 5,
-};
-
 
 enum class PlayerMarkersMode
 {
@@ -186,11 +176,11 @@ int getActorPoolSize();
 
 ///////////////////////////////////////////////
 template <size_t MaxHashLength = (256 / 8)>
-std::string sha256PassHash(std::string const& password_, std::string const& salt_)
+StackString<MaxHashLength> sha256PassHash(std::string const& password_, std::string const& salt_)
 {
-	char buf[MaxHashLength]{};
-	sampgdk_SHA256_PassHash(password_.c_str(), salt_.c_str(), buf, MaxHashLength);
-	return std::string{buf, buf + strnlen_s(buf, MaxHashLength) };
+	StackString<MaxHashLength> buf{};
+	sampgdk_SHA256_PassHash(password_.c_str(), salt_.c_str(), buf.data(), MaxHashLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
@@ -210,16 +200,16 @@ bool setSVar(std::string const& varName_, std::string const& value_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getSVarString(char const* varName_)
+inline StackString<MaxLength> getSVarString(char const* varName_)
 {
-	char buf[MaxLength]{};
-	sampgdk_GetSVarString(varName_, buf, MaxLength);
-	return std::string{buf, buf + strnlen_s(buf, MaxLength) };
+	StackString<MaxHashLength> buf{};
+	sampgdk_GetSVarString(varName_, buf.data(), MaxLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getSVarString(std::string const& varName_)
+inline StackString<MaxLength> getSVarString(std::string const& varName_)
 {
 	return getSVarString<MaxLength>(varName_.c_str());
 }
@@ -241,11 +231,11 @@ int getSVarsUpperIndex();
 
 ///////////////////////////////////////////////
 template <size_t MaxNameLength = 1024>
-inline bool getSVarNameAtIndex(int index_)
+inline StackString<MaxNameLength> getSVarNameAtIndex(int index_)
 {
-	char buf[MaxNameLength]{};
-	sampgdk_GetSVarNameAtIndex(index_, buf, MaxNameLength);
-	return std::string{buf, buf + strnlen_s(buf, MaxNameLength) };
+	StackString<MaxNameLength> buf{};
+	sampgdk_GetSVarNameAtIndex(index_, buf.data(), MaxNameLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
@@ -358,11 +348,11 @@ bool sendRconCommand(std::string const& command_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getNetworkStats()
+inline StackString<MaxLength> getNetworkStats()
 {
-	char buf[MaxLength]{};
-	sampgdk_GetNetworkStats(buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	StackString<MaxLength> buf{};
+	sampgdk_GetNetworkStats(buf.data(), MaxLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
@@ -379,16 +369,16 @@ bool unblockIpAddress(std::string const& ipAddress_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getServerVarAsString(char const* varName_)
+inline StackString<MaxLength> getServerVarAsString(char const* varName_)
 {
-	char buf[MaxLength]{};
-	sampgdk_GetServerVarAsString(varName_, buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	StackString<MaxLength> buf{};
+	sampgdk_GetServerVarAsString(varName_, buf.data(), MaxLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getServerVarAsString(std::string const& varName_)
+inline StackString<MaxLength> getServerVarAsString(std::string const& varName_)
 {
 	return getServerVarAsString<MaxLength>(varName_.c_str());
 }
@@ -407,16 +397,16 @@ bool getServerVarAsBool(std::string const& varName_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getConsoleVarAsString(char const* varName_)
+inline StackString<MaxLength> getConsoleVarAsString(char const* varName_)
 {
-	char buf[MaxLength]{};
-	sampgdk_GetConsoleVarAsString(varName_, buf, MaxLength);
-	return std::string{ buf, buf + strnlen_s(buf, MaxLength) };
+	StackString<MaxLength> buf{};
+	sampgdk_GetConsoleVarAsString(varName_, buf.data(), MaxLength);
+	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline std::string getConsoleVarAsString(std::string const& varName_)
+inline StackString<MaxLength> getConsoleVarAsString(std::string const& varName_)
 {
 	return getConsoleVarAsString<MaxLength>(varName_.c_str());
 }
@@ -435,9 +425,6 @@ bool getConsoleVarAsBool(std::string const& varName_);
 
 ///////////////////////////////////////////////
 int getServerTickRate();
-
-///////////////////////////////////////////////
-bool showPlayerDialog(Player player_, int dialogIdx_, int style_, char const* caption_, char const* info_, char const* button1_, char const* button2_);
 
 ///////////////////////////////////////////////
 int addCharModel(int baseIdx_, int newIdx_, char const* dffName_, char const* txdName_);
