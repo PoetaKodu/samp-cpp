@@ -19,7 +19,6 @@ public:
 	}
 
 	bool load(AMX* amx_, char const* nativeName_);
-	size_t loadFromAmx(AMX* amx_);
 
 	NativeMap natives;
 };

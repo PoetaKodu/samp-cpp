@@ -9,10 +9,15 @@ namespace samp_cpp
 
 //////////////////////////////////////
 template <typename... TArgs>
-inline cell callNativeOn(AMX* amx_, AMX_NATIVE native, TArgs&&... args_)
+inline cell callNativeOn(AMX_NATIVE native, TArgs&&... args_)
 {
 	constexpr int NumNativeArgs = sizeof...(TArgs);
 	using Expander = int[];
+
+	// NOTE: THIS IS VERY, VERY IMPORTANT
+	// "sampgdk_fakeamx_amx" has to be visible from sampgdk-amlg
+	// By default it is hidden in source files (at the moment I write this comment)
+	AMX* amx = sampgdk_fakeamx_amx();
 
 	// Array of allocated resources 
 	cell resources[NumNativeArgs];
@@ -39,7 +44,7 @@ inline cell callNativeOn(AMX* amx_, AMX_NATIVE native, TArgs&&... args_)
 		int physicalAddrIdx	= 0;
 
 		// Initializer list to expand in order
-		Expander{ ((params[paramIdx++] = evalAmxParam(amx_,
+		Expander{ ((params[paramIdx++] = evalAmxParam(amx,
 				std::forward<TArgs>(args_),
 				resources[resourceIdx++],
 				physicalAddresses[physicalAddrIdx++]
@@ -47,7 +52,7 @@ inline cell callNativeOn(AMX* amx_, AMX_NATIVE native, TArgs&&... args_)
 	}
 
 	// Execute and collect return value
-	cell returnValue = native(amx_, params);
+	cell returnValue = sampgdk_CallNative(native, params);
 
 	// Handle physical addresses (used when using pointers)
 	{
@@ -66,7 +71,7 @@ inline cell callNativeOn(AMX* amx_, AMX_NATIVE native, TArgs&&... args_)
 	for(int i = 0; i < NumNativeArgs; ++i)
 	{
 		if (resources[i] != -1)
-			amx_Release(amx_, resources[i]);
+			amx_Release(amx, resources[i]);
 	}
 
 	return returnValue;

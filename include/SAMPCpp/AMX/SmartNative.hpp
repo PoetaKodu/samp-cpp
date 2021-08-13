@@ -7,7 +7,6 @@ namespace samp_cpp
 
 struct SmartNative
 {
-	AMX* 		amx = nullptr;
 	AMX_NATIVE 	native = nullptr;
 };
 
@@ -16,7 +15,7 @@ struct SmartNative
 	{ \
 		cell operator() Params const \
 		{ \
-			return ([&](auto&&... args) { return samp_cpp::callNativeOn(amx, native, std::forward<decltype(args)>(args)...); }) CallParams;\
+			return ([&](auto&&... args) { return samp_cpp::callNativeOn(native, std::forward<decltype(args)>(args)...); }) CallParams;\
 		} \
 	};\
 	inline NativeName##_Impl NativeName{};
