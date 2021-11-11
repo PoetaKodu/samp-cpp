@@ -81,6 +81,9 @@ public:
 	T& operator*() { return _value; }
 	T const& operator*() const { return _value; }
 
+	T* operator->() { return &_value; }
+	T const* operator->() const { return &_value; }
+
 	bool hasValue() const {
 		return _hasValue;
 	}
