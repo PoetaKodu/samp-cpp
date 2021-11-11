@@ -42,6 +42,8 @@ constexpr const int32_t		InvalidTextDraw		= 0xFFFF;
 constexpr const int32_t		InvalidGangZone		= -1;
 constexpr const int32_t		Invalid3DTextId		= 0xFFFF;
 
+constexpr const uint16_t 	InvalidPlayerSkin	= 74;
+constexpr const uint16_t 	MaxPlayerSkins		= 311;
 
 enum class ServerVarType
 {
