@@ -8,8 +8,8 @@ namespace samp_cpp
 class StaticPickup final
 {
 public:
-	static bool add(int modelIdx_, int type_, Vec3f const& pos_, int virtualWorld_);
 	static bool add(int modelIdx_, int type_, float x_, float y_, float z_, int virtualWorld_);
+	static bool add(int modelIdx_, int type_, Vec3f const& pos_, int virtualWorld_);
 };
 
 class Pickup
