@@ -193,6 +193,7 @@ private:
 	Player const& _player;
 };
 
+
 class Player
 {
 public:
@@ -212,25 +213,33 @@ public:
 	template <typename TFirstArg, typename... TArgs>
 	void msg(ChatFmtColorPair const& colorPair_, TFirstArg && firstArg_, TArgs &&... args_)
 	{
-		std::string msgContent = fmt::format(
+		std::array<char, 512> msgContent;		
+		auto result = fmt::format_to_n(
+				msgContent.data(),
+				msgContent.size() - 1,
 				colorPair_.second,
 				std::forward<TFirstArg>(firstArg_),
 				std::forward<TArgs>(args_)...
 			);
+		msgContent[result.size] = '\0';
 
-		this->msg(colorPair_.first, msgContent);
+		this->msg(colorPair_.first, msgContent.data());
 	}
 	
-	template <typename TFormat, typename TFirstArg, typename... TArgs>
+	template <FormatType TFormat, typename TFirstArg, typename... TArgs>
 	void msg(Color color_, TFormat && fmt_, TFirstArg && firstArg_, TArgs &&... args_)
 	{
-		std::string msgContent = fmt::format(
+		std::array<char, 512> msgContent;
+		auto result = fmt::format_to_n(
+				msgContent.data(),
+				msgContent.size() - 1,
 				std::forward<TFormat>(fmt_),
 				std::forward<TFirstArg>(firstArg_),
 				std::forward<TArgs>(args_)...
 			);
+		msgContent[result.size] = '\0';
 
-		this->msg(color_, msgContent);
+		this->msg(color_, msgContent.data());
 	}
 
 	bool msg(ChatFmtColorPair const& coloredMsg_);
@@ -250,7 +259,7 @@ public:
 		Player::msgAll(colorPair_.first, msgContent);
 	}
 	
-	template <typename TFormat, typename TFirstArg, typename... TArgs>
+	template <FormatType TFormat, typename TFirstArg, typename... TArgs>
 	static void msgAll(Color color_, TFormat && fmt_, TFirstArg && firstArg_, TArgs &&... args_)
 	{
 		std::string msgContent = fmt::format(

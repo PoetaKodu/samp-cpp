@@ -93,4 +93,32 @@ constexpr ChatFmtColorPair colored(Color const& chatColor_, TArgs const&... args
 	return { chatColor_, colored(args_...) };
 }
 
+
+// Formatting type traits:
+
+template <typename T>
+struct IsKindOfString : std::false_type {};
+
+template <typename CharType>
+struct IsKindOfString< std::basic_string_view<CharType> > : std::true_type {};
+
+template <typename CharType>
+struct IsKindOfString< std::basic_string<CharType> > : std::true_type {};
+
+template <typename T>
+concept CharacterType =
+	std::is_same_v<std::remove_cvref_t<T>, char>		||
+	std::is_same_v<std::remove_cvref_t<T>, wchar_t>		||
+	std::is_same_v<std::remove_cvref_t<T>, char8_t>		||
+	std::is_same_v<std::remove_cvref_t<T>, char16_t>	||
+	std::is_same_v<std::remove_cvref_t<T>, char32_t>;
+
+template <CharacterType CharType>
+struct IsKindOfString<CharType*> : std::true_type {};
+
+template <typename T>
+concept FormatType =
+	fmt::detail::is_compiled_format<T>::value	||
+	IsKindOfString<T>::value;
+
 }
