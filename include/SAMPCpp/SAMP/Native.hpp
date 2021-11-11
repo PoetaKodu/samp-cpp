@@ -180,10 +180,10 @@ auto callWithParams(Function f, AMX* amx_, cell* params, size_t & baseIndex)
     return callWithParams<Function, Tuple>(f, amx_, params, baseIndex, std::make_index_sequence<size>{});
 }
 
-template <auto func, typename FuncArgType = decltype(func)>
+template <auto func>
 auto make()
 {
-	using FuncType 		= std::remove_reference_t<FuncArgType>;
+	using FuncType 		= std::remove_pointer_t< std::remove_reference_t< decltype(func) > >;
 	using FuncParams 	= typename FuncArgs< FuncType >::Types;
 
 	static auto native = [] AMX_NATIVE_CALL (AMX* amx, cell* params) -> cell

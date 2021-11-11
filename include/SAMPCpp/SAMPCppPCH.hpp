@@ -11,6 +11,7 @@
 #include <map>
 #include <set>
 #include <optional>
+#include <tuple>
 #include <type_traits>
 
 #include <SAMPCpp/Core/Math.hpp>
