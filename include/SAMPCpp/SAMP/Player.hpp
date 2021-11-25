@@ -3,6 +3,7 @@
 #include SAMPCPP_PCH
 
 #include <SAMPCpp/SAMP/Weapon.hpp>
+#include <SAMPCpp/SAMP/MapIcon.hpp>
 #include <SAMPCpp/Core/Color.hpp>
 #include <SAMPCpp/Core/String.hpp>
 #include <SAMPCpp/Core/Formatting.hpp>
@@ -24,6 +25,31 @@ constexpr const int32_t MaxPlayerAttachedObjects 	= 10;
 constexpr const int32_t MaxChatbubbleLength 		= 144;
 constexpr const int32_t IpAddressSize 				= 15; /// Warning, without zero at the end!
 
+// TODO: move it to Constants.hpp
+enum class Weather : int
+{
+	ExtrasunnyLa			= 0,
+	SunnyLa					= 1,
+	ExtrasunnySmogLa		= 2,
+	SunnySmogLa				= 3,
+	CloudyLa				= 4,
+	SunnySf					= 5,
+	ExtrasunnySf			= 6,
+	CloudySf				= 7,
+	RainySf					= 8,
+	FoggySf					= 9,
+	SunnyVegas				= 10,
+	ExtrasunnyVegas			= 11,
+	CloudyVegas				= 12,
+	ExtrasunnyCountryside	= 13,
+	SunnyCountryside		= 14,
+	CloudyCountryside		= 15,
+	RainyCountryside		= 16,
+	ExtrasunnyDesert		= 17,
+	SunnyDesert				= 18,
+	SandstormDesert			= 19,
+	Underwater				= 20,
+};
 
 /////////////////////////////
 enum class PlayerState
@@ -109,15 +135,6 @@ enum class PlayerVarType
 	Int					= 1,
 	String				= 2,
 	Float				= 3
-};
-
-/////////////////////////////
-enum class MapIconType
-{
-	Local				= 0,
-	Global				= 1,
-	LocalCheckpoint		= 2,
-	GlobalCheckpoint	= 3
 };
 
 /////////////////////////////
@@ -443,6 +460,13 @@ public:
 	GameTime getTime() const;
 	bool toggleClock(bool toggle);
 	bool setWeather(int weather);
+
+	///////////////////////////////////////////////
+	inline bool setWeather(Weather weather_)
+	{
+		return this->setWeather( static_cast<int>(weather_) );
+	}
+
 	bool forceClassSelection();
 	bool setWantedLevel(int level);
 	int getWantedLevel() const;
@@ -591,9 +615,6 @@ public:
 	bool setWorldBounds(float x_max, float x_min, float y_max, float y_min);
 	bool setMarkerForPlayer(Player showPlayer_, Color color_);
 	bool showNameTagForPlayer(Player showPlayer_, bool show);
-	bool setMapIcon(int iconIdx_, Vec3f const& pos_, int markerType_, Color color_, int style_);
-	bool setMapIcon(int iconIdx_, float x_, float y_, float z_, int markerType_, Color color_, int style_);
-	bool removeMapIcon(int iconIdx_);
 	bool allowTeleport(bool allow_);
 	bool setCameraBehindPlayer();
 	Vec3f getCameraPosition() const;

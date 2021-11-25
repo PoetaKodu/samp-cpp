@@ -53,7 +53,6 @@ enum class ServerVarType
 	Float	= 3,
 };
 
-
 enum class PlayerMarkersMode
 {
 	Off			= 0,
@@ -290,6 +289,12 @@ bool allowInteriorWeapons(bool allow_);
 
 ///////////////////////////////////////////////
 bool setWeather(int weatherIdx_);
+
+///////////////////////////////////////////////
+inline bool setWeather(Weather weather_)
+{
+	return setWeather( static_cast<int>(weather_) );
+}
 
 ///////////////////////////////////////////////
 bool setGravity(float gravity_);

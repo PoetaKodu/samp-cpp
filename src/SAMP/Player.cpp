@@ -944,24 +944,6 @@ bool Player::showNameTagForPlayer(Player showPlayer_, bool show)
 }
 
 //////////////////////////////////////
-bool Player::setMapIcon(int iconIdx_, Vec3f const& pos_, int markerType_, Color color_, int style_)
-{
-	return this->setMapIcon(iconIdx_, pos_.x, pos_.y, pos_.z, markerType_, color_, style_);
-}
-
-//////////////////////////////////////
-bool Player::setMapIcon(int iconIdx_, float x_, float y_, float z_, int markerType_, Color color_, int style_)
-{
-	return sampgdk_SetPlayerMapIcon(_id, iconIdx_, x_, y_, z_, markerType_, color_, style_);
-}
-
-//////////////////////////////////////
-bool Player::removeMapIcon(int iconIdx_)
-{
-	return sampgdk_RemovePlayerMapIcon(_id, iconIdx_);
-}
-
-//////////////////////////////////////
 bool Player::allowTeleport(bool allow_)
 {
 	return sampgdk_AllowPlayerTeleport(_id, allow_);
