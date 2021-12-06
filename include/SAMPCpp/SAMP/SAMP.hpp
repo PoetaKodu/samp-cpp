@@ -177,9 +177,9 @@ int getActorPoolSize();
 
 ///////////////////////////////////////////////
 template <size_t MaxHashLength = (256 / 8)>
-StackString<MaxHashLength> sha256PassHash(std::string const& password_, std::string const& salt_)
+InplaceStr<MaxHashLength> sha256PassHash(std::string const& password_, std::string const& salt_)
 {
-	StackString<MaxHashLength> buf{};
+	InplaceStr<MaxHashLength> buf{};
 	sampgdk_SHA256_PassHash(password_.c_str(), salt_.c_str(), buf.data(), MaxHashLength);
 	return buf;
 }
@@ -201,16 +201,16 @@ bool setSVar(std::string const& varName_, std::string const& value_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getSVarString(char const* varName_)
+inline InplaceStr<MaxLength> getSVarString(char const* varName_)
 {
-	StackString<MaxLength> buf{};
+	InplaceStr<MaxLength> buf{};
 	sampgdk_GetSVarString(varName_, buf.data(), MaxLength);
 	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getSVarString(std::string const& varName_)
+inline InplaceStr<MaxLength> getSVarString(std::string const& varName_)
 {
 	return getSVarString<MaxLength>(varName_.c_str());
 }
@@ -232,9 +232,9 @@ int getSVarsUpperIndex();
 
 ///////////////////////////////////////////////
 template <size_t MaxNameLength = 1024>
-inline StackString<MaxNameLength> getSVarNameAtIndex(int index_)
+inline InplaceStr<MaxNameLength> getSVarNameAtIndex(int index_)
 {
-	StackString<MaxNameLength> buf{};
+	InplaceStr<MaxNameLength> buf{};
 	sampgdk_GetSVarNameAtIndex(index_, buf.data(), MaxNameLength);
 	return buf;
 }
@@ -355,9 +355,9 @@ bool sendRconCommand(std::string const& command_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getNetworkStats()
+inline InplaceStr<MaxLength> getNetworkStats()
 {
-	StackString<MaxLength> buf{};
+	InplaceStr<MaxLength> buf{};
 	sampgdk_GetNetworkStats(buf.data(), MaxLength);
 	return buf;
 }
@@ -376,16 +376,16 @@ bool unblockIpAddress(std::string const& ipAddress_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getServerVarAsString(char const* varName_)
+inline InplaceStr<MaxLength> getServerVarAsString(char const* varName_)
 {
-	StackString<MaxLength> buf{};
+	InplaceStr<MaxLength> buf{};
 	sampgdk_GetServerVarAsString(varName_, buf.data(), MaxLength);
 	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getServerVarAsString(std::string const& varName_)
+inline InplaceStr<MaxLength> getServerVarAsString(std::string const& varName_)
 {
 	return getServerVarAsString<MaxLength>(varName_.c_str());
 }
@@ -404,16 +404,16 @@ bool getServerVarAsBool(std::string const& varName_);
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getConsoleVarAsString(char const* varName_)
+inline InplaceStr<MaxLength> getConsoleVarAsString(char const* varName_)
 {
-	StackString<MaxLength> buf{};
+	InplaceStr<MaxLength> buf{};
 	sampgdk_GetConsoleVarAsString(varName_, buf.data(), MaxLength);
 	return buf;
 }
 
 ///////////////////////////////////////////////
 template <size_t MaxLength = 4 * 1024>
-inline StackString<MaxLength> getConsoleVarAsString(std::string const& varName_)
+inline InplaceStr<MaxLength> getConsoleVarAsString(std::string const& varName_)
 {
 	return getConsoleVarAsString<MaxLength>(varName_.c_str());
 }

@@ -204,7 +204,7 @@ public:
 	int connectionStatus() const;
 
 	template <size_t MaxLength = 15 + 1 + 5> // Ip address (15) + colon (:) + port(max 65535 -> 5 chars)
-	StackString<MaxLength> getIpPort() const;
+	InplaceStr<MaxLength> getIpPort() const;
 
 private:
 	Player const& _player;
@@ -308,9 +308,9 @@ public:
 
 	//////////////////////////////////////
 	template <size_t MaxLength = MAX_PLAYER_NAME>
-	StackString<MaxLength> name() const
+	InplaceStr<MaxLength> name() const
 	{
-		StackString<MaxLength> buf;
+		InplaceStr<MaxLength> buf;
 		int len = this->getName(buf.data(), MaxLength);
 		if (len == 0)
 			return {};
@@ -322,9 +322,9 @@ public:
 
 	// GPCI/serial
 	template <size_t MaxLength = 50> // Actually can take up to ~40 chars
-	StackString<MaxLength> serial() const
+	InplaceStr<MaxLength> serial() const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		sampgdk_gpci(_id, buf.data(), MaxLength);
 		return buf;
 	}
@@ -373,9 +373,9 @@ public:
 
 	//////////////////////////////////////
 	template <size_t MaxLength = IpAddressSize + 1>
-	StackString<MaxLength> getIpAddress() const
+	InplaceStr<MaxLength> getIpAddress() const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		if (this->getIpAddress(buf.data(), MaxLength))
 			return buf;
 
@@ -384,7 +384,7 @@ public:
 
 	// A shorthand for this->getIpAddress()
 	template <size_t MaxLength = IpAddressSize + 1>
-	StackString<MaxLength> ip() const {
+	InplaceStr<MaxLength> ip() const {
 		return this->getIpAddress<MaxLength>();
 	}
 
@@ -492,17 +492,17 @@ public:
 	bool editAttachedObject(int slot_);
 
 	template <size_t MaxLength = 64>
-	StackString<MaxLength> getVersion() const
+	InplaceStr<MaxLength> getVersion() const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		sampgdk_GetPlayerVersion(_id, buf.data(), MaxLength);
 		return buf;
 	}
 
 	template <size_t MaxLength = 4 * 1024>
-	StackString<MaxLength> getNetworkStats() const
+	InplaceStr<MaxLength> getNetworkStats() const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		sampgdk_GetPlayerNetworkStats(_id, buf.data(), MaxLength);
 		return buf;
 	}
@@ -534,16 +534,16 @@ public:
 	bool 		setVarString(char const* varName_, char const* value_);
 	bool 		getVarString(char const* varName_, char * buf_, int size_) const;
 	template <size_t MaxLength = 4 * 1024>
-	StackString<MaxLength> getVarString(char const* varName_) const
+	InplaceStr<MaxLength> getVarString(char const* varName_) const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		if (this->getVarString(varName_, buf.data(), MaxLength))
 			return buf;
 
 		return {};
 	}
 	template <size_t MaxLength = 4 * 1024>
-	StackString<MaxLength> getVarString(std::string const& varName_) const
+	InplaceStr<MaxLength> getVarString(std::string const& varName_) const
 	{
 		return this->getVarString<MaxLength>(varName_.c_str());
 	}
@@ -558,9 +558,9 @@ public:
 	int 		getVarsUpperIndex() const;
 
 	template <size_t MaxLength = 4 * 1024>
-	StackString<MaxLength> getVarNameAtIndex(int index_) const
+	InplaceStr<MaxLength> getVarNameAtIndex(int index_) const
 	{
-		StackString<MaxLength> buf{};
+		InplaceStr<MaxLength> buf{};
 		if (this->getVarNameAtIndex(index_, buf.data(), MaxLength))
 			return buf;
 
@@ -689,9 +689,9 @@ private:
 
 //////////////////////////////////////////////////////////////
 template <size_t MaxLength>
-inline StackString<MaxLength> PlayerNetStats::getIpPort() const
+inline InplaceStr<MaxLength> PlayerNetStats::getIpPort() const
 {
-	StackString<MaxLength> buf{};
+	InplaceStr<MaxLength> buf{};
 	sampgdk_NetStats_GetIpPort(_player.id(), buf, MaxLength);
 	return buf;
 }
