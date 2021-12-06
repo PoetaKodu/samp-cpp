@@ -42,6 +42,28 @@ constexpr inline OutputIt byteToChars(uint8_t byte_, OutputIt it_)
 }
 
 
+template <size_t MaxChars, typename OutputIt>
+struct FormatNResult
+{
+	InplaceStr<MaxChars>				string;
+	fmt::format_to_n_result<OutputIt>	formatResult;
+};
+
+template <size_t MaxChars, typename TFormat, typename... TArgs>
+auto inplaceFormat(TFormat&& format_, TArgs&&... args_)
+{
+	FormatNResult<MaxChars, char*> result;
+
+	result.formatResult = fmt::format_to_n(
+			result.string.data(), MaxChars - 1,
+			std::forward<TFormat>(format_),
+			std::forward<TArgs>(args_)...
+		);
+	*result.formatResult.out = '\0';
+
+	return result;
+}
+
 }
 
 namespace fmt
