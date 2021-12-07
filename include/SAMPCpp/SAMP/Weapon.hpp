@@ -2,12 +2,14 @@
 
 #include SAMPCPP_PCH
 
+#include <SAMPCpp/Core/String.hpp>
+
 namespace samp_cpp
 {
 
 struct Weapon
 {
-	enum Type
+	enum Type : int
 	{
 		None 				= 0,
 		BrassKnuckle		= 1,
@@ -56,13 +58,57 @@ struct Weapon
 		Collision 			= 54,
 	};
 
+	static bool valid(int idx_)
+	{
+		if (idx_ < None || idx_ >= Weapon::Collision)
+			return false;
+
+		if (idx_ > 18 && idx_ < 22)
+			return false;
+		
+		if (idx_ > 43 && idx_ < 46)
+			return false;
+
+		if (idx_ > 46 && idx_ < 49)
+			return false;
+
+		if (idx_ > 49 && idx_ < 53)
+			return false;
+
+		return true;
+	}
+
+	template <size_t MaxNameLength = 128>
+	static auto name(int weaponIdx_)
+	{
+		InplaceStr<MaxNameLength> buf{};
+		sampgdk_GetWeaponName(weaponIdx_, buf.data(), MaxNameLength);
+		return buf;
+	}
+
+	template <size_t MaxNameLength = 128>
+	auto name() const
+	{
+		return Weapon::name<MaxNameLength>(id);
+	}
+
 	Weapon() = default;
+
+	Weapon(int type_, int32_t ammo_ = 1)
+		:
+		id(static_cast<Type>(type_)),
+		ammo(ammo_)
+	{
+	}
+
 	Weapon(Type type_, int32_t ammo_ = 1)
-		: id(type_),
+		:
+		id(type_),
 		ammo(ammo_)
 	{
 	}
 	
+
 	Type id 		= Weapon::None;
 	int32_t ammo 	= 1;
 };

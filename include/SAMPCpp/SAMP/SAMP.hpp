@@ -279,6 +279,13 @@ bool setWorldTime(int hour_);
 bool getWeaponName(int weaponIdx_, char * name_, int size_);
 
 ///////////////////////////////////////////////
+template <size_t MaxNameLength = 128>
+inline auto getWeaponName(int weaponIdx_)
+{
+	return Weapon::name<MaxNameLength>(weaponIdx_);
+}
+
+///////////////////////////////////////////////
 bool enableTirePopping(bool enable_);
 
 ///////////////////////////////////////////////
